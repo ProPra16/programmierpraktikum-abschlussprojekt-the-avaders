@@ -1,4 +1,4 @@
-package sample;
+package de.hhu.propra16.avaders;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
