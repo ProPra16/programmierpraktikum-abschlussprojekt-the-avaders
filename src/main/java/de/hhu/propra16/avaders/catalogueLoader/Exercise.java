@@ -1,4 +1,4 @@
-package de.hhu.propra16.avaders.exerciseLoader;
+package de.hhu.propra16.avaders.catalogueLoader;
 
 public class Exercise {
 	final String exerciseName;
