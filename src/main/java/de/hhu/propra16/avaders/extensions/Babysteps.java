@@ -21,20 +21,31 @@ public class Babysteps {
 		currentlyEditableArea = t;
 		oldText = currentlyEditableArea.getText();
 		timeline = new Timeline(new KeyFrame(Duration.seconds(1),
-											ae -> {seconds.set(seconds.get()+1);
-												System.out.println(seconds.get());
-											if(!hasTimeLeft.get()){
-												currentlyEditableArea.setEditable(false);
-												currentlyEditableArea.setText(oldText);
-												System.out.println("Ich wollte text machen");
-											}}));
+				ae -> {seconds.set(seconds.get()+1);
+					if(!hasTimeLeft.get()){
+						currentlyEditableArea.setEditable(false);
+						currentlyEditableArea.setText(oldText);
+					}}));
 	}
 
 	public void startTimer(int maxSeconds){
 		this.maxSeconds.set(maxSeconds);
 		timeline.setCycleCount(maxSeconds);
 		timeline.play();
-		System.out.println("timeline läuft");
+	}
+
+	public void stopTimer(){
+		timeline.stop();
+	}
+
+	public void reset(){
+		seconds.set(0);
+	}
+
+	public void restart(){
+		timeline.stop();
+		seconds.set(0);
+		startTimer(maxSeconds.get());
 	}
 
 	public int getRemainingSeconds(){
