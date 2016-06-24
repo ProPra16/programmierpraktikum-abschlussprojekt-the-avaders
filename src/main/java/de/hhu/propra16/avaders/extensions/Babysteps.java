@@ -9,6 +9,7 @@ import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.TextArea;
+import javafx.scene.web.HTMLEditor;
 import javafx.util.Duration;
 
 public class Babysteps {
@@ -18,6 +19,8 @@ public class Babysteps {
 	private IntegerProperty seconds = new SimpleIntegerProperty(0), maxSeconds = new SimpleIntegerProperty(0);
 	private NumberBinding remaining = Bindings.subtract(maxSeconds,seconds);
 	private BooleanBinding hasTimeLeft = Bindings.notEqual(seconds,maxSeconds);
+
+	private HTMLEditor currentlyEditableHtmlEditor;
 
 	/**
 	 * Creates a new instance of Babysteps.
@@ -32,6 +35,24 @@ public class Babysteps {
 						currentlyEditableArea.setEditable(false);
 						currentlyEditableArea.setText(oldText);
 					}}));
+	}
+
+	public Babysteps(HTMLEditor htmlEditor){
+		currentlyEditableHtmlEditor = htmlEditor;
+		oldText = htmlEditor.getHtmlText();
+		timeline = new Timeline(new KeyFrame(Duration.seconds(1),
+				ae -> {seconds.set(seconds.get()+1);
+					if(!hasTimeLeft.get()){
+						currentlyEditableHtmlEditor.setHtmlText(oldText.replace("contenteditable=\"true\"", "contenteditable=\"false\""));
+						htmlEditor.setDisable(true);
+						//System.out.println("fertig\n"+htmlEditor.getHtmlText());
+					}}));
+	}
+
+	public void startTimerHTML(int maxSeconds){
+		this.maxSeconds.set(maxSeconds);
+		timeline.setCycleCount(maxSeconds);
+		timeline.play();
 	}
 
 	/**
