@@ -1,19 +1,19 @@
 Protokoll zum Gruppentreffen am 22.06.2016
-Protokollfuehrer: Thiemo Urselmann
+Protokollführer: Thiemo Urselmann
 Alias: Batman140
 
 Erledigt: 
 -Finden eines Gruppennamens, Austausch von Email-Adressen
--Absprachen �ber skype
+-Absprachen über Skype
 -Gruppentreffen immer Donnerstags
--Entwurf eines Flussdiagramms fuer die primaere Logik 
+-Entwurf eines Flussdiagramms für die primäre Logik 
 
-Beschluesse:
--gemeinsam verwendete Sprache im code: Englisch
--code-Einrueckungen: Tabs statt Leerzeichen
+Beschlüsse:
+-gemeinsam verwendete Sprache im Code: Englisch
+-Code-Einrückungen: Tabs statt Leerzeichen
 -verwendung der Erweiterungen: Babysteps, Tracking
 
-Arbeitszweige und Ziel fuer diese Woche:
+Arbeitszweige und Ziel für diese Woche:
 -Florian:
 Arbeitsbereich: Implementierung der Hauptlogik
 Ziel dieser Woche: Umsetzung der Struktur des Flussdiagramms in Java
