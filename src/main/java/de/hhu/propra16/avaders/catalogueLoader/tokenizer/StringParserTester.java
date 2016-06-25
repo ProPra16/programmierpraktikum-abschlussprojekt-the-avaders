@@ -1,8 +1,9 @@
 package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
 
-import de.hhu.propra16.avaders.catalogueLoader.StringParser;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 import org.junit.Assert;
 import org.junit.Test;
 
