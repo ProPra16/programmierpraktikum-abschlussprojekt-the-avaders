@@ -15,7 +15,7 @@ public class Logik {
 			konfigLaden();
 	}
 
-	//Lädt die relevanten Einstellungen aus der Konfiguration
+	//LÃ¤dt die relevanten Einstellungen aus der Konfiguration
 	public void konfigLaden() {
 		ILogikKonfigDaten einstellung = fKonfig.Einstellung("ATDD");  //Einstellung holen
 		atdd = einstellung.toBoolean();                               //und konvertieren
@@ -37,23 +37,23 @@ public class Logik {
 
       //Versucht im Schritt RED, weiterzugehen
 	ITestenRueckgabe redWeiter(ITestenUebergabe uebergabe) {
-		ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
+		ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausfÃ¼hren
 		if (rueckgabe.testBestanden()) schritt = 1;                   //Red -> Green
-		return rueckgabe;                                             //Testergebnisse zurückgeben
+		return rueckgabe;                                             //Testergebnisse zurÃ¼ckgeben
 	}
 
       //Versucht im Schritt GREEN, weiterzugehen
 	ITestenRueckgabe greenWeiter(ITestenUebergabe uebergabe) {
-		ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
+		ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausfÃ¼hren
 		if (rueckgabe.testBestanden()) schritt = 2;                   //Green -> Refactor 1
-		return rueckgabe;                                             //Testergebnisse zurückgeben
+		return rueckgabe;                                             //Testergebnisse zurÃ¼ckgeben
 	}
 
       //Versucht im Schritt REFACTOR1, weiterzugehen
 	ITestenRueckgabe refactor1Weiter(ITestenUebergabe uebergabe) {
-		ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
-		Refactor2Aufrufen(rueckgabe, uebergabe);                      //Zusatz Refactor 2 ggf. ausführen
-		return rueckgabe;                                             //Testergebnisse zurückgeben
+		ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausfÃ¼hren
+		Refactor2Aufrufen(rueckgabe, uebergabe);                      //Zusatz Refactor 2 ggf. ausfÃ¼hren
+		return rueckgabe;                                             //Testergebnisse zurÃ¼ckgeben
 	}
 
       //Geht im Schritt REFACTOR1 weiter zu REFACTOR 2 oder zum Ende
@@ -67,25 +67,25 @@ public class Logik {
 
       //Versucht im Schritt REFACTOR2, weiterzugehen
 	ITestenRueckgabe refactor2Weiter(ITestenUebergabe uebergabe) {
-		ITestenRueckgabe  rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
+		ITestenRueckgabe  rueckgabe = fTester.Testen(uebergabe);       //Test ausfÃ¼hren
 		if (rueckgabe.testBestanden()) endeAufrufen(uebergabe);        //Refactor 2 -> Ende
-		return rueckgabe;                                              //Testergebnisse zurückgeben
+		return rueckgabe;                                              //Testergebnisse zurÃ¼ckgeben
 	}
 
       //Geht weiter zum Ende
 	ITestenRueckgabe endeAufrufen(ITestenUebergabe uebergabe) {
-		if (atdd) {                                                    //Zusatz: Akzeptanztest ausführen
+		if (atdd) {                                                    //Zusatz: Akzeptanztest ausfÃ¼hren
 			ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);  //Testen
 			if (rueckgabe.testBestanden()) {                         //Falls der Test bestanden wurde
 				if (fKonfig.naechsterTest()) schritt = 0;          //Ende -> Red
 				else schritt = 5;                                  //Entwicklungsende
 			} else {
-				return rueckgabe;                                  //Testergebnisse zurückgeben
+				return rueckgabe;                                  //Testergebnisse zurÃ¼ckgeben
 			}
 		} else {
 			schritt = 0;                                             //Ende -> Red
 		}
-		return null;                                                   //Kein Test ausgeführt, nichts zurückgeben
+		return null;                                                   //Kein Test ausgefÃ¼hrt, nichts zurÃ¼ckgeben
 	}
 
       //Startet den Zyklus mit einem neuen Test
@@ -93,12 +93,12 @@ public class Logik {
 		schritt = 0;                                                   //Ende -> Red
 	}
 
-      //Bricht den aktuellen Test ab und setzt das Programm zum letzten bestandendenen Test zurück
+      //Bricht den aktuellen Test ab und setzt das Programm zum letzten bestandendenen Test zurÃ¼ck
 	public void abbrechen() {
 		schritt = 0;
 	}
 
-      //Bricht den aktuellen Test ab und setzt das Programm zum letzten bestandendenen Akzeptanztest zurück
+      //Bricht den aktuellen Test ab und setzt das Programm zum letzten bestandendenen Akzeptanztest zurÃ¼ck
 	public void zuruecksetzen() {
 		schritt = 0;
 		fKonfig.ErstenTestAuswaehlen();
