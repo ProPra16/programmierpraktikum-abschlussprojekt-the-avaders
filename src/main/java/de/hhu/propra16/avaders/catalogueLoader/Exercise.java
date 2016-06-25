@@ -1,11 +1,11 @@
 package de.hhu.propra16.avaders.catalogueLoader;
 
 public class Exercise {
-	final String exerciseName;
-	final String description;
-	final JavaFiles classTemplates;
-	final JavaFiles testTemplates;
-	final ExerciseConfig exerciseConfig;
+	private String exerciseName;
+	private String description;
+	private JavaFiles classTemplates;
+	private JavaFiles testTemplates;
+	private ExerciseConfig exerciseConfig;
 
 	public Exercise(String exerciseName, String description, JavaFiles classTemplates, JavaFiles testTemplates, ExerciseConfig exerciseConfig){
 		this.exerciseName = exerciseName;
@@ -13,5 +13,25 @@ public class Exercise {
 		this.classTemplates = classTemplates;
 		this.testTemplates = testTemplates;
 		this.exerciseConfig = exerciseConfig;
+	}
+
+	public String getExerciseName() {
+		return exerciseName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public JavaFiles getClassTemplates() {
+		return classTemplates;
+	}
+
+	public JavaFiles getTestTemplates() {
+		return testTemplates;
+	}
+
+	public ExerciseConfig getExerciseConfig() {
+		return exerciseConfig;
 	}
 }
