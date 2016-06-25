@@ -15,6 +15,7 @@ public class StringParser {
 			case "/description":
 			case "classes":
 			case "/classes":
+			case "class":
 			case "tests":
 			case "/tests":
 			case "test":
