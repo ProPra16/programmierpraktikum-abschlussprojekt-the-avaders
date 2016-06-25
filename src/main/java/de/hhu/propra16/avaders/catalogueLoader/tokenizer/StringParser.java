@@ -37,7 +37,7 @@ public class StringParser {
 			}
 		}
 		throw new UnknownTokenException("<exercises>, </exercises>, <description>, </description> \n" +
-				"<classes>, </classes>, <tests>, </tests>, </test>, <config>, </config>", lineNr);
+				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", lineNr);
 	}
 
 	public static Token parseBabySteps(String readLine, int lineNr) throws SamePropertyTwiceException, TokenException {
