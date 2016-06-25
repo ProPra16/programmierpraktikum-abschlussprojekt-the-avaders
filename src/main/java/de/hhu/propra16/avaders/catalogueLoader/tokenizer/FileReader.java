@@ -10,7 +10,7 @@ public class FileReader implements LineReader {
     private BufferedReader bufferedReader;
 	private int lineNr = 1;
 
-    FileReader(Path filePath) {
+    public FileReader(Path filePath) {
         try {
             bufferedReader = Files.newBufferedReader(filePath);
         }catch(IOException e){
