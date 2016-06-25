@@ -24,10 +24,10 @@ public class StringParser {
 				return new Token(readLine);
 			default:{
 				if(readLine.startsWith("exercisename")){
-					return parseExerciseName(readLine);
+					return parseExerciseName(readLine, lineNr);
 				}
 				else if(readLine.startsWith("babysteps")){
-					return parseBabySteps(readLine);
+					return parseBabySteps(readLine, lineNr);
 				}
 			}
 		}
@@ -35,7 +35,7 @@ public class StringParser {
 		return null;
 	}
 
-	public static Token parseBabySteps(String readLine) {
+	public static Token parseBabySteps(String readLine, int lineNr) throws SamePropertyTwiceException {
 		String value = null;
 		String time = null;
 
@@ -48,13 +48,13 @@ public class StringParser {
 				if(value == null) {
 					value = parseProperty(readLine, "value");
 				}
-				else System.err.println("value appears twice"); // TODO: make exception
+				else throw new SamePropertyTwiceException("value", lineNr);
  			}
 			else if (readLine.startsWith("time")) {
 				if (time == null) {
 					time = parseProperty(readLine, "time");
 				}
-				else System.err.println("time appears twice"); // TODO: make exception
+				else throw new SamePropertyTwiceException("time", lineNr);
 			}
 			// remove read time/value
 			readLine = readLine.substring(readLine.indexOf("\"")+1);
@@ -72,7 +72,7 @@ public class StringParser {
 		return removeWhiteSpace(readLine.substring(0,readLine.indexOf("\"")));
 	}
 
-	public static Token parseExerciseName(String readLine) {
+	public static Token parseExerciseName(String readLine, int lineNr) {
 		readLine = readLine.replaceFirst("exercisename=","");
 		if(readLine.startsWith("\"") && readLine.endsWith("\"")){
 			readLine = readLine.substring(1,readLine.length()-1);
