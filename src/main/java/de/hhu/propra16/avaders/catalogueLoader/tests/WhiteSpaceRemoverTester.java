@@ -1,5 +1,6 @@
-package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
+package de.hhu.propra16.avaders.catalogueLoader.tests;
 
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.WhiteSpaceRemover;
 import org.junit.Assert;
 import org.junit.Test;
 

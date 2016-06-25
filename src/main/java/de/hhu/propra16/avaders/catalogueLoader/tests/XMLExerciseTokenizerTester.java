@@ -1,5 +1,6 @@
-package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
+package de.hhu.propra16.avaders.catalogueLoader.tests;
 
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnknownTokenException;

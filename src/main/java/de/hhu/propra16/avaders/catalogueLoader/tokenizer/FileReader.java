@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-class FileReader implements LineReader {
+public class FileReader implements LineReader {
 
     private BufferedReader bufferedReader;
 	private int lineNr = 1;
