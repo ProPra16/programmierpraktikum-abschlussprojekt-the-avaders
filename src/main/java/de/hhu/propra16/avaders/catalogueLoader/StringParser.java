@@ -24,7 +24,7 @@ public class StringParser {
 			case "/config":
 				return new Token(readLine);
 			default:{
-				if(readLine.startsWith("exercisename")){
+				if(readLine.startsWith("exercise")){
 					return parseExerciseName(readLine, lineNr);
 				}
 				else if(readLine.startsWith("babysteps")){
@@ -74,10 +74,12 @@ public class StringParser {
 	}
 
 	public static Token parseExerciseName(String readLine, int lineNr) {
-		readLine = readLine.replaceFirst("exercisename=","");
+		readLine = removeWhiteSpace(readLine.replaceFirst("exercise",""));
+		readLine = removeWhiteSpace(readLine.replaceFirst("name", ""));
+		readLine = removeWhiteSpace(readLine.replaceFirst("=", ""));
 		if(readLine.startsWith("\"") && readLine.endsWith("\"")){
 			readLine = readLine.substring(1,readLine.length()-1);
-			return new Token("exercisename", readLine);
+			return new Token("exercise name", readLine);
 		}
 		else{
 			//TODO: Throw Exception expected exercisename, found something else
