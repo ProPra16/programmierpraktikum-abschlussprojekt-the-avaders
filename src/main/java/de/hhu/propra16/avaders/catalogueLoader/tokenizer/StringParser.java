@@ -82,10 +82,10 @@ public class StringParser {
 		readLine = removeWhiteSpace(readLine.replaceFirst("=", ""));
 		readLine = removeWhiteSpace(readLine.replaceFirst("\"", ""));
 
-		int indexOfQoute = readLine.indexOf("\"");
-		if(indexOfQoute == -1) throw new MissingTokenException("\"", lineNr);
+		int indexOfQuote = readLine.indexOf("\"");
+		if(indexOfQuote == -1) throw new MissingTokenException("\"", lineNr);
 
-		return removeWhiteSpace(readLine.substring(0, indexOfQoute));
+		return removeWhiteSpace(readLine.substring(0, indexOfQuote));
 	}
 
 	public static Token parseExerciseName(String readLine, int lineNr) throws MissingTokenException {
