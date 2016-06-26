@@ -3,7 +3,7 @@ package de.hhu.propra16.avaders.catalogueLoader.tests;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnknownTokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> null);
 			xmlExerciseTokenizer.advance();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 			fail();
 		}
 
@@ -231,7 +231,7 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  \t / test   \t\t >\n");
 			xmlExerciseTokenizer.advance();
 		}
-		catch (UnknownTokenException e){
+		catch (UnexpectedTokenException e){
 			System.out.println(e.getMessage());
 			return;
 		}

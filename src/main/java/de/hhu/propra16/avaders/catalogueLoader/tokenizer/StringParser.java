@@ -5,7 +5,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnknownTokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.WhiteSpaceRemover.removeWhiteSpace;
 
@@ -36,8 +36,8 @@ public class StringParser {
 				}
 			}
 		}
-		throw new UnknownTokenException("<exercises>, </exercises>, <description>, </description> \n" +
-				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", lineNr);
+		throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
+				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readLine, lineNr);
 	}
 
 	public static Token parseBabySteps(String readLine, int lineNr) throws SamePropertyTwiceException, TokenException {
@@ -69,7 +69,7 @@ public class StringParser {
 		}
 
 		if(!readLine.equals("")){
-			throw new UnknownTokenException("property: time or value", lineNr);
+			throw new UnexpectedTokenException("property: time or value", readLine, lineNr);
 		}
 
 		return new BabyStepsToken(value, time);

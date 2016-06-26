@@ -3,6 +3,7 @@ package de.hhu.propra16.avaders.catalogueLoader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -29,7 +30,8 @@ public class XMLExerciseLoader implements ExerciseLoader {
 				xmlExerciseTokenizer.advance();
 		}
 		else{
-			//TODO: THROW ERROR unknown token
+			throw new UnexpectedTokenException("<exercises>", xmlExerciseTokenizer.currentToken().name,
+					xmlExerciseTokenizer.getLineNr());
 		}
 
 		while(xmlExerciseTokenizer.hasNextToken()){
