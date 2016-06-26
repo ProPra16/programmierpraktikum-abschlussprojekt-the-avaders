@@ -10,8 +10,8 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTo
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.WhiteSpaceRemover.removeWhiteSpace;
 
 public class StringParser {
-	public static Token parseToken(String readLine, int lineNr) throws SamePropertyTwiceException, TokenException {
-		switch (readLine){
+	public static Token parseToken(String readToken, int lineNr) throws SamePropertyTwiceException, TokenException {
+		switch (readToken){
 			case "exercises":
 			case "/exercises":
 			case "description":
@@ -26,80 +26,79 @@ public class StringParser {
 			case "/test":
 			case "config":
 			case "/config":
-				return new Token(readLine);
+				return new Token(readToken);
 			default:{
-				if(readLine.startsWith("exercise")){
-					return parseExerciseName(readLine, lineNr);
+				if(readToken.startsWith("exercise")){
+					return parseExerciseName(readToken, lineNr);
 				}
-				else if(readLine.startsWith("babysteps")){
-					return parseBabySteps(readLine, lineNr);
+				else if(readToken.startsWith("babysteps")){
+					return parseBabySteps(readToken, lineNr);
 				}
 			}
 		}
 		throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
-				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readLine, lineNr);
+				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
 	}
 
-	public static Token parseBabySteps(String readLine, int lineNr) throws SamePropertyTwiceException, TokenException {
+	public static Token parseBabySteps(String readToken, int lineNr) throws SamePropertyTwiceException, TokenException {
 		String value = null;
 		String time = null;
 
-		readLine = readLine.replaceFirst("babysteps", "");
-		readLine = removeWhiteSpace(readLine);
+		readToken = readToken.replaceFirst("babysteps", "");
+		readToken = removeWhiteSpace(readToken);
 
-		while(readLine.startsWith("value") || readLine.startsWith("time")) {
-			//System.out.println(readLine);
-			if (readLine.startsWith("value")) {
+		while(readToken.startsWith("value") || readToken.startsWith("time")) {
+			if (readToken.startsWith("value")) {
 				if(value == null) {
-					value = parseProperty(readLine, "value", lineNr);
+					value = parseProperty(readToken, "value", lineNr);
 				}
 				else throw new SamePropertyTwiceException("value", lineNr);
  			}
-			else if (readLine.startsWith("time")) {
+			else if (readToken.startsWith("time")) {
 				if (time == null) {
-					time = parseProperty(readLine, "time", lineNr);
+					time = parseProperty(readToken, "time", lineNr);
 				}
 				else throw new SamePropertyTwiceException("time", lineNr);
 			}
 
 			// remove read time/value
-			readLine = readLine.substring(readLine.indexOf("\"")+1);
-			readLine = readLine.substring(readLine.indexOf("\"")+1);
-			readLine = removeWhiteSpace(readLine);
+			readToken = readToken.substring(readToken.indexOf("\"")+1);
+			readToken = readToken.substring(readToken.indexOf("\"")+1);
+			readToken = removeWhiteSpace(readToken);
 		}
 
-		if(!readLine.equals("")){
-			throw new UnexpectedTokenException("property: time or value", readLine, lineNr);
+		if(!readToken.equals("")){
+			throw new UnexpectedTokenException("property: time or value", readToken, lineNr);
 		}
 
 		return new BabyStepsToken(value, time);
 	}
 
-	private static String parseProperty(String readLine, String property, int lineNr) throws MissingTokenException {
-		if(!readLine.contains("=")) throw  new MissingTokenException("=", lineNr);
+	private static String parseProperty(String readToken, String property, int lineNr) throws MissingTokenException {
+		if(!readToken.contains("=")) throw  new MissingTokenException("=", lineNr);
 
-		readLine = removeWhiteSpace(readLine.replaceFirst(property, ""));
-		readLine = removeWhiteSpace(readLine.replaceFirst("=", ""));
-		readLine = removeWhiteSpace(readLine.replaceFirst("\"", ""));
+		readToken = removeWhiteSpace(readToken.replaceFirst(property, ""));
+		readToken = removeWhiteSpace(readToken.replaceFirst("=", ""));
+		readToken = removeWhiteSpace(readToken.replaceFirst("\"", ""));
 
-		int indexOfQuote = readLine.indexOf("\"");
-		if(indexOfQuote == -1) throw new MissingTokenException("\"", lineNr);
+		int indexOfQuote = readToken.indexOf("\"");
+		if(indexOfQuote == -1) throw new MissingTokenException("\" in " + readToken, lineNr);
 
-		return removeWhiteSpace(readLine.substring(0, indexOfQuote));
+		return removeWhiteSpace(readToken.substring(0, indexOfQuote));
 	}
 
-	public static Token parseExerciseName(String readLine, int lineNr) throws MissingTokenException {
-		if(!readLine.contains("exercise") || !readLine.contains("name") || !readLine.contains("=")){
+	public static Token parseExerciseName(String readToken, int lineNr) throws MissingTokenException {
+		if(!readToken.contains("exercise") || !readToken.contains("name") || !readToken.contains("=")){
 			throw new MissingTokenException("exercise name or =", lineNr);
 		}
 
-		readLine = removeWhiteSpace(readLine.replaceFirst("exercise",""));
-		readLine = removeWhiteSpace(readLine.replaceFirst("name", ""));
-		readLine = removeWhiteSpace(readLine.replaceFirst("=", ""));
+		readToken = removeWhiteSpace(readToken.replaceFirst("exercise",""));
+		readToken = removeWhiteSpace(readToken.replaceFirst("name", ""));
+		readToken = removeWhiteSpace(readToken.replaceFirst("=", ""));
 
-		if(readLine.startsWith("\"") && readLine.endsWith("\"")){
-			readLine = readLine.substring(1,readLine.length()-1);
-			return new Token("exercise name", readLine);
+		if(readToken.startsWith("\"") && readToken.endsWith("\"")){
+			readToken = readToken.substring(1,readToken.length()-1);
+			return new Token("exercise name", readToken);
 		}
 		else{
 			throw new MissingTokenException("\"", lineNr);
