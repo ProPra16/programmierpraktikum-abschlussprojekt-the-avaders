@@ -10,7 +10,7 @@ public class JavaFiles {
 		javaFiles = new ArrayList<>();
 	}
 
-	void addJavaFile(JavaFile javaFile){
+	public void addJavaFile(JavaFile javaFile){
 		javaFiles.add(javaFile);
 	}
 
