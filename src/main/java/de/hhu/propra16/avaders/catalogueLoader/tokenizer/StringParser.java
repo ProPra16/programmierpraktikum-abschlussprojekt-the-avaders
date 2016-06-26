@@ -34,10 +34,42 @@ public class StringParser {
 				else if(readToken.startsWith("babysteps")){
 					return parseBabySteps(readToken, lineNr);
 				}
+				else if(readToken.startsWith("timetracking")){
+					return parseTimeTracking(readToken, lineNr);
+				}
 			}
 		}
 		throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
 				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
+	}
+
+	private static Token parseTimeTracking(String readToken, int lineNr) throws UnexpectedTokenException, SamePropertyTwiceException, MissingTokenException {
+		String value = null;
+
+		readToken = readToken.replaceFirst("timetracking", "");
+		readToken = removeWhiteSpace(readToken);
+
+		while(readToken.startsWith("value")) {
+			if (readToken.startsWith("value")) {
+				if (value == null) {
+					value = parseProperty(readToken, "value", lineNr);
+				} else throw new SamePropertyTwiceException("value", lineNr);
+			}
+			readToken = removeProperty(readToken);
+		}
+
+		if(!readToken.equals("")){
+			throw new UnexpectedTokenException("property: value", readToken, lineNr);
+		}
+
+		return new Token("timetracking", value);
+	}
+
+	private static String removeProperty(String readToken) {
+		// remove read time/value
+		readToken = readToken.substring(readToken.indexOf("\"")+1);
+		readToken = readToken.substring(readToken.indexOf("\"")+1);
+		return removeWhiteSpace(readToken);
 	}
 
 	public static Token parseBabySteps(String readToken, int lineNr) throws SamePropertyTwiceException, TokenException {
@@ -61,10 +93,7 @@ public class StringParser {
 				else throw new SamePropertyTwiceException("time", lineNr);
 			}
 
-			// remove read time/value
-			readToken = readToken.substring(readToken.indexOf("\"")+1);
-			readToken = readToken.substring(readToken.indexOf("\"")+1);
-			readToken = removeWhiteSpace(readToken);
+			readToken = removeProperty(readToken);
 		}
 
 		if(!readToken.equals("")){
@@ -82,7 +111,7 @@ public class StringParser {
 		readToken = removeWhiteSpace(readToken.replaceFirst("\"", ""));
 
 		int indexOfQuote = readToken.indexOf("\"");
-		if(indexOfQuote == -1) throw new MissingTokenException("\" in " + readToken, lineNr);
+		if(indexOfQuote == -1) throw new MissingTokenException("\" around " + readToken, lineNr);
 
 		return removeWhiteSpace(readToken.substring(0, indexOfQuote));
 	}

@@ -218,6 +218,7 @@ public class StringParserTester {
 		Assert.assertEquals("false", token.value);
 	}
 
+
 	@Test
 	public void test_BabystepsString_true(){
 		Token token = null;
@@ -245,6 +246,44 @@ public class StringParserTester {
 		Assert.assertEquals("babysteps", token.name);
 		Assert.assertEquals("true", token.value);
 		Assert.assertEquals("2:00", ((BabyStepsToken)token).time);
+	}
+
+	@Test
+	public void test_timeTrackingString_false(){
+		Token token = null;
+		try {
+			token = StringParser.parseToken("timetracking value=\"  false \t \"", 1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+		Assert.assertEquals("timetracking", token.name);
+		Assert.assertEquals("false", token.value);
+	}
+
+	@Test
+	public void test_timeTrackingString_true(){
+		Token token = null;
+		try {
+			token = StringParser.parseToken("timetracking value=\"  true \t \"", 1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+		Assert.assertEquals("timetracking", token.name);
+		Assert.assertEquals("true", token.value);
+	}
+
+	@Test
+	public void test_timeTrackingString_wrongProperty(){
+		try {
+			Token token = StringParser.parseToken("timetracking time=\"  true \t \"", 1);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+
+		fail();
 	}
 
 	@Test
