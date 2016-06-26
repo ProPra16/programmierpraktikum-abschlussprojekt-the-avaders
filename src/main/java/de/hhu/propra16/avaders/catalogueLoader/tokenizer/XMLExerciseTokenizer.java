@@ -3,19 +3,23 @@ package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.ClassToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 
 import java.io.IOException;
 
-import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringParser.parseToken;
-import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.WhiteSpaceRemover.*;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.insertEscapedCurlyBracket;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.remove;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.removeWhiteSpace;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.convert;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.convertDescription;
 
 public class XMLExerciseTokenizer {
 	private LineReader fileReader;
 	private Token currentToken;
 	private Token nextToken;
-	private int lineNr;
 	private String readLine;
+	int lineNr = 0;
 
 	private static final int INCLUDE = 1;
 
@@ -23,7 +27,7 @@ public class XMLExerciseTokenizer {
 		this.fileReader = fileReader;
 		readLine = "";
 		currentToken = new Token("DUMMY");
-		advance();
+		advance();	advance();
 	}
 
 	public void advance() throws SamePropertyTwiceException, IOException, TokenException {
@@ -33,21 +37,21 @@ public class XMLExerciseTokenizer {
 		}
 
 		while(readLine != null && readLine.equals("")){
-			readLine = fileReader.readLine();
+			readNextLine();
 			if(readLine != null) {
-				readLine = removeWhiteSpace(readLine.toLowerCase());
-				lineNr++;
+				readLine = removeWhiteSpace(readLine);
 			}
 		}
+
+		System.out.println("Line to parse: " + readLine);
+
 		parseLine();
 	}
 
-	private void parseLine() throws SamePropertyTwiceException, TokenException {
+	private void parseLine() throws SamePropertyTwiceException, TokenException, IOException {
 		String readToken = "";
 		if(readLine != null && readLine.contains("<") && readLine.contains(">")) {
-			readToken = readLine.substring(readLine.indexOf('<'), readLine.indexOf('>')+INCLUDE);
-			readLine = removeWhiteSpace(readLine.replaceFirst(readToken, ""));
-			readToken = removeWhiteSpace(readToken.replaceFirst("<","").replaceFirst(">",""));
+			readToken = tokenize();
 		}
 		else if(readLine != null){
 			throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
@@ -56,13 +60,67 @@ public class XMLExerciseTokenizer {
 
 		currentToken = nextToken;
 
+		if(readToken.equals("description")) {
+			nextToken = readContent("description");
+			return;
+		}
+
 		// end of stream reached
-		if(readLine == null) {
-			nextToken = null;
+		if(readLine == null) nextToken = null;
+		else nextToken = convert(readToken, lineNr);
+	}
+
+	private String tokenize() throws IOException {
+		String readToken = "";
+		readToken = readLine.substring(readLine.indexOf('<'), readLine.indexOf('>')+INCLUDE);
+		readLine = removeWhiteSpace(readLine.replaceFirst(readToken, ""));
+		readToken = removeWhiteSpace(readToken.replaceFirst("<","").replaceFirst(">",""));
+
+		return readToken;
+	}
+
+	public Token readContent(String tokenWhichShouldBeRead) throws IOException, SamePropertyTwiceException, TokenException {
+		String content = readLinesUntil(tokenWhichShouldBeRead);
+
+		//System.out.println("___" + content  + "___" + "\n-->" + readLine + "<--");
+
+		return convertDescription(content);
+	}
+
+	public ClassToken readClass() throws IOException, SamePropertyTwiceException, TokenException {
+		if(!nextToken.name.equals("/classes")) {
+			//System.out.println(currentToken.name);
+			String classTemplate = readLinesUntil("class");
+			advance();
+			//System.out.println(currentToken.name + "- " + currentToken.value);
+			return new ClassToken("class", currentToken.value, classTemplate);
 		}
+		// only skip the /class token
 		else {
-			nextToken = parseToken(readToken, lineNr);
+			advance();
+			return null;
 		}
+	}
+
+	private String readLinesUntil(String until) throws IOException {
+		String content = "";
+		while(readLine != null && !readLine.replace(" ","").contains("</" + until + ">")){
+			content = content + readLine;
+			readNextLine();
+		}
+
+		content = content + readLine.substring(0, readLine.indexOf("</" + until + ">"));
+		content = remove(content, "<" + until + ">");
+		System.out.println("content: " + content);
+		readLine = remove(readLine, insertEscapedCurlyBracket(content));
+		readLine = remove(readLine, "</" + until + ">");
+
+		return removeWhiteSpace(content);
+	}
+
+	private void readNextLine() throws IOException {
+		readLine = fileReader.readLine();
+		lineNr++;
 	}
 
 	public boolean hasNextToken(){
@@ -73,7 +131,7 @@ public class XMLExerciseTokenizer {
 		return currentToken;
 	}
 
-	public int getLineNr(){
+	public int getLineNr() {
 		return lineNr;
 	}
 }

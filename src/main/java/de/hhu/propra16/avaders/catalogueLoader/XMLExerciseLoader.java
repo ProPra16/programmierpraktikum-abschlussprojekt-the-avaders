@@ -1,18 +1,28 @@
 package de.hhu.propra16.avaders.catalogueLoader;
 
-import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.JavaFile;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.JavaFiles;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.ClassToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
+import jdk.nashorn.internal.runtime.linker.JavaAdapterFactory;
 
 import java.io.IOException;
 
 public class XMLExerciseLoader implements ExerciseLoader {
 	XMLExerciseTokenizer xmlExerciseTokenizer;
 	ExerciseCatalogue loadedExerciseCatalogue;
-	private Exercise currentlyParsingExercise;
+
+	private String exerciseName = null;
+	private String description = null;
+	private ExerciseConfig exerciseConfig = null;
+	private JavaFiles classes = null;
 
 	public XMLExerciseLoader(XMLExerciseTokenizer xmlExerciseTokenizer){
 		this.xmlExerciseTokenizer = xmlExerciseTokenizer;

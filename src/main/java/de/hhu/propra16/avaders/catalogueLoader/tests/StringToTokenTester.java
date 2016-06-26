@@ -39,36 +39,6 @@ public class StringToTokenTester {
 		Assert.assertEquals(null, token.value);
 	}
 
-	/*@Test
-	public void test_DescriptionString(){
-		Token token = null;
-		try {
-			token = StringToToken.convert("description", 1);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			fail();
-		}
-
-		Assert.assertEquals("description", token.name);
-		Assert.assertEquals(null, token.value);
-	}
-
-
-	@Test
-	public void test_SlashDescriptionString(){
-		Token token = null;
-		try {
-			token = StringToToken.convert("/description", 1);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			fail();
-		}
-
-		Assert.assertEquals("/description", token.name);
-		Assert.assertEquals(null, token.value);
-	}
-	*/
-
 	@Test
 	public void test_ClassesString(){
 		Token token = null;

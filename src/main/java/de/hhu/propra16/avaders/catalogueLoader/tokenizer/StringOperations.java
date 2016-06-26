@@ -19,4 +19,8 @@ public class StringOperations {
 	public static String remove(String removeFrom, String toRemove){
 		return removeWhiteSpace(removeFrom.replaceFirst(toRemove,""));
 	}
+
+	public static String insertEscapedCurlyBracket(String string){
+		return string.replace("{", "\\{").replace("}", "\\}");
+	}
 }
