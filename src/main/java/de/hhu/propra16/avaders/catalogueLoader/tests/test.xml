@@ -1,9 +1,17 @@
 <exercises>
 	<exercise name="Römische Zahlen">
-		<description>Konvertiert arabische in römische Zahlen.</description>
+		<description> Konvertiert arabische in römische Zahlen. </description>
 		<classes>
 			<class name="RomanNumberConverter">
 				public class RomanNumberConverter {
+				}
+			</class>
+			<class name="RomanNumberConverter2">
+				public class RomanNumberConverter2 {
+				}
+			</class>
+			<class name="RomanNumberConverter3">
+				public class RomanNumberConverter3 {
 				}
 			</class>
 		</classes>
