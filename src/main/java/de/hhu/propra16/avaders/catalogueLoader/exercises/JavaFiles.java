@@ -1,4 +1,4 @@
-package de.hhu.propra16.avaders.catalogueLoader;
+package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
 import java.util.ArrayList;
 import java.util.List;
