@@ -17,7 +17,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	}
 
 	@Override
-	public ExerciseCatalogue loadExercise(Path path) throws SamePropertyTwiceException, IOException, TokenException {
+	public ExerciseCatalogue loadExercise() throws SamePropertyTwiceException, IOException, TokenException {
 		return parseExercises();
 	}
 

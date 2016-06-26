@@ -7,5 +7,5 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface ExerciseLoader {
-	ExerciseCatalogue loadExercise(Path path) throws SamePropertyTwiceException, IOException, TokenException;
+	ExerciseCatalogue loadExercise() throws SamePropertyTwiceException, IOException, TokenException;
 }
