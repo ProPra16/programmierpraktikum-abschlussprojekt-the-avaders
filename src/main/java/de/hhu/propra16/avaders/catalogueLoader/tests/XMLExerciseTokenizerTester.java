@@ -80,6 +80,32 @@ public class XMLExerciseTokenizerTester {
 	}
 
 	@Test
+	public void test_Description(){
+		try {
+			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "<description>   Konvertiert arabische in römische Zahlen.   </description >\n");
+			xmlExerciseTokenizer.advance();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+
+		Assert.assertEquals("description", xmlExerciseTokenizer.currentToken().name);
+	}
+
+	@Test
+	public void test_ExerciseNameBeforeDescription(){
+		try {
+			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "<exercise name = \"test\"> <description>   Konvertiert arabische in römische Zahlen.   </description >\n");
+			xmlExerciseTokenizer.advance();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+
+		Assert.assertEquals("exercise name", xmlExerciseTokenizer.currentToken().name);
+	}
+
+	@Test
 	public void test_BeginClasses(){
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <       classes >\n");

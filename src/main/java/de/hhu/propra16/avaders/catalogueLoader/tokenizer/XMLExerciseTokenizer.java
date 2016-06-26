@@ -17,6 +17,8 @@ public class XMLExerciseTokenizer {
 	private int lineNr;
 	private String readLine;
 
+	private static final int INCLUDE = 1;
+
 	public XMLExerciseTokenizer(LineReader fileReader) throws SamePropertyTwiceException, IOException, TokenException {
 		this.fileReader = fileReader;
 		readLine = "";
@@ -25,18 +27,33 @@ public class XMLExerciseTokenizer {
 	}
 
 	public void advance() throws SamePropertyTwiceException, IOException, TokenException {
+		if (readLine != null && readLine.length() > 0) {
+			parseLine();
+			return;
+		}
+
 		while(readLine != null && readLine.equals("")){
 			readLine = fileReader.readLine();
 			if(readLine != null) {
-				readLine = readLine.replaceFirst("<", "").replaceFirst(">", "").toLowerCase();
-				readLine = removeWhiteSpace(readLine);
+				readLine = removeWhiteSpace(readLine.toLowerCase());
 				lineNr++;
 			}
 		}
-		parseLine(readLine);
+		parseLine();
 	}
 
-	private void parseLine(String readLine) throws SamePropertyTwiceException, TokenException {
+	private void parseLine() throws SamePropertyTwiceException, TokenException {
+		String readToken = "";
+		if(readLine != null && readLine.contains("<") && readLine.contains(">")) {
+			readToken = readLine.substring(readLine.indexOf('<'), readLine.indexOf('>')+INCLUDE);
+			readLine = removeWhiteSpace(readLine.replaceFirst(readToken, ""));
+			readToken = removeWhiteSpace(readToken.replaceFirst("<","").replaceFirst(">",""));
+		}
+		else if(readLine != null){
+			throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
+					"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
+		}
+
 		currentToken = nextToken;
 
 		// end of stream reached
@@ -44,7 +61,7 @@ public class XMLExerciseTokenizer {
 			nextToken = null;
 		}
 		else {
-			nextToken = parseToken(readLine, lineNr);
+			nextToken = parseToken(readToken, lineNr);
 		}
 	}
 
