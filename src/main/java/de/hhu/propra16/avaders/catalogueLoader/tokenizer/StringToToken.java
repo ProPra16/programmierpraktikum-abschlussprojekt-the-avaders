@@ -7,19 +7,17 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SameProperty
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 
-import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.WhiteSpaceRemover.removeWhiteSpace;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.remove;
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.removeWhiteSpace;
 
-public class StringParser {
-	public static Token parseToken(String readToken, int lineNr) throws SamePropertyTwiceException, TokenException {
+public class StringToToken {
+	public static Token convert(String readToken, int lineNr) throws SamePropertyTwiceException, TokenException {
+		//System.out.println(readToken);
 		switch (readToken){
 			case "exercises":
 			case "/exercises":
-			case "description":
-			case "/description":
 			case "classes":
 			case "/classes":
-			case "class":
-			case "/class":
 			case "tests":
 			case "/tests":
 			case "test":
@@ -29,7 +27,10 @@ public class StringParser {
 				return new Token(readToken);
 			default:{
 				if(readToken.startsWith("exercise")){
-					return parseExerciseName(readToken, lineNr);
+					return parseTokenName("exercise", readToken, lineNr);
+				}
+				else if(readToken.startsWith("class")){
+					return parseTokenName("class", readToken, lineNr);
 				}
 				else if(readToken.startsWith("babysteps")){
 					return parseBabySteps(readToken, lineNr);
@@ -106,9 +107,9 @@ public class StringParser {
 	private static String parseProperty(String readToken, String property, int lineNr) throws MissingTokenException {
 		if(!readToken.contains("=")) throw  new MissingTokenException("=", lineNr);
 
-		readToken = removeWhiteSpace(readToken.replaceFirst(property, ""));
-		readToken = removeWhiteSpace(readToken.replaceFirst("=", ""));
-		readToken = removeWhiteSpace(readToken.replaceFirst("\"", ""));
+		readToken = remove(readToken, property);
+		readToken = remove(readToken, "=");
+		readToken = remove(readToken, "\"");
 
 		int indexOfQuote = readToken.indexOf("\"");
 		if(indexOfQuote == -1) throw new MissingTokenException("\" around " + readToken, lineNr);
@@ -116,21 +117,26 @@ public class StringParser {
 		return removeWhiteSpace(readToken.substring(0, indexOfQuote));
 	}
 
-	public static Token parseExerciseName(String readToken, int lineNr) throws MissingTokenException {
-		if(!readToken.contains("exercise") || !readToken.contains("name") || !readToken.contains("=")){
-			throw new MissingTokenException("exercise name or =", lineNr);
+	public static Token parseTokenName(String token, String readToken, int lineNr) throws MissingTokenException {
+		if(!readToken.contains(token) || !readToken.contains("name") || !readToken.contains("=")){
+			throw new MissingTokenException(token + ", name or =", lineNr);
 		}
 
-		readToken = removeWhiteSpace(readToken.replaceFirst("exercise",""));
-		readToken = removeWhiteSpace(readToken.replaceFirst("name", ""));
-		readToken = removeWhiteSpace(readToken.replaceFirst("=", ""));
+		readToken = remove(readToken, token);
+		readToken = remove(readToken, "name");
+		readToken = remove(readToken, "=");
 
 		if(readToken.startsWith("\"") && readToken.endsWith("\"")){
 			readToken = readToken.substring(1,readToken.length()-1);
-			return new Token("exercise name", readToken);
+			//System.out.println(readToken);
+			return new Token(token, readToken);
 		}
 		else{
 			throw new MissingTokenException("\"", lineNr);
 		}
+	}
+
+	public static Token convertDescription(String descriptionContent){
+		return new Token("description", descriptionContent);
 	}
 }

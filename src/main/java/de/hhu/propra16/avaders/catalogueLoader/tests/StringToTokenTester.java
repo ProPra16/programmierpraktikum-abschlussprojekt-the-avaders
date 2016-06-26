@@ -1,6 +1,6 @@
 package de.hhu.propra16.avaders.catalogueLoader.tests;
 
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringParser;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
@@ -10,12 +10,12 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
 
-public class StringParserTester {
+public class StringToTokenTester {
 	 @Test
 	 public void test_ExercisesString(){
 		 Token token = null;
 		 try {
-			 token = StringParser.parseToken("exercises", 1);
+			 token = StringToToken.convert("exercises", 1);
 		 } catch (Exception e) {
 			 System.out.println(e.getMessage());
 			 fail();
@@ -29,7 +29,7 @@ public class StringParserTester {
 	public void test_SlashExercisesString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("/exercises", 1);
+			token = StringToToken.convert("/exercises", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -39,11 +39,11 @@ public class StringParserTester {
 		Assert.assertEquals(null, token.value);
 	}
 
-	@Test
+	/*@Test
 	public void test_DescriptionString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("description", 1);
+			token = StringToToken.convert("description", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -53,11 +53,12 @@ public class StringParserTester {
 		Assert.assertEquals(null, token.value);
 	}
 
+
 	@Test
 	public void test_SlashDescriptionString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("/description", 1);
+			token = StringToToken.convert("/description", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -66,12 +67,13 @@ public class StringParserTester {
 		Assert.assertEquals("/description", token.name);
 		Assert.assertEquals(null, token.value);
 	}
+	*/
 
 	@Test
 	public void test_ClassesString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("classes", 1);
+			token = StringToToken.convert("classes", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -85,7 +87,7 @@ public class StringParserTester {
 	public void test_SlashClassesString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("/classes", 1);
+			token = StringToToken.convert("/classes", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -99,7 +101,7 @@ public class StringParserTester {
 	public void test_TestsString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("tests", 1);
+			token = StringToToken.convert("tests", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -113,7 +115,7 @@ public class StringParserTester {
 	public void test_SlashTestsString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("/tests", 1);
+			token = StringToToken.convert("/tests", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -127,7 +129,7 @@ public class StringParserTester {
 	public void test_TestString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("test", 1);
+			token = StringToToken.convert("test", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -141,7 +143,7 @@ public class StringParserTester {
 	public void test_SlashTestString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("/test", 1);
+			token = StringToToken.convert("/test", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -155,7 +157,7 @@ public class StringParserTester {
 	public void test_ConfigString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("config", 1);
+			token = StringToToken.convert("config", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -169,7 +171,7 @@ public class StringParserTester {
 	public void test_SlashConfigString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("/config", 1);
+			token = StringToToken.convert("/config", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -182,13 +184,13 @@ public class StringParserTester {
 	public void test_ExerciseNameString(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("exercise \t name=\"Römische Zahlen\"", 1);
+			token = StringToToken.convert("exercise \t name=\"Römische Zahlen\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
 		}
 
-		Assert.assertEquals("exercise name", token.name);
+		Assert.assertEquals("exercise", token.name);
 		Assert.assertEquals("Römische Zahlen", token.value);
 	}
 
@@ -196,20 +198,20 @@ public class StringParserTester {
 	public void test_Class(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("class", 1);
+			token = StringToToken.convert("class name = \"test\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
 		}
 		Assert.assertEquals("class", token.name);
-		Assert.assertEquals(null, token.value);
+		Assert.assertEquals("test", token.value);
 	}
 
 	@Test
 	public void test_BabystepsString_false(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("babysteps value=\"  false \t \"", 1);
+			token = StringToToken.convert("babysteps value=\"  false \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -223,7 +225,7 @@ public class StringParserTester {
 	public void test_BabystepsString_true(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("babysteps value=\"true\" time = \"2:00\"", 1);
+			token = StringToToken.convert("babysteps value=\"true\" time = \"2:00\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -238,7 +240,7 @@ public class StringParserTester {
 	public void test_BabystepsString_true_switched(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("babysteps \t time = \"2:00\"   value=\"true\" \n", 1);
+			token = StringToToken.convert("babysteps \t time = \"2:00\"   value=\"true\" \n", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -252,7 +254,7 @@ public class StringParserTester {
 	public void test_timeTrackingString_false(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("timetracking value=\"  false \t \"", 1);
+			token = StringToToken.convert("timetracking value=\"  false \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -265,7 +267,7 @@ public class StringParserTester {
 	public void test_timeTrackingString_true(){
 		Token token = null;
 		try {
-			token = StringParser.parseToken("timetracking value=\"  true \t \"", 1);
+			token = StringToToken.convert("timetracking value=\"  true \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -277,7 +279,7 @@ public class StringParserTester {
 	@Test
 	public void test_timeTrackingString_wrongProperty(){
 		try {
-			Token token = StringParser.parseToken("timetracking time=\"  true \t \"", 1);
+			Token token = StringToToken.convert("timetracking time=\"  true \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
@@ -289,7 +291,7 @@ public class StringParserTester {
 	@Test
 	public void test_SamePropertyTwice_time(){
 		try {
-			StringParser.parseToken("babysteps \t time = \"2:00\"   time=\"2:00\" \n", 1);
+			StringToToken.convert("babysteps \t time = \"2:00\"   time=\"2:00\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
 			System.out.println(e.getMessage());
 			return;
@@ -302,7 +304,7 @@ public class StringParserTester {
 	@Test
 	public void test_SamePropertyTwice_value(){
 		try {
-			StringParser.parseToken("babysteps \t value = \"true\"   value=\"false\" \n", 1);
+			StringToToken.convert("babysteps \t value = \"true\"   value=\"false\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
 			System.out.println(e.getMessage());
 			return;
@@ -316,7 +318,7 @@ public class StringParserTester {
 	@Test
 	public void test_Exercisename_missing_name(){
 		try {
-			StringParser.parseToken("exercise = \"fail\"", 1);
+			StringToToken.convert("exercise = \"fail\"", 1);
 		} catch (MissingTokenException e) {
 			System.out.println(e.getMessage());
 			return;
