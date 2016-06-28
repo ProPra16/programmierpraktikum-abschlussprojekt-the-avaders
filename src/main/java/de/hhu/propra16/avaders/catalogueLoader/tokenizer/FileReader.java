@@ -17,19 +17,10 @@ public class FileReader implements LineReader {
     }
 
     public String readLine() throws  IOException{
-		lineNr++;
-		return bufferedReader.readLine();
+		String readLine = bufferedReader.readLine();
+		if(readLine == null){
+			bufferedReader.close();
+		}
+		return readLine;
     }
-
-    void closeReader(){
-        try {
-            bufferedReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-	public int getLineNr(){
-		return lineNr;
-	}
 }
