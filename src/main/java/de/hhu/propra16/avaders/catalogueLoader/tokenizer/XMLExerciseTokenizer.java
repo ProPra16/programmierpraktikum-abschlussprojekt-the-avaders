@@ -120,13 +120,15 @@ public class XMLExerciseTokenizer {
 	private String readLinesUntil(String until) throws IOException {
 		String content = "";
 		while(readLine != null && !readLine.replace(" ","").contains("</" + until + ">")){
-			content = content + readLine;
+			content = content + removeWhiteSpace(readLine) + "\n";
 			readNextLine();
 		}
 
-		content = content + readLine.substring(0, readLine.indexOf("</" + until + ">"));
+		if (readLine != null) {
+			content = content + readLine.substring(0, readLine.indexOf("</" + until + ">"));
+		}
 		content = remove(content, "<" + until + ">");
-		System.out.println("content: " + content);
+		//System.out.println("content: " + content);
 		readLine = remove(readLine, insertEscapedCurlyBracket(content));
 		readLine = remove(readLine, "</" + until + ">");
 
