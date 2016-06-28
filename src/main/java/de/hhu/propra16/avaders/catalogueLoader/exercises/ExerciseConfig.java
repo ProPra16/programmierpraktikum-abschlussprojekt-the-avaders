@@ -1,9 +1,9 @@
 package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
 public class ExerciseConfig {
-	boolean babySteps;
-	String time;
-	boolean timeTracking;
+	private boolean babySteps;
+	private String time;
+	private boolean timeTracking;
 
 	public ExerciseConfig(){
 	}
@@ -16,11 +16,11 @@ public class ExerciseConfig {
 		this.babySteps = babySteps;
 	}
 
-	public String getTime() {
+	public String getBabyStepsTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setBabyStepsTime(String time) {
 		this.time = time;
 	}
 
