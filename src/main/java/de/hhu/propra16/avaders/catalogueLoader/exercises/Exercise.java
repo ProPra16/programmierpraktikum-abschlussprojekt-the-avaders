@@ -23,15 +23,39 @@ public class Exercise {
 		return description;
 	}
 
-	public JavaFiles getClassTemplates() {
-		return classTemplates;
+	public String getClassTemplate(int templateNr){
+		return classTemplates.getJavaFile(templateNr).sourceCodeTemplate;
 	}
 
-	public JavaFiles getTestTemplates() {
-		return testTemplates;
+	public String getTestTemplates(int classNr){
+		return testTemplates.getJavaFile(classNr).sourceCodeTemplate;
 	}
 
-	public ExerciseConfig getExerciseConfig() {
-		return exerciseConfig;
+	public boolean babyStepsIsEnabled(){
+		return exerciseConfig.isBabySteps();
+	}
+
+	public boolean timeTrackingIsEnabled(){
+		return exerciseConfig.isTimeTracking();
+	}
+
+	public String babyStepsTime(){
+		return exerciseConfig.getBabyStepsTime();
+	}
+
+	public String getClassName(int classNr){
+		return classTemplates.getJavaFile(classNr).className;
+	}
+
+	public String getTestName(int testNr) {
+		return testTemplates.getJavaFile(testNr).className;
+	}
+
+	public int getNrOfClasses(){
+		return classTemplates.size();
+	}
+
+	public int getNrOfTests(){
+		return testTemplates.size();
 	}
 }
