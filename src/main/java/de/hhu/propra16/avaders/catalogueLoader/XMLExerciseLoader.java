@@ -31,10 +31,8 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		return parseExercises();
 	}
 
-	ExerciseCatalogue parseExercises() throws SamePropertyTwiceException, IOException, TokenException {
-		loadedExerciseCatalogue = new ExerciseCatalogue();
-
-		if((xmlExerciseTokenizer.currentToken()).name == "exercises"
+	private ExerciseCatalogue parseExercises() throws SamePropertyTwiceException, IOException, TokenException {
+		if((xmlExerciseTokenizer.currentToken()).name.equals("exercises")
 				&& xmlExerciseTokenizer.hasNextToken()){
 				xmlExerciseTokenizer.advance();
 		}
