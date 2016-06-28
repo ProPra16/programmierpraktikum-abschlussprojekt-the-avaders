@@ -17,4 +17,8 @@ public class JavaFiles {
 	public JavaFile getJavaFile(int javaFileNumber){
 		return javaFiles.get(javaFileNumber);
 	}
+
+	public int size() {
+		return javaFiles.size();
+	}
 }

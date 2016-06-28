@@ -19,7 +19,7 @@ public class XMLExerciseTokenizer {
 	private Token currentToken;
 	private Token nextToken;
 	private String readLine;
-	int lineNr = 0;
+	private int lineNr = 0;
 
 	private static final int INCLUDE = 1;
 
@@ -42,8 +42,6 @@ public class XMLExerciseTokenizer {
 				readLine = removeWhiteSpace(readLine);
 			}
 		}
-
-		System.out.println("Line to parse: " + readLine);
 
 		parseLine();
 	}

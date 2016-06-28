@@ -10,7 +10,7 @@ public class ExerciseCatalogue {
 		catalogue = new ArrayList<>();
 	}
 
-	void addExercise(Exercise exercise){
+	public void addExercise(Exercise exercise){
 		catalogue.add(exercise);
 	}
 

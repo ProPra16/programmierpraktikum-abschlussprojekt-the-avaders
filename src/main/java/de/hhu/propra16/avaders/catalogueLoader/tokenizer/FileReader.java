@@ -6,11 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileReader implements LineReader {
-
     private BufferedReader bufferedReader;
-	private int lineNr = 1;
 
-    public FileReader(Path filePath) {
+	public FileReader(Path filePath) {
         try {
             bufferedReader = Files.newBufferedReader(filePath);
         }catch(IOException e){
