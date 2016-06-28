@@ -1,0 +1,109 @@
+<exercises>
+
+
+	<exercise name="Römische Zahlen">
+
+
+		<description> Konvertiert arabische in römische Zahlen.
+
+
+
+
+		</description>
+		<classes>
+
+
+			<class name="RomanNumberConverter">
+
+
+
+
+				public class RomanNumberConverter {
+				}
+			</class>
+			<class name="RomanNumberConverter2">
+				public class RomanNumberConverter2 {
+				}
+			</class>
+			<class name="RomanNumberConverter3">
+				public class RomanNumberConverter3 {
+				}
+			</class>
+		</classes>
+
+
+
+
+
+		<tests>
+			<test name="RomanNumberConverterTest">
+				import static org.junit.Assert.*;
+				import org.junit.Test;
+				public class RomanNumbersTest {
+				@Test
+				public void testSomething() {
+				}
+				}
+			</test>
+			<test name="RomanNumberConverterTest2">
+				import static org.junit.Assert.*;
+				import org.junit.Test;
+				public class RomanNumbersTest2 {
+				@Test
+				public void testSomethingElse() {
+				}
+				}
+			</test>
+		</tests>
+		<config>
+			<babysteps value="False" />
+			<timetracking value="True" />
+
+
+
+
+
+
+		</config>
+	</exercise>
+	<exercise name="Arabische Zahlen">
+		<description>Konvertiert römische in arabische Zahlen.</description>
+		<classes>
+
+
+
+
+
+
+
+			<class name="ArabNumberConverter">
+				public class ArabNumberConverter {
+				}
+			</class>
+		</classes>
+		<tests>
+			<test name="ArabNumberConverterTest">
+				import static org.junit.Assert.*;
+				import org.junit.Test;
+				public class ArabNumbersTest {
+				@Test
+				public void testSomething() {
+				}
+				}
+			</test>
+		</tests>
+		<config>
+
+
+
+
+
+
+			<babysteps value="True" time="2:00" />
+			<timetracking value="True" />
+		</config>
+	</exercise>
+
+
+
+</exercises>
