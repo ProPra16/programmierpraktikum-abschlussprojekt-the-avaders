@@ -20,10 +20,9 @@ public class StringToToken {
 			case "/classes":
 			case "tests":
 			case "/tests":
-			case "test":
-			case "/test":
 			case "config":
 			case "/config":
+			case "/exercise":
 				return new Token(readToken);
 			default:{
 				if(readToken.startsWith("exercise")){
@@ -32,14 +31,26 @@ public class StringToToken {
 				else if(readToken.startsWith("class")){
 					return parseTokenName("class", readToken, lineNr);
 				}
+				else if(readToken.startsWith("test")){
+					return parseTokenName("test", readToken, lineNr);
+				}
 				else if(readToken.startsWith("babysteps")){
+					if(readToken.contains("/")){
+						readToken = readToken.replaceFirst("/", "");
+						//System.out.println("about to parse babysteps in: _" + readToken + "_");
+					}
 					return parseBabySteps(readToken, lineNr);
 				}
 				else if(readToken.startsWith("timetracking")){
+					if(readToken.contains("/")){
+						readToken = readToken.replaceFirst("/", "");
+						//System.out.println("about to parse timetracking in: _" + readToken + "_");
+					}
 					return parseTimeTracking(readToken, lineNr);
 				}
 			}
 		}
+		//System.out.println(readToken);
 		throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
 				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
 	}
