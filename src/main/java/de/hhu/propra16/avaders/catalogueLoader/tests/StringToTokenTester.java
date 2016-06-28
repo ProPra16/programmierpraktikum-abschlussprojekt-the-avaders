@@ -99,28 +99,14 @@ public class StringToTokenTester {
 	public void test_TestString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("test", 1);
+			token = StringToToken.convert("test name= \t \"testName\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
 		}
 
 		Assert.assertEquals("test", token.name);
-		Assert.assertEquals(null, token.value);
-	}
-
-	@Test
-	public void test_SlashTestString(){
-		Token token = null;
-		try {
-			token = StringToToken.convert("/test", 1);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			fail();
-		}
-
-		Assert.assertEquals("/test", token.name);
-		Assert.assertEquals(null, token.value);
+		Assert.assertEquals("testName", token.value);
 	}
 
 	@Test
@@ -249,7 +235,7 @@ public class StringToTokenTester {
 	@Test
 	public void test_timeTrackingString_wrongProperty(){
 		try {
-			Token token = StringToToken.convert("timetracking time=\"  true \t \"", 1);
+			StringToToken.convert("timetracking time=\"  true \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return;
