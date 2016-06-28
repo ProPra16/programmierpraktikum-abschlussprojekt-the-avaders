@@ -52,6 +52,7 @@ public class XMLExerciseTokenizer {
 			readToken = tokenize();
 		}
 		else if(readLine != null){
+			//System.out.println(readLine);
 			throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
 					"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
 		}
@@ -94,6 +95,22 @@ public class XMLExerciseTokenizer {
 			return new ClassToken("class", currentToken.value, classTemplate);
 		}
 		// only skip the /class token
+		else {
+			advance();
+			return null;
+		}
+	}
+
+	public ClassToken readTest() throws IOException, SamePropertyTwiceException, TokenException {
+		if(!nextToken.name.equals("/tests")) {
+			//System.out.println(currentToken.name);
+			String classTemplate = readLinesUntil("test");
+			advance();
+			//System.out.println("testTemplate: " + classTemplate);
+			//System.out.println(currentToken.name + "- " + currentToken.value);
+			return new ClassToken("test", currentToken.value, classTemplate);
+		}
+		// only skip the /test token
 		else {
 			advance();
 			return null;
