@@ -41,28 +41,97 @@ public class XMLExerciseLoader implements ExerciseLoader {
 					xmlExerciseTokenizer.getLineNr());
 		}
 
-		while(xmlExerciseTokenizer.hasNextToken()){
-			parseToken();
+		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercises")) {
+			//System.out.println(xmlExerciseTokenizer.currentToken().name);
+			parseExercise();
+			xmlExerciseTokenizer.advance();
+			//System.out.println("\n --- new Exercise --- \n\n");
 		}
 
-		if(xmlExerciseTokenizer.currentToken().name == "/exercise"
-				&& !xmlExerciseTokenizer.hasNextToken()){
+		//System.out.println("END: " + xmlExerciseTokenizer.currentToken().name + ", " + xmlExerciseTokenizer.hasNextToken());
+
+		if(xmlExerciseTokenizer.currentToken().name.equals("/exercises") && !xmlExerciseTokenizer.hasNextToken()){
+			//System.out.println("returning Exercises");
 			return  loadedExerciseCatalogue;
 		}
 		else{
 			//TODO: THROW ERROR End of classes reached, but more to read
+			//System.out.println("not returning Exercises");
 			return null;
 		}
 	}
 
+	private void parseExercise() throws SamePropertyTwiceException, IOException, TokenException {
+		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercise")){
+			parseToken();
+		}
+		//System.out.println("ADDING CLASSES to EXERCISE WITH LENGTH OF: " + classes.size());
+		loadedExerciseCatalogue.addExercise(new Exercise(exerciseName, description, classes, tests, exerciseConfig));
+	}
+
 	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException {
+		Token token = xmlExerciseTokenizer.currentToken();
+		//System.out.println("parsing: _" + token.name + "_");
+		switch(token.name){
+			case "exercise": exerciseName = token.value; break;
+			case "description": description = token.value; break;
+			case "classes":	parseClasses(); break;
+			case "tests": parseTests(); break;
+			case "config": parseConfig(); break;
+			default:
+				//TODO: throw error
+		}
 		xmlExerciseTokenizer.advance();
-		switch(xmlExerciseTokenizer.currentToken().name){
-			case "exercisename":	//TODO: add exercise name to Exercise
-			case "description": // TODO: add description to Exercise
-			case "classes":	//TODO: parse classes
-			case "tests": //TODO: parse tests
-			case "config": //TODO: parse config
+	}
+
+	private void parseTests() throws SamePropertyTwiceException, IOException, TokenException {
+		tests = new JavaFiles();
+		ClassToken classToken;
+		do {
+			classToken = xmlExerciseTokenizer.readTest();
+			//System.out.println(classToken.value + ", " + classToken.classTemplate);
+			if(classToken != null) {
+				JavaFile test = new JavaFile(classToken.value, classToken.classTemplate);
+				tests.addJavaFile(test);
+				//System.out.println("testCode: " + test.sourceCodeTemplate);
+			}
+		}while(!xmlExerciseTokenizer.currentToken().name.equals("/tests")  && classToken != null);
+	}
+
+	private void parseClasses() throws IOException, SamePropertyTwiceException, TokenException {
+		classes = new JavaFiles();
+		ClassToken classToken;
+
+		do {
+			//System.out.println("ADDING ANOTHER CLASS");
+			classToken = xmlExerciseTokenizer.readClass();
+			//System.out.println(classToken);
+			//System.out.println(classToken.value + ", " + classToken.classTemplate);
+			if(classToken != null) {
+				JavaFile clazz = new JavaFile(classToken.value, classToken.classTemplate);
+				classes.addJavaFile(clazz);
+				//System.out.println("size of classes: " + classes.size());
+			}
+		}while(!xmlExerciseTokenizer.currentToken().name.equals("/classes") && classToken != null);
+
+		//System.out.println(xmlExerciseTokenizer.currentToken().name + ", meaning i got out");
+	}
+
+	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
+		exerciseConfig = new ExerciseConfig();
+		Token token = xmlExerciseTokenizer.currentToken();
+
+		while(!token.name.equals("/config")) {
+			xmlExerciseTokenizer.advance();
+			token = xmlExerciseTokenizer.currentToken();
+
+			if (token.name.equals("babysteps")) {
+				//System.out.println("BABYSTEPS: " + Boolean.valueOf(token.value));
+				exerciseConfig.setBabySteps(Boolean.valueOf(token.value));
+				exerciseConfig.setBabyStepsTime(((BabyStepsToken) token).time);
+			} else if (token.name.equals("timetracking")) {
+				exerciseConfig.setTimeTracking(Boolean.valueOf(token.value));
+			}
 		}
 	}
 }

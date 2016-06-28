@@ -1,34 +1,150 @@
 package de.hhu.propra16.avaders.catalogueLoader.tests;
 
+import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
+import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static junit.framework.TestCase.fail;
 
 public class XMLExerciseLoaderTester {
 	@Test
-	public void test_test_xml() {
+	public void test_TestXml_Exercise0() {
+		Exercise exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/test.xml");
+
+		// check exercise 0
+		// exercise
+		Assert.assertEquals("Römische Zahlen", exercise.getExerciseName());
+		Assert.assertEquals("Konvertiert arabische in römische Zahlen.", exercise.getDescription());
+
+		// source code
+		Assert.assertEquals("RomanNumberConverter", exercise.getClassName(0));
+		Assert.assertEquals("RomanNumberConverter2", exercise.getClassName(1));
+		Assert.assertEquals("RomanNumberConverter3", exercise.getClassName(2));
+		Assert.assertEquals("public class RomanNumberConverter {\n}", exercise.getClassTemplate(0));
+		Assert.assertEquals("public class RomanNumberConverter2 {\n}", exercise.getClassTemplate(1));
+		Assert.assertEquals("public class RomanNumberConverter3 {\n}", exercise.getClassTemplate(2));
+
+		// test code
+		Assert.assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
+		Assert.assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
+		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+							"import org.junit.Test;\n" +
+							"public class RomanNumbersTest {\n" +
+							"@Test\n" +
+							"public void testSomething() {\n" +
+							"}\n" +
+							"}", 									exercise.getTestTemplates(0));
+		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+				"import org.junit.Test;\n" +
+				"public class RomanNumbersTest2 {\n" +
+				"@Test\n" +
+				"public void testSomethingElse() {\n" +
+				"}\n" +
+				"}", 									exercise.getTestTemplates(1));
+
+
+		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
+		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
+	}
+
+	@Test
+	public void test_TestXml_Exercise1() {
+		Exercise exercise = setup(1, "java/de/hhu/propra16/avaders/catalogueLoader/tests/test.xml");
+
+		// check exercise 1
+		Assert.assertEquals("Arabische Zahlen", exercise.getExerciseName());
+		Assert.assertEquals("Konvertiert römische in arabische Zahlen.", exercise.getDescription());
+
+		// source code
+		Assert.assertEquals("ArabNumberConverter", exercise.getClassName(0));
+		Assert.assertEquals("public class ArabNumberConverter {\n}", exercise.getClassTemplate(0));
+
+		// test code
+		Assert.assertEquals("ArabNumberConverterTest", exercise.getTestName(0));
+		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+				"import org.junit.Test;\n" +
+				"public class ArabNumbersTest {\n" +
+				"@Test\n" +
+				"public void testSomething() {\n" +
+				"}\n" +
+				"}", 									exercise.getTestTemplates(0));
+
+		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
+		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
+		Assert.assertEquals("2:00", exercise.babyStepsTime());
+	}
+
+	@Test
+	public void test_TestXml_ExerciseLineBreaks() {
+		Exercise exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testLotsOfLineBreaks.xml");
+
+		// check exercise 0
+		// exercise
+		Assert.assertEquals("Römische Zahlen", exercise.getExerciseName());
+		Assert.assertEquals("Konvertiert arabische in römische Zahlen.", exercise.getDescription());
+
+		// source code
+		Assert.assertEquals("RomanNumberConverter", exercise.getClassName(0));
+		Assert.assertEquals("RomanNumberConverter2", exercise.getClassName(1));
+		Assert.assertEquals("RomanNumberConverter3", exercise.getClassName(2));
+		Assert.assertEquals("public class RomanNumberConverter {\n}", exercise.getClassTemplate(0));
+		Assert.assertEquals("public class RomanNumberConverter2 {\n}", exercise.getClassTemplate(1));
+		Assert.assertEquals("public class RomanNumberConverter3 {\n}", exercise.getClassTemplate(2));
+
+		// test code
+		Assert.assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
+		Assert.assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
+		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+				"import org.junit.Test;\n" +
+				"public class RomanNumbersTest {\n" +
+				"@Test\n" +
+				"public void testSomething() {\n" +
+				"}\n" +
+				"}", 									exercise.getTestTemplates(0));
+		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+				"import org.junit.Test;\n" +
+				"public class RomanNumbersTest2 {\n" +
+				"@Test\n" +
+				"public void testSomethingElse() {\n" +
+				"}\n" +
+				"}", 									exercise.getTestTemplates(1));
+
+
+		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
+		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
+	}
+
+	private Exercise setup(int exerciseNr, String path){
 		FileReader lineReader;
-		lineReader = new FileReader(Paths.get("java\\de\\hhu\\propra16\\avaders\\catalogueLoader\\tests\\test.xml"));
+		XMLExerciseTokenizer xmlExerciseTokenizer = null;
+		lineReader = new FileReader(Paths.get(path));
+		ExerciseCatalogue exerciseCatalogue = null;
+
 		try {
-			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(lineReader);
-		} catch (SamePropertyTwiceException e) {
-			e.printStackTrace();
-			fail();
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail();
-		} catch (TokenException e) {
+			xmlExerciseTokenizer = new XMLExerciseTokenizer(lineReader);
+		} catch (SamePropertyTwiceException | IOException | TokenException e) {
 			e.printStackTrace();
 			fail();
 		}
 
-		//TODO: continue until fully read
+		XMLExerciseLoader xmlExerciseLoader = new XMLExerciseLoader(xmlExerciseTokenizer, new ExerciseCatalogue());
+
+		try {
+			exerciseCatalogue = xmlExerciseLoader.loadExercise();
+		} catch (SamePropertyTwiceException | IOException | TokenException e) {
+			e.printStackTrace();
+		}
+
+		return exerciseCatalogue.getExercise(exerciseNr);
 	}
 }
