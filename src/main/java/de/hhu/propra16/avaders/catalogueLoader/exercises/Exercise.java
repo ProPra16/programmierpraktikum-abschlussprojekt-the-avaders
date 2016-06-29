@@ -1,5 +1,8 @@
 package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
+/**
+ * This class holds the necessary information of an exercise
+ */
 public class Exercise {
 	private String exerciseName;
 	private String description;
@@ -57,5 +60,10 @@ public class Exercise {
 
 	public int getNrOfTests(){
 		return testTemplates.size();
+	}
+
+	public boolean atdd() {
+		System.out.println("atdd before return " + exerciseConfig.isAtdd());
+		return exerciseConfig.isAtdd();
 	}
 }

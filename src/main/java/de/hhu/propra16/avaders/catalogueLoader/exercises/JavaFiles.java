@@ -3,6 +3,9 @@ package de.hhu.propra16.avaders.catalogueLoader.exercises;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class holds the java files of the exercise
+ */
 public class JavaFiles {
 	private List<JavaFile>	javaFiles;
 

@@ -1,9 +1,14 @@
 package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
+/**
+ * ExerciseConfig keeps track of configurations for the exercise
+ * it is attached to
+ */
 public class ExerciseConfig {
 	private boolean babySteps;
 	private String time;
 	private boolean timeTracking;
+	private boolean atdd;
 
 	public ExerciseConfig(){
 	}
@@ -30,5 +35,13 @@ public class ExerciseConfig {
 
 	public void setTimeTracking(boolean timeTracking) {
 		this.timeTracking = timeTracking;
+	}
+
+	public boolean isAtdd() {
+		return atdd;
+	}
+
+	public void setAtdd(boolean atdd) {
+		this.atdd = atdd;
 	}
 }
