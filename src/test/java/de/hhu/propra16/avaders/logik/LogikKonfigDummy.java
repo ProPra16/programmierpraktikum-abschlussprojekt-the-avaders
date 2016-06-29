@@ -7,13 +7,8 @@ public class LogikKonfigDummy implements ILogikKonfig {
 		this.value = value;
 	}
 	
-	public ILogikKonfigDaten Einstellung(String Eigenschaft) {
+	@Override
+	public ILogikKonfigDaten einstellung(String name) {
 		return value;
-	}
-
-	public void ErstenTestAuswaehlen() {}
-
-	public boolean naechsterTest() {
-		return false;
 	}
 }

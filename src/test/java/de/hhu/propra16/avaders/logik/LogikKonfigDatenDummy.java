@@ -7,6 +7,7 @@ public class LogikKonfigDatenDummy implements ILogikKonfigDaten {
 		this.value = value;
 	}
 	
+	@Override
 	public boolean toBoolean() {
 		return value;
 	}

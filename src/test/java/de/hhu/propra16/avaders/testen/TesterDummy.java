@@ -1,5 +1,7 @@
 package de.hhu.propra16.avaders.testen;
 
+import vk.core.api.CompilationUnit;
+
 public class TesterDummy implements ITester {
 	private final ITestenRueckgabe rueckgabe;
 	
@@ -7,7 +9,8 @@ public class TesterDummy implements ITester {
 		this.rueckgabe = rueckgabe;
 	}
 	
-	public ITestenRueckgabe Testen(ITestenUebergabe quelltext) {
+	@Override
+	public ITestenRueckgabe testen(CompilationUnit[] sources) {
 		return rueckgabe;
 	}
 }

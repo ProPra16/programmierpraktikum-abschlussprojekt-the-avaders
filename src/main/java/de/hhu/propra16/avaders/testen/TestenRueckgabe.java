@@ -1,11 +1,24 @@
-//Vorlage für die Klasse TestenRueckgabe
-
 package de.hhu.propra16.avaders.testen;
 
-public class TestenRueckgabe implements ITestenRueckgabe {
-    private boolean fTestBestanden;
+import vk.core.api.CompilerResult;
+import vk.core.api.TestResult;
 
-    public boolean testBestanden() {
-        return fTestBestanden;
-    }
+public class TestenRueckgabe implements ITestenRueckgabe {
+	private final CompilerResult compilerResult;
+	private final TestResult testResult;
+	
+	public TestenRueckgabe(final CompilerResult compilerResult, final TestResult testResult) {
+		this.compilerResult = compilerResult;
+		this.testResult = testResult;
+	}
+	
+	@Override
+	public CompilerResult getCompilerResult() {
+		return compilerResult;
+	}
+	
+	@Override
+	public TestResult getTestResult() {
+		return testResult;
+	}
 }

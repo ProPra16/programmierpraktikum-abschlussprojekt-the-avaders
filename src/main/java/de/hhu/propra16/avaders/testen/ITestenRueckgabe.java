@@ -1,7 +1,29 @@
-//Interface einer Klasse, dessen Instanzen von Testen zurückgegeben werden
-
 package de.hhu.propra16.avaders.testen;
 
+import vk.core.api.CompilerResult;
+import vk.core.api.TestResult;
+
 public interface ITestenRueckgabe {
-    public boolean testBestanden();
+	/**
+	 * Gibt einen {@link CompilerResult} mit weiteren Daten über mögliche Compilerfehler zurück.
+	 * 
+	 * @return der {@link CompilerResult}
+	 */
+	public CompilerResult getCompilerResult();
+	
+	/**
+	 * Gibt einen {@link TestResult} mit weiteren Daten über die Testergebnisse zurück.
+	 * 
+	 * @return der {@link TestResult}
+	 */
+	public TestResult getTestResult();
+	
+	/**
+	 * Gibt zurück, ob der Test erfolgreich war, d. h. ob es keine Compilerfehler gab und alle Tests erfolgreich waren.
+	 * 
+	 * @return ob der Test erfolgreich war
+	 */
+	public default boolean isSuccessful() {
+		return !this.getCompilerResult().hasCompileErrors() && this.getTestResult().getNumberOfFailedTests() == 0;
+	}
 }

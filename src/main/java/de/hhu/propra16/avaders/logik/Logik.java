@@ -1,106 +1,97 @@
 package de.hhu.propra16.avaders.logik;
 
-import de.hhu.propra16.avaders.logik.Step;                            //Enthält die Konstanten RED, GREEN, ...
 import de.hhu.propra16.avaders.testen.ITester;
 import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
-import de.hhu.propra16.avaders.testen.ITestenUebergabe;
+import vk.core.api.CompilationUnit;
 
-
-public class Logik {
-	private ILogikKonfig fKonfig;
-	private ITester fTester;
+/**
+ * Implementiert die Logik hinter dem Testzyklus.
+ */
+public class Logik implements ILogik {
+	private final ITester tester;
+	private final boolean refactor2;
 	private Step schritt;
-	private boolean atdd;
-	private boolean refactor2;
+	
+	/**
+	 * Erstellt eine neue Logik-Instanz.
+	 * 
+	 * @param tester der zu verwendende {@link ITester}
+	 * @param konfig die zu verwendende {@link ILogikKonfig}
+	 */
+	public Logik(ITester tester, ILogikKonfig konfig) {
+		this.tester = tester;
+		refactor2 = konfig.einstellung("REFACTOR2").toBoolean();
+		schritt = Step.RED;
+	}
+	
+	@Override
+	public Step getSchritt() {
+		return schritt;
+	}
+	
+	@Override
+	public ITestenRueckgabe weiter(CompilationUnit[] sources) {
+		ITestenRueckgabe rueckgabe = tester.testen(sources);
+		switch (schritt) {
+			case RED:
+				redWeiter(rueckgabe);
+				break;
+			
+			case GREEN:
+				greenWeiter(rueckgabe);
+				break;
+			
+			case REFACTOR1:
+				refactor1Weiter(rueckgabe);
+				break;
+			
+			case REFACTOR2:
+				refactor2Weiter(rueckgabe);
+				break;
+			
+			default:
+				throw new IllegalStateException(String.format("Schritt %s wurde nicht behandelt", schritt));
+		}
+		return rueckgabe;
+	}
 
-    //Konstruktor: Erstellt eine Instanz von Logik
-    public Logik(ITester tester, ILogikKonfig konfig) {
-        fKonfig = konfig;                                             //Uebergabewerte speichern
-        fTester = tester;                                             //und Variablen initialisieren
-        schritt = Step.RED;
-        konfigLaden();
-    }
+	private void redWeiter(ITestenRueckgabe rueckgabe) {
+		if (!rueckgabe.isSuccessful()) {
+			schritt = Step.GREEN;
+		}
+	}
 
-    //Lädt die relevanten Einstellungen aus der Konfiguration
-    public void konfigLaden() {
-        ILogikKonfigDaten einstellung = fKonfig.Einstellung("ATDD");  //Einstellung holen
-        atdd = einstellung.toBoolean();                               //und konvertieren
-        einstellung = fKonfig.Einstellung("REFACTOR2");
-        refactor2 = einstellung.toBoolean();
-    }
+	private void greenWeiter(ITestenRueckgabe rueckgabe) {
+		if (rueckgabe.isSuccessful()) {
+			schritt = Step.REFACTOR1;
+		}
+	}
 
-    //weiter: wird von GUI aufgerufen, testet und geht gegebenenfalls einen Zyklenschritt weiter
-    public ITestenRueckgabe weiter(ITestenUebergabe uebergabe) {
-        switch(schritt) {                                             //Aktuellen Schritt ermitteln
-            case RED:       return redWeiter(uebergabe);
-            case GREEN:     return greenWeiter(uebergabe);
-            case REFACTOR1: return refactor1Weiter(uebergabe);
-            case REFACTOR2: return refactor2Weiter(uebergabe);
-         }
-         return null;
-    }
+	private void refactor1Weiter(ITestenRueckgabe rueckgabe) {
+		if (rueckgabe.isSuccessful()) {
+			if (refactor2) {
+				schritt = Step.REFACTOR2;
+			} else {
+				endeAufrufen(rueckgabe);
+			}
+		}
+	}
 
-    //Versucht im Schritt RED, weiterzugehen
-    ITestenRueckgabe redWeiter(ITestenUebergabe uebergabe) {
-        ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
-        if (rueckgabe.testBestanden()) schritt = Step.GREEN;          //Red -> Green
-        return rueckgabe;                                             //Testergebnisse zurückgeben
-    }
+	private void refactor2Weiter(ITestenRueckgabe rueckgabe) {
+		if (rueckgabe.isSuccessful()) {
+			endeAufrufen(rueckgabe);
+		}
+	}
 
-    //Versucht im Schritt GREEN, weiterzugehen
-    ITestenRueckgabe greenWeiter(ITestenUebergabe uebergabe) {
-        ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
-        if (rueckgabe.testBestanden()) schritt = Step.REFACTOR1;      //Green -> Refactor 1
-        return rueckgabe;                                             //Testergebnisse zurückgeben
-    }
+	private void endeAufrufen(ITestenRueckgabe rueckgabe) {
+		schritt = Step.RED;
+	}
 
-    //Versucht im Schritt REFACTOR1, weiterzugehen
-    ITestenRueckgabe refactor1Weiter(ITestenUebergabe uebergabe) {
-        ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
-        Refactor2Aufrufen(rueckgabe, uebergabe);                      //Zusatz Refactor 2 ggf. ausführen
-        return rueckgabe;                                             //Testergebnisse zurückgeben
-    }
-
-    //Geht im Schritt REFACTOR1 weiter zu REFACTOR 2 oder zum Ende
-    void Refactor2Aufrufen(ITestenRueckgabe rueckgabe, ITestenUebergabe uebergabe) {
-        if (refactor2) {                                              //Zusatz: Refactor 2
-            if (rueckgabe.testBestanden()) schritt = Step.REFACTOR2;  //Refactor 1 -> Refactor 2
-        } else {
-            if (rueckgabe.testBestanden()) endeAufrufen(uebergabe);   //Refactor 1 -> Ende
-        }
-    }
-
-    //Versucht im Schritt REFACTOR2, weiterzugehen
-    ITestenRueckgabe refactor2Weiter(ITestenUebergabe uebergabe) {
-        ITestenRueckgabe  rueckgabe = fTester.Testen(uebergabe);       //Test ausführen
-        if (rueckgabe.testBestanden()) endeAufrufen(uebergabe);        //Refactor 2 -> Ende
-        return rueckgabe;                                              //Testergebnisse zurückgeben
-    }
-
-    //Geht weiter zum Ende
-    ITestenRueckgabe endeAufrufen(ITestenUebergabe uebergabe) {
-        if (atdd) {                                                    //Zusatz: Akzeptanztest ausführen
-            ITestenRueckgabe rueckgabe = fTester.Testen(uebergabe);    //Testen
-            if (rueckgabe.testBestanden()) {                           //Falls der Test bestanden wurde
-                if (fKonfig.naechsterTest()) schritt = Step.RED;       //Falls weiterer Test ausgewählt werden konnte: Ende -> Red
-                else schritt = Step.ENDE;                              //Entwicklungsende
-            } else {
-                return rueckgabe;                                      //Testergebnisse zurückgeben
-            }
-        } else {
-            schritt = Step.RED;                                        //Ende -> Red
-        }
-        return null;                                                   //Kein Test ausgeführt, nichts zurückgeben
-    }
-
-      //Bricht den aktuellen Test ab und setzt das Programm zum letzten bestandendenen Test zurück
-    public void abbrechen() {
-        schritt = Step.RED;
-    }
-
-      //Bricht den aktuellen Test ab und setzt das Programm zum letzten bestandendenen Akzeptanztest zurück
-    public void zuruecksetzen() {
-        schritt = Step.RED;
-        fKonfig.ErstenTestAuswaehlen();
-    }
+	@Override
+	public void abbrechen() {
+		if (schritt != Step.GREEN) {
+			throw new IllegalStateException("Es darf nur während dem GREEN-Schritt abgebrochen werden");
+		}
+		schritt = Step.RED;
+	}
 }
