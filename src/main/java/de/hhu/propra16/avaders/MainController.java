@@ -1,6 +1,7 @@
 package de.hhu.propra16.avaders;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javafx.event.ActionEvent;
@@ -12,64 +13,91 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 public class MainController {
-	private static BorderPane mainBase;
-	private static Map<Name,Phase> phases;
-	private static Name current = Name.RED;
 	
-    @FXML
-    private MenuItem newExercise;
-    @FXML
-    private Button prePhase;
-    @FXML
-    private Text activatedModes;
-    @FXML
-    private MenuItem restart;
-    @FXML
-    private Button nextPhase;
-    @FXML
-    private TextArea greenRefactor;
-    @FXML
-    private Text timeLeft;
-    @FXML
-    private TextArea redPhase;
-    @FXML
-    private TextArea codePhase;
+	//access to main pane of primarystage where scene is set
+	private static BorderPane mainBase;
+	
+	//access to every phase-object
+	private static Map<PhaseName,Phase> phases;
+	
+	/**
+	 * main cycle-control datastructure:
+	 * Objects Red,Green and Refactor will be inserted in this order. The first 
+	 * Element represents the current Phase. We do EVER access first element to 
+	 * set phase.
+	 * Switching can be achieved due shifting the list with the shiftoperations below.
+	 * For example:
+	 * list(Red,Green,Refactor) -> Red-phase --->shiftLeft---> list(Green,Refactor,Red) -> 
+	 * Green-Phase.
+	 */
+	private static LinkedList<Phase> phase = new LinkedList<Phase>();
+	
+	
+	
+	//excercise-menuItems
+    @FXML private MenuItem newExercise;
+    @FXML private MenuItem restart;
     
+    //phase-switcher
+    @FXML private Button prePhase;
+    @FXML private Button nextPhase;
     
+    //Userinformation about activated modes and time left due activated babysteps
+    @FXML private Text activatedModes;
+    @FXML private Text timeLeft;
 
     
+    @FXML private TextArea greenRefactor;
+    @FXML private TextArea redPhase;
+    @FXML private TextArea codePhase;
+    
+   
     //Handler
-    @FXML
-    void handlePrePhase(ActionEvent event) {
-    	redPhase.setDisable(false);
-    	codePhase.setDisable(true);
-    	prePhase.setVisible(false);
+    @FXML void handleRestart(ActionEvent event) { }
+    
+   
+    @FXML void handlePrePhase(ActionEvent event) {
+    	shiftRight(phase);
+    	phase.getFirst().setStates(redPhase, codePhase, prePhase, nextPhase);
+    }
+    
+    @FXML void handleNextPhase(ActionEvent event){
+    	shiftLeft(phase);
+    	phase.getFirst().setStates(redPhase, codePhase, prePhase, nextPhase);
+    }
+    
+    /**
+     * will be triggered if click on excercise->new... in the menubar.
+     * takes the mainbase makes controls visible to user, creates map for
+     * general access to phase objects and initializes phase-control-list.
+     * finally sets first phase ->Red-phase.
+     * @param event
+     */
+    @FXML void handleNewExcercise(ActionEvent event) {
+    	mainBase = Main.getMainBase();
+    	mainBase.getCenter().setVisible(true);
+    	mainBase.getBottom().setVisible(true);
+     	phases   = new HashMap<>();
+     	
+    	phases.put(PhaseName.RED, new Red());
+    	phases.put(PhaseName.GREEN, new Green());
+    	phases.put(PhaseName.REFACTOR, new Refactor());
+  
+    	phase.add(phases.get(PhaseName.RED));
+    	phase.addLast(phases.get(PhaseName.GREEN));
+    	phase.addLast(phases.get(PhaseName.REFACTOR));
     	
+    	phase.getFirst().setStates(redPhase, codePhase, prePhase, nextPhase);
     }
     
-    enum Name{
-    	RED,GREEN,REFACTOR;
-    }
-    
-    @FXML
-    void handleNextPhase(ActionEvent event){
  
-    	
-    	
+    //Shift-operations mentioned above 
+    private void shiftLeft(LinkedList<Phase> phases){
+    	phase.addLast(phase.getFirst());
+    	phase.removeFirst();
     }
-    @FXML
-    void handleNewExcercise(ActionEvent event) {
-    	this.phases = new HashMap<>();
-    	Red      red      = new Red();
-    	Green    green    = new Green();
-    	Refactor refactor = new Refactor();
-    	phases.put(Name.RED, red);
-    	phases.put(Name.GREEN, green);
-    	phases.put(Name.REFACTOR, refactor);
-    }
-    
-    @FXML
-    void handleRestart(ActionEvent event) {
-
+    private void shiftRight(LinkedList<Phase> phases){
+    	phase.addFirst(phase.getLast());
+    	phase.removeLast();
     }
 }

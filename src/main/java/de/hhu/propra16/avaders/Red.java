@@ -5,11 +5,12 @@ import javafx.scene.control.TextArea;
 
 public class Red extends Phase {
 	
+	//Sets values to controls according to red-phase
 	@Override 
-	public void setStates(TextArea redPhase, TextArea codePhase, Button prePhase, Button nextPhase){
-		redPhase.setDisable(false);
-		codePhase.setDisable(true);
-		prePhase.setVisible(false);
-		nextPhase.setText("Green");
+	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
+		userFieldRed.setDisable(false);
+		userFieldCode.setDisable(true);
+		stepBack.setVisible(false);
+		stepFurther.setText("Green");
 	}
 }

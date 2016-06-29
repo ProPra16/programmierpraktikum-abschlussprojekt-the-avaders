@@ -4,7 +4,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 abstract class Phase {
-
-	public void setStates(TextArea redPhase, TextArea greenPhase, Button prePhase, Button nextPhase){
+	//save userinput from textarea
+	public String userInput; 
+	
+	//this method will be overriden by subclasses Red,Green,Refactor to set appropriate states 
+	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
 	}
 }
