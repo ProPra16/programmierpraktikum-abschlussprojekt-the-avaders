@@ -10,11 +10,15 @@ public class Main extends Application {
 	private static Stage      primaryStage;
 	private static BorderPane mainBase;
 	
+	public static BorderPane getMainBase() { return mainBase;}
+
 	@Override
 	public void start(Stage stage) throws Exception{
 		primaryStage = stage;
 		mainBase = FXMLLoader.load(getClass().getResource("applicationView.fxml"));		
 		primaryStage.setTitle("Test Driven Developement Trainer");
+		mainBase.getCenter().setVisible(false);
+		mainBase.getBottom().setVisible(false);
 		
 		
 		Scene scene = new Scene(mainBase, 600, 400);
