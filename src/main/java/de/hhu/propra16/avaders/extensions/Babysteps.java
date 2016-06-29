@@ -17,6 +17,7 @@ public class Babysteps {
 	private IntegerProperty seconds = new SimpleIntegerProperty(0), maxSeconds = new SimpleIntegerProperty(0);
 	private NumberBinding remaining = Bindings.subtract(maxSeconds,seconds);
 	private BooleanBinding hasTimeLeft = Bindings.notEqual(seconds,maxSeconds);
+	private Runnable onTimeout;
 
 	/**
 	 * Creates a new instance of Babysteps.
@@ -25,11 +26,20 @@ public class Babysteps {
 	public Babysteps(TextArea t){
 		currentlyEditableArea = t;
 		oldText = currentlyEditableArea.getText();
+		onTimeout = () -> {currentlyEditableArea.setEditable(false);currentlyEditableArea.setText(oldText);};
+		setTimeline();
+	}
+
+	public Babysteps(){
+		onTimeout = () -> {};
+		setTimeline();
+	}
+
+	private void setTimeline(){
 		timeline = new Timeline(new KeyFrame(Duration.seconds(1),
 				ae -> {seconds.set(seconds.get()+1);
 					if(!hasTimeLeft.get()){
-						currentlyEditableArea.setEditable(false);
-						currentlyEditableArea.setText(oldText);
+						onTimeout.run();
 					}}));
 	}
 
@@ -100,4 +110,7 @@ public class Babysteps {
 		return oldText;
 	}
 
+	public void setOnTimeout(Runnable onTimeout) {
+		this.onTimeout = onTimeout;
+	}
 }
