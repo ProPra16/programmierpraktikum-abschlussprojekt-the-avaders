@@ -63,7 +63,6 @@ public class Exercise {
 	}
 
 	public boolean atdd() {
-		System.out.println("atdd before return " + exerciseConfig.isAtdd());
 		return exerciseConfig.isAtdd();
 	}
 }

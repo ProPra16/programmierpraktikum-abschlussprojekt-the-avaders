@@ -11,6 +11,9 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 
 import java.io.IOException;
 
+/**
+ * Loads Exercises from a .xml file
+ */
 public class XMLExerciseLoader implements ExerciseLoader {
 	private final XMLExerciseTokenizer xmlExerciseTokenizer;
 	private final ExerciseCatalogue loadedExerciseCatalogue;
@@ -26,11 +29,28 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		this.loadedExerciseCatalogue = exerciseCatalogue;
 	}
 
+	/**
+	 * Parses the exercise catalogue and returns a ExerciseCatalogue instance with
+	 * the parsed information
+	 * @return An ExerciseCatalogue with the read exercises
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	@Override
 	public ExerciseCatalogue loadExercise() throws SamePropertyTwiceException, IOException, TokenException {
 		return parseExercises();
 	}
 
+	/**
+	 * Parses all exercises and returns the exerciseCatalogue holding those exercises
+	 * @return The ExerciseCatalogue holding the parsed exercises
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private ExerciseCatalogue parseExercises() throws SamePropertyTwiceException, IOException, TokenException {
 		if((xmlExerciseTokenizer.currentToken()).name.equals("exercises")
 				&& xmlExerciseTokenizer.hasNextToken()){
@@ -42,16 +62,11 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		}
 
 		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercises")) {
-			//System.out.println(xmlExerciseTokenizer.currentToken().name);
 			parseExercise();
 			xmlExerciseTokenizer.advance();
-			//System.out.println("\n --- new Exercise --- \n\n");
 		}
 
-		//System.out.println("END: " + xmlExerciseTokenizer.currentToken().name + ", " + xmlExerciseTokenizer.hasNextToken());
-
 		if(xmlExerciseTokenizer.currentToken().name.equals("/exercises") && !xmlExerciseTokenizer.hasNextToken()){
-			//System.out.println("returning Exercises");
 			return  loadedExerciseCatalogue;
 		}
 		else{
@@ -61,17 +76,29 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		}
 	}
 
+	/**
+	 * Parses a single exercise and adds it to the exerciseCatalogue
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private void parseExercise() throws SamePropertyTwiceException, IOException, TokenException {
 		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercise")){
 			parseToken();
 		}
-		//System.out.println("ADDING CLASSES to EXERCISE WITH LENGTH OF: " + classes.size());
 		loadedExerciseCatalogue.addExercise(new Exercise(exerciseName, description, classes, tests, exerciseConfig));
 	}
 
+	/**
+	 * Parses a token and adds it's information to the corresponding field
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException {
 		Token token = xmlExerciseTokenizer.currentToken();
-		//System.out.println("parsing: _" + token.name + "_");
 		switch(token.name){
 			case "exercise": exerciseName = token.value; break;
 			case "description": description = token.value; break;
@@ -84,16 +111,40 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		xmlExerciseTokenizer.advance();
 	}
 
+	/**
+	 * parses all tests inside <tests> ... </tests> and adds them to tests
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private void parseTests() throws SamePropertyTwiceException, IOException, TokenException {
 		tests = new JavaFiles();
 		parseJavaFiles(tests, "test", "/tests");
 	}
 
+	/**
+	 * parses all classes inside <classes> ... </classes> and adds them to tests
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private void parseClasses() throws IOException, SamePropertyTwiceException, TokenException {
 		classes = new JavaFiles();
 		parseJavaFiles(classes, "class", "/classes");
 	}
 
+	/**
+	 * parses all java files (test or class) and adds them to either tests or classes
+	 * @param javaFiles The Object in which the java files will be collected
+	 * @param classType The type of java file: test or class
+	 * @param stringToEndOn The string which marks the end of the java files
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+     * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private void parseJavaFiles(JavaFiles javaFiles, String classType, String stringToEndOn) throws SamePropertyTwiceException, IOException, TokenException {
 		ClassToken classToken;
 
@@ -106,6 +157,13 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		}while(!xmlExerciseTokenizer.currentToken().name.equals(stringToEndOn) && classToken != null);
 	}
 
+	/**
+	 * Parses the Config structure in the xml file
+	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * but not found
+     */
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
 		exerciseConfig = new ExerciseConfig();
 		Token token = xmlExerciseTokenizer.currentToken();
@@ -114,12 +172,17 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			xmlExerciseTokenizer.advance();
 			token = xmlExerciseTokenizer.currentToken();
 
-			if (token.name.equals("babysteps")) {
-				//System.out.println("BABYSTEPS: " + Boolean.valueOf(token.value));
-				exerciseConfig.setBabySteps(Boolean.valueOf(token.value));
-				exerciseConfig.setBabyStepsTime(((BabyStepsToken) token).time);
-			} else if (token.name.equals("timetracking")) {
-				exerciseConfig.setTimeTracking(Boolean.valueOf(token.value));
+			switch (token.name) {
+				case "babysteps":
+					exerciseConfig.setBabySteps(Boolean.valueOf(token.value));
+					exerciseConfig.setBabyStepsTime(((BabyStepsToken) token).time);
+					break;
+				case "timetracking":
+					exerciseConfig.setTimeTracking(Boolean.valueOf(token.value));
+					break;
+				case "atdd":
+					exerciseConfig.setAtdd(Boolean.valueOf(token.value));
+					break;
 			}
 		}
 	}
