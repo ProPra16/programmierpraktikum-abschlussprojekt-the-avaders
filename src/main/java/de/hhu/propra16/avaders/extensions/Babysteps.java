@@ -1,6 +1,5 @@
 package de.hhu.propra16.avaders.extensions;
 
-import com.sun.istack.internal.NotNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
@@ -72,7 +71,6 @@ public class Babysteps {
 	 * changes the current TextAre
 	 * @param t the TextArea
 	 */
-	@NotNull
 	public void setCurrentlyEditableArea(TextArea t){
 		currentlyEditableArea = t;
 		oldText = t.getText();
