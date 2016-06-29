@@ -81,36 +81,16 @@ public class XMLExerciseTokenizer {
 	public Token readContent(String tokenWhichShouldBeRead) throws IOException, SamePropertyTwiceException, TokenException {
 		String content = readLinesUntil(tokenWhichShouldBeRead);
 
-		//System.out.println("___" + content  + "___" + "\n-->" + readLine + "<--");
-
 		return convertDescription(content);
 	}
 
-	public ClassToken readClass() throws IOException, SamePropertyTwiceException, TokenException {
-		if(!nextToken.name.equals("/classes")) {
-			//System.out.println(currentToken.name);
-			String classTemplate = readLinesUntil("class");
+	public ClassToken readJavaFile(String stringToEndOn, String classType) throws IOException, SamePropertyTwiceException, TokenException {
+		if(!nextToken.name.equals(stringToEndOn)) {
+			String classTemplate = readLinesUntil(classType);
 			advance();
-			//System.out.println(currentToken.name + "- " + currentToken.value);
-			return new ClassToken("class", currentToken.value, classTemplate);
+			return new ClassToken(classType, currentToken.value, classTemplate);
 		}
-		// only skip the /class token
-		else {
-			advance();
-			return null;
-		}
-	}
-
-	public ClassToken readTest() throws IOException, SamePropertyTwiceException, TokenException {
-		if(!nextToken.name.equals("/tests")) {
-			//System.out.println(currentToken.name);
-			String classTemplate = readLinesUntil("test");
-			advance();
-			//System.out.println("testTemplate: " + classTemplate);
-			//System.out.println(currentToken.name + "- " + currentToken.value);
-			return new ClassToken("test", currentToken.value, classTemplate);
-		}
-		// only skip the /test token
+		// only skip the /classType token
 		else {
 			advance();
 			return null;
