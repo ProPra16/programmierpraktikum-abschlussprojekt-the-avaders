@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static junit.framework.TestCase.fail;
@@ -55,6 +54,7 @@ public class XMLExerciseLoaderTester {
 
 		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
 		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
+		Assert.assertEquals(false, exercise.atdd());
 	}
 
 	@Test
@@ -82,6 +82,7 @@ public class XMLExerciseLoaderTester {
 		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
 		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
 		Assert.assertEquals("2:00", exercise.babyStepsTime());
+		Assert.assertEquals(true, exercise.atdd());
 	}
 
 	@Test
