@@ -1,0 +1,30 @@
+Protokoll zum Gruppentreffen am 29.06.2016
+Protokollführer: Nikita Hasert (nihas101)
+
+
+Themen:
+- Fortschritt und Redesign der GUI
+- Verhalten der Programmlogik in der Refactor Phase
+- Interaktion zwischen GUI, Babysteps und der Logik Klassen
+- Einbindung der virtual-kata-lib
+
+
+Ziele für diese Woche:
+-Florian:
+Arbeitsbereich: feature/logic
+Ziel dieser Woche: XMLCatalogueLoader implementieren
+
+-Thiemo:
+Arbeitsbereich: gui
+Ziel dieser Woche: Controller implementieren und Babysteps Klasse einbinden
+
+Nikita:
+Arbeitsbereich: feature/XMLCatalogueLoader
+Ziel dieser Woche: Akzeptanztest Einstellung einbinden und allgemeine Tests der Klassen
+
+David:
+Arbeitsbereich: feature/logic
+Ziel dieser Woche: Weitere Integration der virtual-kata-lib
+
+Lukas: babysteps, Tracking
+Ziel dieser Woche: Tracking Klasse fertigstellen
