@@ -3,6 +3,7 @@ package de.hhu.propra16.avaders.catalogueLoader.tests;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 import org.junit.Assert;
@@ -282,6 +283,50 @@ public class StringToTokenTester {
 		catch (Exception e){
 			fail();
 		}
+		fail();
+	}
+
+	@Test
+	public void test_atdd_true(){
+		Token token = null;
+		try {
+			token = StringToToken.convert("atdd \t value = \"true\" \n", 1);
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+			fail();
+		}
+
+		Assert.assertEquals("atdd", token.name);
+		Assert.assertEquals("true", token.value);
+	}
+
+	@Test
+	public void test_atdd_false(){
+		Token token = null;
+		try {
+			token = StringToToken.convert("atdd \t value = \"false\" \n", 1);
+		} catch (Exception e){
+			System.out.println(e.getMessage());
+			fail();
+		}
+
+		Assert.assertEquals("atdd", token.name);
+		Assert.assertEquals("false", token.value);
+	}
+
+	@Test
+	public void test_atdd_samePropertyTwice_value(){
+		Token token = null;
+		try {
+			token = StringToToken.convert("atdd \t value = \"false\" value = \"true\"\n", 1);
+		} catch (SamePropertyTwiceException e){
+			System.out.println(e.getMessage());
+			return;
+		} catch (TokenException e) {
+			e.printStackTrace();
+			fail();
+		}
+
 		fail();
 	}
 }

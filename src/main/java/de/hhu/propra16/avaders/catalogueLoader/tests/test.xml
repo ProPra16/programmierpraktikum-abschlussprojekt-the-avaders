@@ -62,6 +62,7 @@
 		<config>
 			<babysteps value="True" time="2:00" />
 			<timetracking value="True" />
+			<atdd value = "false"/>
 		</config>
 	</exercise>
 </exercises>
