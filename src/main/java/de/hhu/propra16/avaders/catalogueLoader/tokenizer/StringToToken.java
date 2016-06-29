@@ -36,29 +36,36 @@ public class StringToToken {
 				}
 				else if(readToken.startsWith("babysteps")){
 					if(readToken.contains("/")){
-						readToken = readToken.replaceFirst("/", "");
+						readToken = removeWhiteSpace(readToken.replaceFirst("/", ""));
 						//System.out.println("about to parse babysteps in: _" + readToken + "_");
 					}
 					return parseBabySteps(readToken, lineNr);
 				}
 				else if(readToken.startsWith("timetracking")){
 					if(readToken.contains("/")){
-						readToken = readToken.replaceFirst("/", "");
+						readToken = removeWhiteSpace(readToken.replaceFirst("/", ""));
 						//System.out.println("about to parse timetracking in: _" + readToken + "_");
 					}
-					return parseTimeTracking(readToken, lineNr);
+					return parseSingleValueToken("timetracking", readToken, lineNr);
+				}
+				else if(readToken.startsWith("atdd")){
+					if(readToken.contains("/")){
+						readToken = removeWhiteSpace(readToken.replaceFirst("/", ""));
+						//System.out.println("about to parse timetracking in: _" + readToken + "_");
+					}
+					return parseSingleValueToken("atdd", readToken, lineNr);
 				}
 			}
 		}
-		//System.out.println(readToken);
+		System.out.println(readToken);
 		throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
 				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
 	}
 
-	private static Token parseTimeTracking(String readToken, int lineNr) throws UnexpectedTokenException, SamePropertyTwiceException, MissingTokenException {
+	private static Token parseSingleValueToken(String token, String readToken, int lineNr) throws UnexpectedTokenException, SamePropertyTwiceException, MissingTokenException {
 		String value = null;
 
-		readToken = readToken.replaceFirst("timetracking", "");
+		readToken = readToken.replaceFirst(token, "");
 		readToken = removeWhiteSpace(readToken);
 
 		while(readToken.startsWith("value")) {
@@ -74,7 +81,7 @@ public class StringToToken {
 			throw new UnexpectedTokenException("property: value", readToken, lineNr);
 		}
 
-		return new Token("timetracking", value);
+		return new Token(token, value);
 	}
 
 	private static String removeProperty(String readToken) {
