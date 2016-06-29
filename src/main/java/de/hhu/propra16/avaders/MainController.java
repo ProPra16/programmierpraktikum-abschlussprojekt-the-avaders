@@ -39,8 +39,8 @@ public class MainController {
     @FXML private MenuItem restart;
     
     //phase-switcher
-    @FXML private Button prePhase;
-    @FXML private Button nextPhase;
+    @FXML private Button stepBack;
+    @FXML private Button stepFurther;
     
     //Userinformation about activated modes and time left due activated babysteps
     @FXML private Text activatedModes;
@@ -48,8 +48,8 @@ public class MainController {
 
     
     @FXML private TextArea greenRefactor;
-    @FXML private TextArea redPhase;
-    @FXML private TextArea codePhase;
+    @FXML private TextArea userFieldRed;
+    @FXML private TextArea userFieldCode;
     
    
     //Handler
@@ -58,12 +58,20 @@ public class MainController {
    
     @FXML void handlePrePhase(ActionEvent event) {
     	shiftRight(phase);
-    	phase.getFirst().setStates(redPhase, codePhase, prePhase, nextPhase);
+    	phase.getFirst().setStates(userFieldRed, userFieldCode, stepBack, stepFurther);
+    	if(stepFurther.getText().contentEquals("Green")){
+     		userFieldCode.clear();
+    	}
     }
     
     @FXML void handleNextPhase(ActionEvent event){
     	shiftLeft(phase);
-    	phase.getFirst().setStates(redPhase, codePhase, prePhase, nextPhase);
+    	//after clicking finish, the codefield will be cleared, current userinput will be overwritten at this
+    	//time when codeTextfield is called the very next time
+    	if(stepFurther.getText().contentEquals("Finish")){
+     		userFieldCode.clear();
+    	}
+    	phase.getFirst().setStates(userFieldRed, userFieldCode, stepBack, stepFurther);
     }
     
     /**
@@ -87,7 +95,7 @@ public class MainController {
     	phase.addLast(phases.get(PhaseName.GREEN));
     	phase.addLast(phases.get(PhaseName.REFACTOR));
     	
-    	phase.getFirst().setStates(redPhase, codePhase, prePhase, nextPhase);
+    	phase.getFirst().setStates(userFieldRed, userFieldCode, stepBack, stepFurther);
     }
     
  

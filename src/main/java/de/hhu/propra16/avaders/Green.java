@@ -4,10 +4,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
 public class Green extends Phase {
-	
-	//Sets values to controls according to green-phase
+	//Sets values to controls according to green-phase  and records input
 	@Override 
 	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
+		listenTo(userFieldCode);
 		userFieldRed.setDisable(true);
 		userFieldCode.setDisable(false);
 		stepBack.setVisible(true);

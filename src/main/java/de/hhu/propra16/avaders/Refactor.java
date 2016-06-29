@@ -5,9 +5,10 @@ import javafx.scene.control.TextArea;
 
 public class Refactor extends Phase {
 
-	//Sets values to controls according to refactor-phase
+	//Sets values to controls according to refactor-phase  and records input
 	@Override 
 	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
+		listenTo(userFieldCode);
 		userFieldRed.setDisable(true);
 		userFieldCode.setDisable(false);
 		stepBack.setVisible(true);
