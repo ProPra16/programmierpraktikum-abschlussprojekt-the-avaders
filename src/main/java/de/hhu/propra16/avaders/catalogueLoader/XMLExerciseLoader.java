@@ -86,35 +86,24 @@ public class XMLExerciseLoader implements ExerciseLoader {
 
 	private void parseTests() throws SamePropertyTwiceException, IOException, TokenException {
 		tests = new JavaFiles();
-		ClassToken classToken;
-		do {
-			classToken = xmlExerciseTokenizer.readTest();
-			//System.out.println(classToken.value + ", " + classToken.classTemplate);
-			if(classToken != null) {
-				JavaFile test = new JavaFile(classToken.value, classToken.classTemplate);
-				tests.addJavaFile(test);
-				//System.out.println("testCode: " + test.sourceCodeTemplate);
-			}
-		}while(!xmlExerciseTokenizer.currentToken().name.equals("/tests")  && classToken != null);
+		parseJavaFiles(tests, "test", "/tests");
 	}
 
 	private void parseClasses() throws IOException, SamePropertyTwiceException, TokenException {
 		classes = new JavaFiles();
+		parseJavaFiles(classes, "class", "/classes");
+	}
+
+	private void parseJavaFiles(JavaFiles javaFiles, String classType, String stringToEndOn) throws SamePropertyTwiceException, IOException, TokenException {
 		ClassToken classToken;
 
 		do {
-			//System.out.println("ADDING ANOTHER CLASS");
-			classToken = xmlExerciseTokenizer.readClass();
-			//System.out.println(classToken);
-			//System.out.println(classToken.value + ", " + classToken.classTemplate);
+			classToken = xmlExerciseTokenizer.readJavaFile(stringToEndOn, classType);
 			if(classToken != null) {
-				JavaFile clazz = new JavaFile(classToken.value, classToken.classTemplate);
-				classes.addJavaFile(clazz);
-				//System.out.println("size of classes: " + classes.size());
+				JavaFile javaFile = new JavaFile(classToken.value, classToken.classTemplate);
+				javaFiles.addJavaFile(javaFile);
 			}
-		}while(!xmlExerciseTokenizer.currentToken().name.equals("/classes") && classToken != null);
-
-		//System.out.println(xmlExerciseTokenizer.currentToken().name + ", meaning i got out");
+		}while(!xmlExerciseTokenizer.currentToken().name.equals(stringToEndOn) && classToken != null);
 	}
 
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
