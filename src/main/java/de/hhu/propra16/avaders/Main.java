@@ -7,21 +7,24 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+	private static Stage      primaryStage;
+	private static BorderPane mainBase;
+	
 	@Override
-	public void start(Stage primaryStage) throws Exception{
-		BorderPane root = FXMLLoader.load(getClass().getResource("applicationView.fxml"));
+	public void start(Stage stage) throws Exception{
+		primaryStage = stage;
+		mainBase = FXMLLoader.load(getClass().getResource("applicationView.fxml"));		
 		primaryStage.setTitle("Test Driven Developement Trainer");
 		
 		
-		Scene scene = new Scene(root, 600, 400);
+		Scene scene = new Scene(mainBase, 600, 400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 
-
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }
