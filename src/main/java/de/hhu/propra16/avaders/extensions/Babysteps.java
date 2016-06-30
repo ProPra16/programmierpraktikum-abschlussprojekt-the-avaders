@@ -1,6 +1,5 @@
 package de.hhu.propra16.avaders.extensions;
 
-import com.sun.istack.internal.NotNull;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
@@ -19,21 +18,34 @@ public class Babysteps {
 	private IntegerProperty seconds = new SimpleIntegerProperty(0), maxSeconds = new SimpleIntegerProperty(0);
 	private NumberBinding remaining = Bindings.subtract(maxSeconds,seconds);
 	private BooleanBinding hasTimeLeft = Bindings.notEqual(seconds,maxSeconds);
+	private Runnable onTimeout;
 
 	private HTMLEditor currentlyEditableHtmlEditor;
 
 	/**
-	 * Creates a new instance of Babysteps.
+	 * Creates a new instance of Babysteps with the default onTimeout-method.
 	 * @param t the TextAre which you would like to attatch the Babysteps
 	 */
 	public Babysteps(TextArea t){
 		currentlyEditableArea = t;
 		oldText = currentlyEditableArea.getText();
+		onTimeout = () -> {currentlyEditableArea.setEditable(false);currentlyEditableArea.setText(oldText);};
+		setTimeline();
+	}
+
+	/**
+	 * Creates a new instance of Babysteps with an empty onTimeout-method
+	 */
+	public Babysteps(){
+		onTimeout = () -> {};
+		setTimeline();
+	}
+
+	private void setTimeline(){
 		timeline = new Timeline(new KeyFrame(Duration.seconds(1),
 				ae -> {seconds.set(seconds.get()+1);
 					if(!hasTimeLeft.get()){
-						currentlyEditableArea.setEditable(false);
-						currentlyEditableArea.setText(oldText);
+						onTimeout.run();
 					}}));
 	}
 
@@ -57,7 +69,7 @@ public class Babysteps {
 
 	/**
 	 * starts the timer which counts the remaining time
-	 * if the timer runs out, it will lock the TextArea and restore the old text
+	 * if the timer runs out, it will trigger the onTimeout-mehod
 	 * @param maxSeconds the maximum amount of seconds for the user to edit the code
 	 */
 	public void startTimer(int maxSeconds){
@@ -90,10 +102,9 @@ public class Babysteps {
 	}
 
 	/**
-	 * changes the current TextAre
+	 * changes the current TextArea
 	 * @param t the TextArea
 	 */
-	@NotNull
 	public void setCurrentlyEditableArea(TextArea t){
 		currentlyEditableArea = t;
 		oldText = t.getText();
@@ -123,4 +134,11 @@ public class Babysteps {
 		return oldText;
 	}
 
+	/**
+	 * sets the onTimeout-method
+	 * @param onTimeout the method which triggers if the timer runs out
+	 */
+	public void setOnTimeout(Runnable onTimeout) {
+		this.onTimeout = onTimeout;
+	}
 }

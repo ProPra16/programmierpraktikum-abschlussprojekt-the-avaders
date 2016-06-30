@@ -18,11 +18,8 @@ import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import org.junit.Test;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static org.junit.Assert.*;
 
 public class BabystepsTest extends Application{
@@ -88,7 +85,8 @@ public class BabystepsTest extends Application{
 		TextArea textArea = new TextArea("test");
 		Button button = new Button("start");
 		Babysteps babysteps = new Babysteps(textArea);
-		button.setOnAction(evt -> babysteps.startTimer(10));
+		babysteps.setOnTimeout(() -> System.out.println("aaa"));
+		//button.setOnAction(evt -> babysteps.startTimer(10));
 		gp.add(textArea,0,0);
 		gp.add(button,0,1);
 		textArea.setText("ich bin anders");

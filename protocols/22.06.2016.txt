@@ -1,0 +1,34 @@
+Protokoll zum Gruppentreffen am 22.06.2016
+Protokollführer: Thiemo Urselmann
+Alias: Batman140
+
+Erledigt: 
+-Finden eines Gruppennamens, Austausch von Email-Adressen
+-Absprachen über Skype
+-Gruppentreffen immer Donnerstags
+-Entwurf eines Flussdiagramms für die primäre Logik 
+
+Beschlüsse:
+-gemeinsam verwendete Sprache im Code: Englisch
+-Code-Einrückungen: Tabs statt Leerzeichen
+-verwendung der Erweiterungen: Babysteps, Tracking
+
+Arbeitszweige und Ziel für diese Woche:
+-Florian:
+Arbeitsbereich: Implementierung der Hauptlogik
+Ziel dieser Woche: Umsetzung der Struktur des Flussdiagramms in Java
+
+-Thiemo:
+Arbeitsbereich: GUI
+Ziel dieser Woche: Entwurf und Umsetzung der Struktur (Erstellen von Controllern und Views)
+
+Nikita: 
+Arbeitsbereich: PackageLoader
+Ziel: Konzeption und Umsetzung des Loaders
+
+David: 
+Arbeitsbereich: Logik 
+Ziel dieser Woche: Mitarbeiten an der Grundstruktur der Hauptlogik und einbinden der Methoden der Katalib
+
+Lukas: Erweiterungen
+Ziel dieser Woche: Implementierung Babysteps
