@@ -20,7 +20,7 @@ public class Babysteps {
 	private Runnable onTimeout;
 
 	/**
-	 * Creates a new instance of Babysteps.
+	 * Creates a new instance of Babysteps with the default onTimeout-method.
 	 * @param t the TextAre which you would like to attatch the Babysteps
 	 */
 	public Babysteps(TextArea t){
@@ -30,6 +30,9 @@ public class Babysteps {
 		setTimeline();
 	}
 
+	/**
+	 * Creates a new instance of Babysteps with an empty onTimeout-method
+	 */
 	public Babysteps(){
 		onTimeout = () -> {};
 		setTimeline();
@@ -45,7 +48,7 @@ public class Babysteps {
 
 	/**
 	 * starts the timer which counts the remaining time
-	 * if the timer runs out, it will lock the TextArea and restore the old text
+	 * if the timer runs out, it will trigger the onTimeout-mehod
 	 * @param maxSeconds the maximum amount of seconds for the user to edit the code
 	 */
 	public void startTimer(int maxSeconds){
@@ -78,7 +81,7 @@ public class Babysteps {
 	}
 
 	/**
-	 * changes the current TextAre
+	 * changes the current TextArea
 	 * @param t the TextArea
 	 */
 	public void setCurrentlyEditableArea(TextArea t){
@@ -110,6 +113,10 @@ public class Babysteps {
 		return oldText;
 	}
 
+	/**
+	 * sets the onTimeout-method
+	 * @param onTimeout the method which triggers if the timer runs out
+	 */
 	public void setOnTimeout(Runnable onTimeout) {
 		this.onTimeout = onTimeout;
 	}
