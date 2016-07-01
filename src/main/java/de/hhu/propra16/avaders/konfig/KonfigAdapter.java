@@ -17,7 +17,7 @@ public class KonfigAdapter {
 	 */
 	public KonfigAdapter(ExerciseConfig config) {
 		fWerte = new KonfigWerte();
-		setzteATDD(config.isAtdd());
+		setzeATDD(config.isAtdd());
 		setzeRefactor2(true);        //Bisher noch nicht in ExerciseConfig implementiert
 	}
 
