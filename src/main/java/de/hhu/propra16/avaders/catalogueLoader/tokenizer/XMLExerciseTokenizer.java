@@ -149,7 +149,6 @@ public class XMLExerciseTokenizer {
      * @throws TokenException If an unexpected token was read or a token was expected,
 	 * but not found
      */
-	//TODO: stringToEndOn can be inferred from classType: unnecessary
 	public ClassToken readJavaFile(String stringToEndOn, String classType) throws IOException, SamePropertyTwiceException, TokenException {
 		if(!nextToken.name.equals(stringToEndOn)) {
 			String classTemplate = readLinesUntil(classType);
