@@ -8,7 +8,7 @@ public class Green extends Phase {
 	@Override 
 	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
 		listenTo(userFieldCode);
-		userFieldRed.setDisable(true);
+		userFieldRed.setEditable(false);
 		userFieldCode.setDisable(false);
 		stepBack.setVisible(true);
 		stepBack.setText("Red");
