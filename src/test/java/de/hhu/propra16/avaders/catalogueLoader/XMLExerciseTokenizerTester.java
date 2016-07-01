@@ -1,4 +1,4 @@
-package de.hhu.propra16.avaders.catalogueLoader.tests;
+package de.hhu.propra16.avaders.catalogueLoader;
 
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
