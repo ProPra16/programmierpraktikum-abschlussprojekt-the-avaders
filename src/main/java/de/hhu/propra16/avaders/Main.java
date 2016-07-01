@@ -15,14 +15,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception{
 		primaryStage = stage;
-		mainBase = FXMLLoader.load(getClass().getResource("applicationView.fxml"));		
+		mainBase = FXMLLoader.load(getClass().getClassLoader().getResource("applicationView.fxml"));
 		primaryStage.setTitle("Test Driven Developement Trainer");
 		mainBase.getCenter().setVisible(false);
 		mainBase.getBottom().setVisible(false);
 		
 		
 		Scene scene = new Scene(mainBase, 600, 400);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getClassLoader().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
