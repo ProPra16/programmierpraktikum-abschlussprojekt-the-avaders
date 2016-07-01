@@ -1,4 +1,4 @@
-package de.hhu.propra16.avaders.catalogueLoader;
+package de.hhu.propra16.avaders.catalogueLoader.tests;
 
 import de.hhu.propra16.avaders.catalogueLoader.ParserException;
 import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
