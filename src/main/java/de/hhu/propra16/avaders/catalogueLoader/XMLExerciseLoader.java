@@ -103,12 +103,16 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		Token token = xmlExerciseTokenizer.currentToken();
 		switch(token.name){
 			case "exercise": exerciseName = token.value; break;
-			case "description": description = token.value; break;
+			case "description": {
+				if(token.value != null) description = token.value;
+				else description = "";
+				break;
+			}
 			case "classes":	parseClasses(); break;
 			case "tests": parseTests(); break;
 			case "config": parseConfig(); break;
 			default:
-				throw new UnexpectedTokenException("<exercise>, <descritption>, <classes>, <tests> or <config>",
+				throw new UnexpectedTokenException("<exercise>, <description>, <classes>, <tests> or <config>",
 						token.name, xmlExerciseTokenizer.getLineNr());
 		}
 		xmlExerciseTokenizer.advance();
