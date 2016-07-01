@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hhu.propra16.avaders.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Excercise">
+            <items>
+              <MenuItem fx:id="newExercise" mnemonicParsing="false" onAction="#handleNewExcercise" text="New.." />
+                  <MenuItem fx:id="restart" mnemonicParsing="false" onAction="#handleRestart" text="Restart" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="BOTTOM_RIGHT">
+         <children>
+            <HBox layoutX="379.0" layoutY="86.0" prefHeight="30.0" prefWidth="275.0" spacing="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="stepBack" mnemonicParsing="false" onAction="#handlePrePhase" prefWidth="100.0" text="&lt;PrePhase&gt;" />
+                  <Button fx:id="stepFurther" mnemonicParsing="false" onAction="#handleNextPhase" prefWidth="100.0" text="&lt;NextPhase&gt;" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <GridPane gridLinesVisible="false" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Active modes:" />
+                  <Text fx:id="activatedModes" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;mode&gt;" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time left:" />
+                  <Text fx:id="timeLeft" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;time&gt;" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <TextArea fx:id="userFieldRed" layoutX="-36.0" prefHeight="263.0" prefWidth="246.0" promptText="red" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <TextArea fx:id="userFieldCode" layoutX="-28.0" layoutY="14.0" prefHeight="263.0" prefWidth="246.0"  promptText="code" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>
