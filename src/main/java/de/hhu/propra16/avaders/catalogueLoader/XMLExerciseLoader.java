@@ -10,7 +10,6 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.ClassToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 
-import javax.swing.text.html.parser.Parser;
 import java.io.IOException;
 
 /**
@@ -128,36 +127,14 @@ public class XMLExerciseLoader implements ExerciseLoader {
 				else description = "";
 				break;
 			}
-			case "classes":	parseJavaFiles(classes, "class", "/classes");; break;
-			case "tests": parseJavaFiles(tests, "test", "/tests");; break;
+			case "classes":	parseJavaFiles(classes, "class", "/classes"); break;
+			case "tests": parseJavaFiles(tests, "test", "/tests"); break;
 			case "config": parseConfig(); break;
 			default:
 				throw new UnexpectedTokenException("<exercise>, <description>, <classes>, <tests> or <config>",
 						token.name, xmlExerciseTokenizer.getLineNr());
 		}
 		xmlExerciseTokenizer.advance();
-	}
-
-	/**
-	 * parses all tests inside <tests> ... </tests> and adds them to tests
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
-	 * but not found
-     */
-	private void parseTests() throws SamePropertyTwiceException, IOException, TokenException {
-		parseJavaFiles(tests, "test", "/tests");
-	}
-
-	/**
-	 * parses all classes inside <classes> ... </classes> and adds them to tests
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-	 * @throws TokenException If an unexpected token was read or a token was expected,
-	 * but not found
-     */
-	private void parseClasses() throws IOException, SamePropertyTwiceException, TokenException {
-		parseJavaFiles(classes, "class", "/classes");
 	}
 
 	/**
