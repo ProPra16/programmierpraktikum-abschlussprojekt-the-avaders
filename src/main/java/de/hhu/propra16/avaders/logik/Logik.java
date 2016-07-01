@@ -2,6 +2,7 @@ package de.hhu.propra16.avaders.logik;
 
 import de.hhu.propra16.avaders.testen.ITester;
 import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
+import de.hhu.propra16.avaders.konfig.IKonfigWerte;
 import vk.core.api.CompilationUnit;
 
 /**
@@ -18,9 +19,9 @@ public class Logik implements ILogik {
 	 * @param tester der zu verwendende {@link ITester}
 	 * @param konfig die zu verwendende {@link ILogikKonfig}
 	 */
-	public Logik(ITester tester, ILogikKonfig konfig) {
+	public Logik(ITester tester, IKonfigWerte konfig) {
 		this.tester = tester;
-		refactor2 = konfig.einstellung("REFACTOR2").toBoolean();
+		refactor2 = konfig.einstellungAbfragen("Refactor2").BooleanAbfragen();
 		schritt = Step.RED;
 	}
 	
