@@ -108,7 +108,8 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			case "tests": parseTests(); break;
 			case "config": parseConfig(); break;
 			default:
-				//TODO: throw error
+				throw new UnexpectedTokenException("<exercise>, <descritption>, <classes>, <tests> or <config>",
+						token.name, xmlExerciseTokenizer.getLineNr());
 		}
 		xmlExerciseTokenizer.advance();
 	}
