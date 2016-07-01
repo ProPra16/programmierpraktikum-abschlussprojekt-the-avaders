@@ -20,4 +20,8 @@ public class ExerciseCatalogue {
 	public Exercise getExercise(int exerciseNumber){
 		return catalogue.get(exerciseNumber);
 	}
+
+	public int size() {
+		return catalogue.size();
+	}
 }

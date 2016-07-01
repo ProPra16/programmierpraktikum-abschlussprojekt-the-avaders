@@ -1,8 +1,9 @@
 package de.hhu.propra16.avaders.catalogueLoader.tests;
 
+import de.hhu.propra16.avaders.catalogueLoader.ParserException;
+import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
-import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
@@ -22,7 +23,7 @@ public class XMLExerciseLoaderTester {
 		Exercise exercise = null;
 		try {
 			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/test.xml");
-		} catch (SamePropertyTwiceException | IOException | TokenException e) {
+		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -69,7 +70,7 @@ public class XMLExerciseLoaderTester {
 		Exercise exercise = null;
 		try {
 			exercise = setup(1, "java/de/hhu/propra16/avaders/catalogueLoader/tests/test.xml");
-		} catch (SamePropertyTwiceException | IOException | TokenException e) {
+		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -103,7 +104,7 @@ public class XMLExerciseLoaderTester {
 		Exercise exercise = null;
 		try {
 			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testLotsOfLineBreaks.xml");
-		} catch (SamePropertyTwiceException | IOException | TokenException e) {
+		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -153,7 +154,7 @@ public class XMLExerciseLoaderTester {
 		}catch(MissingTokenException e){
 			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
-		} catch (IOException | SamePropertyTwiceException | TokenException e) {
+		} catch (IOException | SamePropertyTwiceException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -165,7 +166,7 @@ public class XMLExerciseLoaderTester {
 		Exercise exercise = null;
 		try {
 			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testEmptyConfig.xml");
-		} catch (IOException | SamePropertyTwiceException | TokenException e) {
+		} catch (IOException | SamePropertyTwiceException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -183,7 +184,7 @@ public class XMLExerciseLoaderTester {
 		}catch(MissingTokenException e){
 			System.out.println(e.getMessage());
 			return;
-		} catch (IOException | SamePropertyTwiceException | TokenException e) {
+		} catch (IOException | SamePropertyTwiceException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -194,7 +195,8 @@ public class XMLExerciseLoaderTester {
 		Assert.assertEquals(false, exercise.timeTrackingIsEnabled());
 	}
 
-	private Exercise setup(int exerciseNr, String path) throws SamePropertyTwiceException, IOException, TokenException {
+	private Exercise setup(int exerciseNr, String path)
+			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		FileReader lineReader;
 		XMLExerciseTokenizer xmlExerciseTokenizer = null;
 		lineReader = new FileReader(Paths.get(path));
