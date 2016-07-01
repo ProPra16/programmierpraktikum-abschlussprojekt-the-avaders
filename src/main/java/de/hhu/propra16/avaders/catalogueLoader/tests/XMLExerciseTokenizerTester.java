@@ -98,6 +98,7 @@ public class XMLExerciseTokenizerTester {
 	}
 	*/
 
+
 	@Test
 	public void test_BeginClasses(){
 		try {
@@ -114,7 +115,7 @@ public class XMLExerciseTokenizerTester {
 	@Test
 	public void test_EndClasses(){
 		try {
-			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <       /classes >\n");
+			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          </		classes >\n");
 			xmlExerciseTokenizer.advance();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -125,7 +126,7 @@ public class XMLExerciseTokenizerTester {
 	}
 
 	@Test
-	public void test_Exercisename(){
+	public void test_ExerciseName(){
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  exercise    name \t = \"test\" >\n");
 			xmlExerciseTokenizer.advance();
@@ -140,11 +141,13 @@ public class XMLExerciseTokenizerTester {
 
 	@Test
 	public void test_BeginBabySteps_missingQuote(){
+		MissingTokenException missingTokenException = new MissingTokenException("\" around false", 1);
+
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  babysteps value = \t \"false \n />\n");
 			xmlExerciseTokenizer.advance();
 		} catch (MissingTokenException e) {
-			System.out.println(e.getMessage());
+			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -156,11 +159,12 @@ public class XMLExerciseTokenizerTester {
 
 	@Test
 	public void test_BeginBabySteps_missingEquals(){
+		MissingTokenException missingTokenException = new MissingTokenException("=", 1);
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  babysteps value  \t \"false\" \n />\n");
 			xmlExerciseTokenizer.advance();
 		} catch (MissingTokenException e) {
-			System.out.println(e.getMessage());
+			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -201,12 +205,15 @@ public class XMLExerciseTokenizerTester {
 
 	@Test
 	public void test_BeginBabySteps_missing_time(){
+		UnexpectedTokenException unexpectedTokenException =
+				new UnexpectedTokenException("property: time or value", "= \"2:15\"", 1);
+
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  babysteps value = \t \"true\" = \"2:15\" />\n");
 			xmlExerciseTokenizer.advance();
 		}
 		catch (TokenException e){
-			System.out.println(e.getMessage());
+			Assert.assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -219,12 +226,16 @@ public class XMLExerciseTokenizerTester {
 
 	@Test
 	public void test_UnknownToken(){
+		UnexpectedTokenException unexpectedTokenException =
+				new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
+				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", "  \t / test   \t\t ", 1);
+
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  \t / test   \t\t >\n");
 			xmlExerciseTokenizer.advance();
 		}
 		catch (UnexpectedTokenException e){
-			System.out.println(e.getMessage());
+			Assert.assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -234,7 +245,7 @@ public class XMLExerciseTokenizerTester {
 		fail();
 	}
 
-	/*
+
 	@Test
 	public void test_EndTest(){
 		try {
@@ -242,10 +253,11 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer.advance();
 		}
 		catch (Exception e){
+			System.out.println(e.getMessage());
 			fail();
 		}
 
 		Assert.assertEquals("/test", xmlExerciseTokenizer.currentToken().name);
 	}
-	*/
+
 }

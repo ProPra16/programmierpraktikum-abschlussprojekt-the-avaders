@@ -2,6 +2,7 @@ package de.hhu.propra16.avaders.catalogueLoader;
 
 import de.hhu.propra16.avaders.catalogueLoader.exercises.*;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
@@ -52,7 +53,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	private ExerciseCatalogue parseExercises() throws SamePropertyTwiceException, IOException, TokenException {
-		if((xmlExerciseTokenizer.currentToken()).name.equals("exercises")
+		if((xmlExerciseTokenizer.currentToken()).name.startsWith("exercises")
 				&& xmlExerciseTokenizer.hasNextToken()){
 				xmlExerciseTokenizer.advance();
 		}
@@ -66,14 +67,14 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			xmlExerciseTokenizer.advance();
 		}
 
+		if(xmlExerciseTokenizer.currentToken() == null){
+			throw new MissingTokenException("</exercise> or </exercises>", xmlExerciseTokenizer.getLineNr());
+		}
+
 		if(xmlExerciseTokenizer.currentToken().name.equals("/exercises") && !xmlExerciseTokenizer.hasNextToken()){
 			return  loadedExerciseCatalogue;
 		}
-		else{
-			//TODO: THROW ERROR End of classes reached, but more to read
-			//System.out.println("not returning Exercises");
-			return null;
-		}
+		return null;
 	}
 
 	/**
@@ -84,6 +85,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	private void parseExercise() throws SamePropertyTwiceException, IOException, TokenException {
+		exerciseConfig = new ExerciseConfig();
 		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercise")){
 			parseToken();
 		}
@@ -165,12 +167,13 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
-		exerciseConfig = new ExerciseConfig();
 		Token token = xmlExerciseTokenizer.currentToken();
 
 		while(!token.name.equals("/config")) {
 			xmlExerciseTokenizer.advance();
 			token = xmlExerciseTokenizer.currentToken();
+
+			if(token == null) throw new MissingTokenException("</config>", xmlExerciseTokenizer.getLineNr());
 
 			switch (token.name) {
 				case "babysteps":

@@ -16,10 +16,10 @@
 				public void testSomething() {
 				}
 				}
-			<test>
+			</test>
 		</tests>
 		<config>
-			<babysteps value="False" />
-			<timetracking value="True" />
+			<babysteps value = "true" />
 		</config>
+	</exercise>
 </exercises>
