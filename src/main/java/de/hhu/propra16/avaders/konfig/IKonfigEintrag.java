@@ -20,7 +20,7 @@ public interface IKonfigEintrag {
 	 * @return boolean Der Wert des Eintrags als Wahrheitswert
 	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
 	 */
-	public boolean BooleanAbfragen() throws Exception;
+	public boolean BooleanAbfragen() throws EintragKonvertierenFehler;
 
 	/*
 	 * Gibt falls möglich den Wert als Integer zurück, wirft sonst eine Exception
@@ -28,7 +28,7 @@ public interface IKonfigEintrag {
 	 * @return int Der Wert des Eintrags als Integer
 	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
 	 */
-	public int IntegerAbfragen() throws Exception;
+	public int IntegerAbfragen() throws EintragKonvertierenFehler;
 
 	/*
 	 * Gibt falls möglich den Wert als String zurück, wirft sonst eine Exception
@@ -36,5 +36,5 @@ public interface IKonfigEintrag {
 	 * @return String Der Wert des Eintrags als Zeichenkette
 	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
 	 */
-	public String StringAbfragen() throws Exception;
+	public String StringAbfragen() throws EintragKonvertierenFehler;
 }
