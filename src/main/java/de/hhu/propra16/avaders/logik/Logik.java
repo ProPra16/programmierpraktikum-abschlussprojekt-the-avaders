@@ -20,7 +20,7 @@ public class Logik implements ILogik {
 	 * Erstellt eine neue Logik-Instanz.
 	 * 
 	 * @param tester der zu verwendende {@link ITester}
-	 * @param konfig die zu verwendende {@link ILogikKonfig}
+	 * @param konfig die zu verwendenden {@link IKonfigWerte}
 	 */
 	public Logik(ITester tester, IKonfigWerte konfig) {
 		this.tester = tester;
