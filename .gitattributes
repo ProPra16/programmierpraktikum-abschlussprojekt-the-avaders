@@ -1,0 +1,15 @@
+.editorconfig text
+.gitattributes text
+.gitignore text
+LICENSE text
+
+*.css text
+*.fxml text
+*.gradle text
+*.java text diff=java
+*.md text
+*.txt text
+*.xml text
+*.yml text
+
+*.pdf binary
