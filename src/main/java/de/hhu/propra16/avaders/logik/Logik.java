@@ -3,6 +3,7 @@ package de.hhu.propra16.avaders.logik;
 import de.hhu.propra16.avaders.testen.ITester;
 import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
 import de.hhu.propra16.avaders.konfig.IKonfigWerte;
+import de.hhu.propra16.avaders.konfig.EintragKonvertierenFehler;
 import vk.core.api.CompilationUnit;
 
 /**
@@ -21,7 +22,11 @@ public class Logik implements ILogik {
 	 */
 	public Logik(ITester tester, IKonfigWerte konfig) {
 		this.tester = tester;
-		refactor2 = konfig.einstellungAbfragen("Refactor2").BooleanAbfragen();
+		try {
+			refactor2 = konfig.einstellungAbfragen("Refactor2").BooleanAbfragen();
+		} catch (EintragKonvertierenFehler e) {
+			refactor2 = true; //Default-Wert
+		}
 		schritt = Step.RED;
 	}
 	

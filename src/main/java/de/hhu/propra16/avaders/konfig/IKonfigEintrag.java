@@ -15,7 +15,7 @@ public interface IKonfigEintrag {
 	public void wertSetzen(String wert);
 
 	/*
-	 * Gibt falls möglich den Wert als Boolean zurück, wirft sonst eine Exception
+	 * Gibt falls mÃ¶glich den Wert als Boolean zurÃ¼ck, wirft sonst eine Exception
 	 * @param <i>Keine</i>
 	 * @return boolean Der Wert des Eintrags als Wahrheitswert
 	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
@@ -23,7 +23,7 @@ public interface IKonfigEintrag {
 	public boolean BooleanAbfragen() throws Exception;
 
 	/*
-	 * Gibt falls möglich den Wert als Integer zurück, wirft sonst eine Exception
+	 * Gibt falls mÃ¶glich den Wert als Integer zurÃ¼ck, wirft sonst eine Exception
 	 * @param <i>Keine</i>
 	 * @return int Der Wert des Eintrags als Integer
 	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
@@ -31,7 +31,7 @@ public interface IKonfigEintrag {
 	public int IntegerAbfragen() throws Exception;
 
 	/*
-	 * Gibt falls möglich den Wert als String zurück, wirft sonst eine Exception
+	 * Gibt falls mÃ¶glich den Wert als String zurÃ¼ck, wirft sonst eine Exception
 	 * @param <i>Keine</i>
 	 * @return String Der Wert des Eintrags als Zeichenkette
 	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte

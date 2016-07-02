@@ -30,41 +30,41 @@ public class KonfigEintrag implements IKonfigEintrag {
 	}
 
 	/*
-	 * Gibt falls möglich den Wert als Boolean zurück, wirft sonst eine Exception
+	 * Gibt falls mÃ¶glich den Wert als Boolean zurÃ¼ck, wirft sonst eine Exception
 	 * @param <i>Keine</i>
 	 * @return boolean Der Wert des Eintrags als Wahrheitswert
-	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
+	 * @exception EintragKonvertierenFehler Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
 	 */
-	public boolean BooleanAbfragen() throws Exception {
-		if (!gesetzt) throw new Exception();
+	public boolean BooleanAbfragen() throws EintragKonvertierenFehler {
+		if (!gesetzt) throw new EintragKonvertierenFehler(fWert);
 		if (fWert.equals("True")) return true;
 		if (fWert.equals("False")) return false;
-		throw new Exception();
+		throw new EintragKonvertierenFehler(fWert);
 	}
 
 	/*
-	 * Gibt falls möglich den Wert als Integer zurück, wirft sonst eine Exception
+	 * Gibt falls mÃ¶glich den Wert als Integer zurÃ¼ck, wirft sonst eine Exception
 	 * @param <i>Keine</i>
 	 * @return int Der Wert des Eintrags als Integer
-	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
+	 * @exception EintragKonvertierenFehler Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
 	 */
-	public int IntegerAbfragen() throws Exception {
-		if (!gesetzt) throw new Exception();
+	public int IntegerAbfragen() throws EintragKonvertierenFehler {
+		if (!gesetzt) throw new EintragKonvertierenFehler(fWert);
 		try {
 			return Integer.parseInt(fWert);
 		} catch(Exception e) {
-			throw new Exception();
+			throw new EintragKonvertierenFehler(fWert);
 		}
 	}
 
 	/*
-	 * Gibt falls möglich den Wert als String zurück, wirft sonst eine Exception
+	 * Gibt falls mÃ¶glich den Wert als String zurÃ¼ck, wirft sonst eine Exception
 	 * @param <i>Keine</i>
 	 * @return String Der Wert des Eintrags als Zeichenkette
-	 * @exception Exception Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
+	 * @exception EintragKonvertierenFehler Falls der Wert nicht gesetzt ist oder nicht konvertiert werden konnte
 	 */
-	public String StringAbfragen() throws Exception {
-		if (!gesetzt) throw new Exception();
+	public String StringAbfragen() throws EintragKonvertierenFehler {
+		if (!gesetzt) throw new EintragKonvertierenFehler(fWert);
 		return fWert;
 	}
 }

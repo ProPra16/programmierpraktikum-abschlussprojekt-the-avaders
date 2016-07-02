@@ -44,7 +44,7 @@ public class KonfigAdapter {
 	}
 
 	/*
-	 * Gibt die Instanz von ExerciseConfig zurück, in die die Einstellungen geladen wurden
+	 * Gibt die Instanz von ExerciseConfig zurÃ¼ck, in die die Einstellungen geladen wurden
 	 * @param <i>Keine</i>
 	 * @return IKonfigWerte
 	 */
