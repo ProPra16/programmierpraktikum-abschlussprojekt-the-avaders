@@ -1,5 +1,6 @@
 package de.hhu.propra16.avaders;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
 public class MainController {
 	
@@ -31,7 +33,7 @@ public class MainController {
 	 * Green-Phase.
 	 */
 	private static LinkedList<Phase> phase = new LinkedList<Phase>();
-	
+	private static File exercise;
 	
 	
 	//excercise-menuItems
@@ -73,15 +75,30 @@ public class MainController {
     	}
     	phase.getFirst().setStates(userFieldRed, userFieldCode, stepBack, stepFurther);
     }
-    
+
+	/**
+	 * opens onClick on new... a window where an exercise  (xml-file)
+	 * should be choosen and only if one does the program continues.
+	 * Exercise will be saved to instance-var 'exercis' of type File,
+	 * can be converted to Path for xml-catalogue-loader
+	 */
+	public void chooseFile(){
+		FileChooser window = new FileChooser();
+		window.setTitle("Choose exercise");
+		window.getExtensionFilters().add( new FileChooser.ExtensionFilter("xml files", "*.xml"));
+		exercise = window.showOpenDialog(Main.getPrimaryStage());
+	}
+
     /**
      * will be triggered if click on excercise->new... in the menubar.
      * takes the mainbase makes controls visible to user, creates map for
      * general access to phase objects and initializes phase-control-list.
      * finally sets first phase ->Red-phase.
-     * @param event
+     * @param event: selecting new... -menuItem for choosing and starting exercise
      */
     @FXML void handleNewExcercise(ActionEvent event) {
+		chooseFile();
+		if(exercise == null) return;
     	mainBase = Main.getMainBase();
     	mainBase.getCenter().setVisible(true);
     	mainBase.getBottom().setVisible(true);
