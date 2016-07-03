@@ -29,9 +29,7 @@ public class FileReader implements LineReader {
 	 * and null is returned.
 	 *
 	 * @return A String containing the read line
-	 *
 	 * @throws IOException If an I/O error occurs
-	 *
 	 * @see java.io.BufferedReader
 	 */
     public String readLine() throws  IOException{

@@ -6,7 +6,7 @@ package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
 class StringOperations {
 
 	/**
-	 * removes the first occurrence of the
+	 * Removes the first occurrence of the
 	 * string specified with toRemove from the string removeFrom and removes
 	 * whitespaces from beginning and end of the string
 	 * @param removeFrom string which toRemove will be removed from
