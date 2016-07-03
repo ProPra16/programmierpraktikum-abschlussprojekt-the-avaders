@@ -13,15 +13,24 @@ public class ExerciseCatalogue {
 		catalogue = new ArrayList<>();
 	}
 
+	/**
+	 * @param exercise The exercise to be added to the list of exercises
+     */
 	public void addExercise(Exercise exercise){
 		catalogue.add(exercise);
 	}
 
+	/**
+	 * @param exerciseNumber The index of the exercise to return
+	 * @return The exercise at the specified position in the list
+	 * @throws IndexOutOfBoundsException - if the index is out of range
+     */
 	public Exercise getExercise(int exerciseNumber){
 		return catalogue.get(exerciseNumber);
 	}
 
-	public int size() {
-		return catalogue.size();
-	}
+	/**
+	 * @return The number of exercises in the catalogue
+     */
+	public int size() { return catalogue.size(); }
 }
