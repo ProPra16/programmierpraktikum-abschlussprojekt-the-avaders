@@ -73,32 +73,32 @@ public class Exercise {
 	}
 
 	/**
-	 * @param classNr The index of the class of which the name should be returned
+	 * @param classNumber The index of the class of which the name should be returned
 	 * @return The name of the class
      */
-	public String getClassName(int classNr){
-		return classTemplates.getJavaFile(classNr).className;
+	public String getClassName(int classNumber){
+		return classTemplates.getJavaFile(classNumber).className;
 	}
 
 	/**
-	 * @param testNr The index of the test of which the name should be returned
+	 * @param testNumber The index of the test of which the name should be returned
 	 * @return The name of the test
      */
-	public String getTestName(int testNr) {
-		return testTemplates.getJavaFile(testNr).className;
+	public String getTestName(int testNumber) {
+		return testTemplates.getJavaFile(testNumber).className;
 	}
 
 	/**
 	 * @return the number of classes in this exercise
      */
-	public int getNrOfClasses(){
+	public int getNumberOfClasses(){
 		return classTemplates.size();
 	}
 
 	/**
 	 * @return the number of tests in this exercise
      */
-	public int getNrOfTests(){
+	public int getNumberOfTests(){
 		return testTemplates.size();
 	}
 
