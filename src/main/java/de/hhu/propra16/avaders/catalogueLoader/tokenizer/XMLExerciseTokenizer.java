@@ -15,21 +15,21 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.co
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.convertDescription;
 
 /**
- * Reads Tokens from a .xml file until the end of file is reached
+ * Reads lexemes from a .xml file until the end of file is reached
  */
 public class XMLExerciseTokenizer {
 	private LineReader fileReader;
 	private Token currentToken;
 	private Token nextToken;
 	private String readLine;
-	private int lineNr = 0;
+	private int lineNumber = 0;
 
 	private static final int INCLUDE = 1;
 
 	public XMLExerciseTokenizer(LineReader fileReader) throws SamePropertyTwiceException, IOException, TokenException {
-		if(fileReader instanceof FileReader && !((FileReader)fileReader).getPath().endsWith(".xml")){
+		if(fileReader instanceof FileReader && !((FileReader)fileReader).getPath().endsWith(".xml"))
 			throw new IOException("Please choose a file with the \".xml\" extension.");
-		}
+
 		this.fileReader = fileReader;
 		readLine = "";
 		currentToken = new Token("DUMMY");
@@ -51,9 +51,7 @@ public class XMLExerciseTokenizer {
 
 		while(readLine != null && readLine.equals("")){
 			readStructure();
-			if(readLine != null) {
-				readLine = readLine.trim();
-			}
+			if(readLine != null) readLine = readLine.trim();
 		}
 
 		parseLine();
@@ -87,14 +85,10 @@ public class XMLExerciseTokenizer {
      */
 	private void parseLine() throws SamePropertyTwiceException, TokenException, IOException {
 		String readToken = "";
-		if(readLine != null && readLine.contains("<") && readLine.contains(">")) {
-			readToken = tokenize();
-			//readToken = readToken.trim();
-		}
-		else if(readLine != null){
+		if(readLine != null && readLine.contains("<") && readLine.contains(">")) readToken = tokenize();
+		else if(readLine != null)
 			throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
-					"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNr);
-		}
+					"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readToken, lineNumber);
 
 		currentToken = nextToken;
 
@@ -103,14 +97,12 @@ public class XMLExerciseTokenizer {
 			return;
 		}
 
-		if( !readToken.contains("/") ||
-				(readToken.indexOf("/") == (readToken.length()-1)) ){
+		if( !readToken.contains("/") || (readToken.indexOf("/") == (readToken.length()-1)) )
 			readToken = readToken.trim();
-		}
 
 		// end of stream reached
 		if(readLine == null) nextToken = null;
-		else nextToken = convert(readToken, lineNr);
+		else nextToken = convert(readToken, lineNumber);
 	}
 
 	/**
@@ -143,7 +135,7 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads the content of a class or test tokens and a class tokens holdingthat information
+	 * Reads the content of a class or test tokens and returns a class tokens holding that information
 	 * @param stringToEndOn The String on which to end the reading on
 	 * @param classType the type of java file read test or class
 	 * @return A ClassToken instance or null if the stringToEndOn was reached
@@ -178,12 +170,8 @@ public class XMLExerciseTokenizer {
 			readNextLine();
 		}
 
-		if (readLine != null) {
-			contentBuilder.append( readLine.substring(0, readLine.indexOf("</" + until + ">")) );
-		}
-		else{
-			throw new MissingTokenException("</" + until + ">", lineNr);
-		}
+		if (readLine != null) contentBuilder.append(readLine.substring(0, readLine.indexOf("</" + until + ">")));
+		else throw new MissingTokenException("</" + until + ">", lineNumber);
 
 		String content = contentBuilder.toString();
 		content = remove(content, "<" + until + ">");
@@ -199,7 +187,7 @@ public class XMLExerciseTokenizer {
      */
 	private void readNextLine() throws IOException {
 		readLine = fileReader.readLine();
-		lineNr++;
+		lineNumber++;
 	}
 
 	/**
@@ -219,7 +207,7 @@ public class XMLExerciseTokenizer {
 	/**
 	 * @return the current line number
      */
-	public int getLineNr() {
-		return lineNr;
+	public int getLineNumber() {
+		return lineNumber;
 	}
 }

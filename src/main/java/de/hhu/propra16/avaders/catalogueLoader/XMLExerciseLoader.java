@@ -66,7 +66,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		}
 		else{
 			throw new UnexpectedTokenException("<exercises>", xmlExerciseTokenizer.currentToken().name,
-					xmlExerciseTokenizer.getLineNr());
+					xmlExerciseTokenizer.getLineNumber());
 		}
 
 		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercises")) {
@@ -79,7 +79,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		}
 
 		if(xmlExerciseTokenizer.currentToken() == null){
-			throw new MissingTokenException("</exercise> or </exercises>", xmlExerciseTokenizer.getLineNr());
+			throw new MissingTokenException("</exercise> or </exercises>", xmlExerciseTokenizer.getLineNumber());
 		}
 
 		if(xmlExerciseTokenizer.currentToken().name.equals("/exercises") && !xmlExerciseTokenizer.hasNextToken()){
@@ -132,7 +132,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			case "config": parseConfig(); break;
 			default:
 				throw new UnexpectedTokenException("<exercise>, <description>, <classes>, <tests> or <config>",
-						token.name, xmlExerciseTokenizer.getLineNr());
+						token.name, xmlExerciseTokenizer.getLineNumber());
 		}
 		xmlExerciseTokenizer.advance();
 	}
@@ -173,7 +173,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			xmlExerciseTokenizer.advance();
 			token = xmlExerciseTokenizer.currentToken();
 
-			if(token == null) throw new MissingTokenException("</config>", xmlExerciseTokenizer.getLineNr());
+			if(token == null) throw new MissingTokenException("</config>", xmlExerciseTokenizer.getLineNumber());
 
 			switch (token.name) {
 				case "babysteps":
