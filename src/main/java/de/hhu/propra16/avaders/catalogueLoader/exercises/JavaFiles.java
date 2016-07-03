@@ -13,15 +13,24 @@ public class JavaFiles {
 		javaFiles = new ArrayList<>();
 	}
 
+	/**
+	 * @param javaFile The File to be added to the list
+     */
 	public void addJavaFile(JavaFile javaFile){
 		javaFiles.add(javaFile);
 	}
 
+	/**
+	 * @param javaFileNumber The index of the file to be returned
+	 * @return The file with the corresponding index
+	 * @throws IndexOutOfBoundsException - if the index is out of range
+     */
 	public JavaFile getJavaFile(int javaFileNumber){
 		return javaFiles.get(javaFileNumber);
 	}
 
-	public int size() {
-		return javaFiles.size();
-	}
+	/**
+	 * @return The Amount of files in the list
+     */
+	public int size() { return javaFiles.size(); }
 }
