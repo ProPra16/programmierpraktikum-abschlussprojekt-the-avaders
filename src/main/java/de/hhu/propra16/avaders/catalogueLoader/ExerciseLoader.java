@@ -6,6 +6,9 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenExcepti
 
 import java.io.IOException;
 
+/**
+ * An ExerciseLoader returns an ExerciseCatalogue
+ */
 public interface ExerciseLoader {
 	ExerciseCatalogue loadExercise() throws SamePropertyTwiceException, IOException, TokenException, ParserException;
 }
