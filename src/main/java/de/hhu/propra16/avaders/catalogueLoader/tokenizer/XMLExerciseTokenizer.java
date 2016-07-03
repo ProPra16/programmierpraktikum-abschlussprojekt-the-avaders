@@ -27,6 +27,9 @@ public class XMLExerciseTokenizer {
 	private static final int INCLUDE = 1;
 
 	public XMLExerciseTokenizer(LineReader fileReader) throws SamePropertyTwiceException, IOException, TokenException {
+		if(fileReader instanceof FileReader && !((FileReader)fileReader).getPath().endsWith(".xml")){
+			throw new IOException("Please choose a file with the \".xml\" extension.");
+		}
 		this.fileReader = fileReader;
 		readLine = "";
 		currentToken = new Token("DUMMY");

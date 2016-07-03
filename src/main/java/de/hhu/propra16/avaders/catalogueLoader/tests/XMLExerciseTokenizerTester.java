@@ -1,13 +1,18 @@
 package de.hhu.propra16.avaders.catalogueLoader.tests;
 
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.nio.file.Paths;
 
 import static junit.framework.TestCase.fail;
 
@@ -258,6 +263,23 @@ public class XMLExerciseTokenizerTester {
 		}
 
 		Assert.assertEquals("/test", xmlExerciseTokenizer.currentToken().name);
+	}
+
+	@Test
+	public void test_WrongExtension(){
+		IOException ioException = new IOException("Please choose a file with the \".xml\" extension.");
+		FileReader fileReader = new FileReader(Paths.get("java\\de\\hhu\\propra16\\avaders\\catalogueLoader\\tests\\test.txt"));
+
+		try {
+			xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader);
+		} catch (SamePropertyTwiceException | TokenException e) {
+			e.printStackTrace();
+			fail();
+		} catch (IOException e){
+			Assert.assertEquals(ioException.getMessage(), e.getMessage());
+			return;
+		}
+		fail();
 	}
 
 }

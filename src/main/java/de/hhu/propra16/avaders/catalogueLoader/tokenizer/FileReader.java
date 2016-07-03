@@ -12,8 +12,10 @@ import java.nio.file.Path;
  */
 public class FileReader implements LineReader {
     private BufferedReader bufferedReader;
+	private String path;
 
 	public FileReader(Path filePath) {
+		this.path = filePath.toString().toLowerCase();
         try {
             bufferedReader = Files.newBufferedReader(filePath);
         }catch(IOException e){
@@ -39,4 +41,8 @@ public class FileReader implements LineReader {
 		}
 		return readLine;
     }
+
+	public String getPath(){
+		return path;
+	}
 }
