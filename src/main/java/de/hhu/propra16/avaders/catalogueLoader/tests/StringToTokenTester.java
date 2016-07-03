@@ -4,6 +4,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 import org.junit.Assert;
@@ -165,7 +166,7 @@ public class StringToTokenTester {
 	}
 
 	@Test
-	public void test_BabystepsString_false(){
+	public void test_BabyStepsString_false(){
 		Token token = null;
 		try {
 			token = StringToToken.convert("babysteps value=\"  false \t \"", 1);
@@ -179,7 +180,7 @@ public class StringToTokenTester {
 
 
 	@Test
-	public void test_BabystepsString_true(){
+	public void test_BabyStepsString_true(){
 		Token token = null;
 		try {
 			token = StringToToken.convert("babysteps value=\"true\" time = \"2:00\"", 1);
@@ -194,7 +195,7 @@ public class StringToTokenTester {
 	}
 
 	@Test
-	public void test_BabystepsString_true_switched(){
+	public void test_BabyStepsString_true_switched(){
 		Token token = null;
 		try {
 			token = StringToToken.convert("babysteps \t time = \"2:00\"   value=\"true\" \n", 1);
@@ -235,22 +236,26 @@ public class StringToTokenTester {
 
 	@Test
 	public void test_timeTrackingString_wrongProperty(){
+		UnexpectedTokenException unexpectedTokenException =
+				new UnexpectedTokenException("property: value", "time=\"  true \t \"", 1);
+
 		try {
 			StringToToken.convert("timetracking time=\"  true \t \"", 1);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			Assert.assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
 		}
-
 		fail();
 	}
 
 	@Test
 	public void test_SamePropertyTwice_time(){
+		SamePropertyTwiceException samePropertyTwiceException = new SamePropertyTwiceException("time", 1);
+
 		try {
 			StringToToken.convert("babysteps \t time = \"2:00\"   time=\"2:00\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
-			System.out.println(e.getMessage());
+			Assert.assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
 		} catch (Exception e){
 			fail();
@@ -260,10 +265,12 @@ public class StringToTokenTester {
 
 	@Test
 	public void test_SamePropertyTwice_value(){
+		SamePropertyTwiceException samePropertyTwiceException = new SamePropertyTwiceException("value", 1);
+
 		try {
 			StringToToken.convert("babysteps \t value = \"true\"   value=\"false\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
-			System.out.println(e.getMessage());
+			Assert.assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -273,11 +280,13 @@ public class StringToTokenTester {
 	}
 
 	@Test
-	public void test_Exercisename_missing_name(){
+	public void test_ExerciseName_missing_name(){
+		MissingTokenException missingTokenException = new MissingTokenException("exercise, name or =", 1);
+
 		try {
 			StringToToken.convert("exercise = \"fail\"", 1);
 		} catch (MissingTokenException e) {
-			System.out.println(e.getMessage());
+			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -287,7 +296,7 @@ public class StringToTokenTester {
 	}
 
 	@Test
-	public void test_atdd_true(){
+	public void test_Atdd_true(){
 		Token token = null;
 		try {
 			token = StringToToken.convert("atdd \t value = \"true\" \n", 1);
@@ -301,7 +310,7 @@ public class StringToTokenTester {
 	}
 
 	@Test
-	public void test_atdd_false(){
+	public void test_Atdd_false(){
 		Token token = null;
 		try {
 			token = StringToToken.convert("atdd \t value = \"false\" \n", 1);
@@ -315,12 +324,13 @@ public class StringToTokenTester {
 	}
 
 	@Test
-	public void test_atdd_samePropertyTwice_value(){
-		Token token = null;
+	public void test_Atdd_samePropertyTwice_value(){
+		SamePropertyTwiceException samePropertyTwiceException = new SamePropertyTwiceException("value", 1);
+
 		try {
-			token = StringToToken.convert("atdd \t value = \"false\" value = \"true\"\n", 1);
+			StringToToken.convert("atdd \t value = \"false\" value = \"true\"\n", 1);
 		} catch (SamePropertyTwiceException e){
-			System.out.println(e.getMessage());
+			Assert.assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
 		} catch (TokenException e) {
 			e.printStackTrace();

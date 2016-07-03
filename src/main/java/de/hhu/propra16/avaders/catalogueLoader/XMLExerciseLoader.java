@@ -2,6 +2,7 @@ package de.hhu.propra16.avaders.catalogueLoader;
 
 import de.hhu.propra16.avaders.catalogueLoader.exercises.*;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
@@ -39,7 +40,8 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	@Override
-	public ExerciseCatalogue loadExercise() throws SamePropertyTwiceException, IOException, TokenException {
+	public ExerciseCatalogue loadExercise()
+			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		return parseExercises();
 	}
 
@@ -51,8 +53,14 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * @throws TokenException If an unexpected token was read or a token was expected,
 	 * but not found
      */
-	private ExerciseCatalogue parseExercises() throws SamePropertyTwiceException, IOException, TokenException {
-		if((xmlExerciseTokenizer.currentToken()).name.equals("exercises")
+	private ExerciseCatalogue parseExercises()
+			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
+
+		if(xmlExerciseTokenizer.currentToken() == null){
+			throw new ParserException("The specified file is empty.");
+		}
+
+		if((xmlExerciseTokenizer.currentToken()).name.startsWith("exercises")
 				&& xmlExerciseTokenizer.hasNextToken()){
 				xmlExerciseTokenizer.advance();
 		}
@@ -66,14 +74,18 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			xmlExerciseTokenizer.advance();
 		}
 
+		if(loadedExerciseCatalogue.size() == 0){
+			throw new ParserException("The specified catalogue does not contain a exercise.");
+		}
+
+		if(xmlExerciseTokenizer.currentToken() == null){
+			throw new MissingTokenException("</exercise> or </exercises>", xmlExerciseTokenizer.getLineNr());
+		}
+
 		if(xmlExerciseTokenizer.currentToken().name.equals("/exercises") && !xmlExerciseTokenizer.hasNextToken()){
 			return  loadedExerciseCatalogue;
 		}
-		else{
-			//TODO: THROW ERROR End of classes reached, but more to read
-			//System.out.println("not returning Exercises");
-			return null;
-		}
+		return null;
 	}
 
 	/**
@@ -83,11 +95,20 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * @throws TokenException If an unexpected token was read or a token was expected,
 	 * but not found
      */
-	private void parseExercise() throws SamePropertyTwiceException, IOException, TokenException {
+	private void parseExercise() throws SamePropertyTwiceException, IOException, TokenException, ParserException {
+		tests = new JavaFiles();
+		exerciseConfig = new ExerciseConfig();
+		classes = new JavaFiles();
+
 		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercise")){
 			parseToken();
 		}
-		loadedExerciseCatalogue.addExercise(new Exercise(exerciseName, description, classes, tests, exerciseConfig));
+		if(exerciseName != null && description != null && classes.size() > 0 && tests.size() > 0 && exerciseConfig != null) {
+			loadedExerciseCatalogue.addExercise(
+					new Exercise(exerciseName, description, classes, tests, exerciseConfig)
+			);
+		}
+		else throw new ParserException("Exercise name, classes, tests or config missing in file");
 	}
 
 	/**
@@ -101,38 +122,19 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		Token token = xmlExerciseTokenizer.currentToken();
 		switch(token.name){
 			case "exercise": exerciseName = token.value; break;
-			case "description": description = token.value; break;
-			case "classes":	parseClasses(); break;
-			case "tests": parseTests(); break;
+			case "description": {
+				if(token.value != null) description = token.value;
+				else description = "";
+				break;
+			}
+			case "classes":	parseJavaFiles(classes, "class", "/classes"); break;
+			case "tests": parseJavaFiles(tests, "test", "/tests"); break;
 			case "config": parseConfig(); break;
 			default:
-				//TODO: throw error
+				throw new UnexpectedTokenException("<exercise>, <description>, <classes>, <tests> or <config>",
+						token.name, xmlExerciseTokenizer.getLineNr());
 		}
 		xmlExerciseTokenizer.advance();
-	}
-
-	/**
-	 * parses all tests inside <tests> ... </tests> and adds them to tests
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
-	 * but not found
-     */
-	private void parseTests() throws SamePropertyTwiceException, IOException, TokenException {
-		tests = new JavaFiles();
-		parseJavaFiles(tests, "test", "/tests");
-	}
-
-	/**
-	 * parses all classes inside <classes> ... </classes> and adds them to tests
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-	 * @throws TokenException If an unexpected token was read or a token was expected,
-	 * but not found
-     */
-	private void parseClasses() throws IOException, SamePropertyTwiceException, TokenException {
-		classes = new JavaFiles();
-		parseJavaFiles(classes, "class", "/classes");
 	}
 
 	/**
@@ -165,12 +167,13 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
-		exerciseConfig = new ExerciseConfig();
 		Token token = xmlExerciseTokenizer.currentToken();
 
 		while(!token.name.equals("/config")) {
 			xmlExerciseTokenizer.advance();
 			token = xmlExerciseTokenizer.currentToken();
+
+			if(token == null) throw new MissingTokenException("</config>", xmlExerciseTokenizer.getLineNr());
 
 			switch (token.name) {
 				case "babysteps":

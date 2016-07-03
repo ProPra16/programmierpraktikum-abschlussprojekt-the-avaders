@@ -1,14 +1,13 @@
 package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
 
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
 
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.remove;
-import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.removeWhiteSpace;
 
 /**
  * Converts strings into token instances and returns them
@@ -24,49 +23,35 @@ public class StringToToken {
 	 * @throws TokenException if an unexpected Token was read or a Token is missing
      */
 	public static Token convert(String readString, int lineNr) throws SamePropertyTwiceException, TokenException {
-		switch (readString){
-			case "exercises":
-			case "/exercises":
-			case "classes":
-			case "/classes":
-			case "tests":
-			case "/tests":
-			case "config":
-			case "/config":
-			case "/exercise":
-				return new Token(readString);
-			default:{
-				if(readString.startsWith("exercise")){
-					return parseTokenName("exercise", readString, lineNr);
-				}
-				else if(readString.startsWith("class")){
-					return parseTokenName("class", readString, lineNr);
-				}
-				else if(readString.startsWith("test")){
-					return parseTokenName("test", readString, lineNr);
-				}
-				else if(readString.startsWith("babysteps")){
-					if(readString.contains("/")){
-						readString = removeWhiteSpace(readString.replaceFirst("/", ""));
-					}
-					return parseBabySteps(readString, lineNr);
-				}
-				else if(readString.startsWith("timetracking")){
-					if(readString.contains("/")){
-						readString = removeWhiteSpace(readString.replaceFirst("/", ""));
-					}
-					return parseSingleValueToken("timetracking", readString, lineNr);
-				}
-				else if(readString.startsWith("atdd")){
-					if(readString.contains("/")){
-						readString = removeWhiteSpace(readString.replaceFirst("/", ""));
-					}
-					return parseSingleValueToken("atdd", readString, lineNr);
-				}
-			}
+		if (readString.startsWith("/")) readString = readString.replaceAll("\\s","");
+
+		if(readString.startsWith("exercises") 		|| readString.startsWith("/exercises")	||
+				readString.startsWith("classes")  	|| readString.startsWith("/classes")	||
+				readString.startsWith("tests") 		|| readString.startsWith("/tests")		||
+				readString.startsWith("/test")		||
+				readString.startsWith("config")		|| readString.startsWith("/config")		||
+				readString.startsWith("/exercise")){
+					return new Token(readString);
 		}
-		throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
+		else if(readString.startsWith("exercise")) return parseTokenName("exercise", readString, lineNr);
+		else if(readString.startsWith("class")) return parseTokenName("class", readString, lineNr);
+		else if(readString.startsWith("test")) return parseTokenName("test", readString, lineNr);
+		else if(readString.startsWith("babysteps")){
+			if(readString.contains("/")) readString = readString.replaceFirst("/", "").trim();
+				return parseBabySteps(readString, lineNr);
+			}
+		else if(readString.startsWith("timetracking")){
+			if(readString.contains("/")) readString = readString.replaceFirst("/", "").trim();
+			return parseSingleValueToken("timetracking", readString, lineNr);
+		}
+		else if(readString.startsWith("atdd")){
+			if(readString.contains("/")) readString = readString.replaceFirst("/", "").trim();
+				return parseSingleValueToken("atdd", readString, lineNr);
+			}
+		else{
+			throw new UnexpectedTokenException("<exercises>, </exercises>, <description>, </description> \n" +
 				"<classes>, </classes>, <tests>, </tests>, </test>, <config> or </config>", readString, lineNr);
+		}
 	}
 
 	/**
@@ -83,7 +68,7 @@ public class StringToToken {
 		String value = null;
 
 		readString = readString.replaceFirst(token, "");
-		readString = removeWhiteSpace(readString);
+		readString = readString.trim();
 
 		while(readString.startsWith("value")) {
 			if (readString.startsWith("value")) {
@@ -111,7 +96,7 @@ public class StringToToken {
 		// remove read time/value
 		readString = readString.substring(readString.indexOf("\"")+1);
 		readString = readString.substring(readString.indexOf("\"")+1);
-		return removeWhiteSpace(readString);
+		return readString.trim();
 	}
 
 	/**
@@ -122,12 +107,12 @@ public class StringToToken {
 	 * @throws SamePropertyTwiceException If a property was found twice in the string
 	 * @throws TokenException If an unexpected token appeared
      */
-	public static Token parseBabySteps(String readString, int lineNr) throws SamePropertyTwiceException, TokenException {
+	private static Token parseBabySteps(String readString, int lineNr) throws SamePropertyTwiceException, TokenException {
 		String value = null;
 		String time = null;
 
 		readString = readString.replaceFirst("babysteps", "");
-		readString = removeWhiteSpace(readString);
+		readString = readString.trim();
 
 		while(readString.startsWith("value") || readString.startsWith("time")) {
 			if (readString.startsWith("value")) {
@@ -171,10 +156,9 @@ public class StringToToken {
 		int indexOfQuote = readString.indexOf("\"");
 		if(indexOfQuote == -1) throw new MissingTokenException("\" around " + readString, lineNr);
 
-		return removeWhiteSpace(readString.substring(0, indexOfQuote));
+		return readString.substring(0, indexOfQuote).trim();
 	}
 
-	//TODO: parseTokenName and parseProperty could possibly be one method
 	/**
 	 * Parses the name property of a token
 	 * @param token The token which this name belongs to
@@ -183,7 +167,7 @@ public class StringToToken {
 	 * @return A Token with a name as value
 	 * @throws MissingTokenException If a " is found to be missing
      */
-	public static Token parseTokenName(String token, String readString, int lineNr) throws MissingTokenException {
+	private static Token parseTokenName(String token, String readString, int lineNr) throws MissingTokenException {
 		if(!readString.contains(token) || !readString.contains("name") || !readString.contains("=")){
 			throw new MissingTokenException(token + ", name or =", lineNr);
 		}
@@ -206,7 +190,7 @@ public class StringToToken {
 	 * @param descriptionContent The content of the description
 	 * @return The token that holds the descriptionContent as its value
      */
-	public static Token convertDescription(String descriptionContent){
+	static Token convertDescription(String descriptionContent){
 		return new Token("description", descriptionContent);
 	}
 }
