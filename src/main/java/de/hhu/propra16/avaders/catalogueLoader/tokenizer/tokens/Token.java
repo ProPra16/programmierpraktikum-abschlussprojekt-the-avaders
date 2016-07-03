@@ -1,7 +1,7 @@
-package de.hhu.propra16.avaders.catalogueLoader.tokenizer.token;
+package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
 
 /**
- * This class represents a token in the file the
+ * This class represents a tokens in the file the
  * exercise catalogue is read from
  */
 public class Token {

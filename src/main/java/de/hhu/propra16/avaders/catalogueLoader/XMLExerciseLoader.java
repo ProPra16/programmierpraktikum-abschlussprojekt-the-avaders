@@ -6,9 +6,9 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingToken
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.ClassToken;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.BabyStepsToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.ClassToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 
 import java.io.IOException;
 
@@ -34,9 +34,9 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * Parses the exercise catalogue and returns a ExerciseCatalogue instance with
 	 * the parsed information
 	 * @return An ExerciseCatalogue with the read exercises
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	@Override
@@ -48,9 +48,9 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	/**
 	 * Parses all exercises and returns the exerciseCatalogue holding those exercises
 	 * @return The ExerciseCatalogue holding the parsed exercises
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	private ExerciseCatalogue parseExercises()
@@ -90,9 +90,9 @@ public class XMLExerciseLoader implements ExerciseLoader {
 
 	/**
 	 * Parses a single exercise and adds it to the exerciseCatalogue
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	private void parseExercise() throws SamePropertyTwiceException, IOException, TokenException, ParserException {
@@ -112,10 +112,10 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	}
 
 	/**
-	 * Parses a token and adds it's information to the corresponding field
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * Parses a tokens and adds it's information to the corresponding field
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException {
@@ -142,9 +142,9 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * @param javaFiles The Object in which the java files will be collected
 	 * @param classType The type of java file: test or class
 	 * @param stringToEndOn The string which marks the end of the java files
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-     * @throws TokenException If an unexpected token was read or a token was expected,
+     * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	private void parseJavaFiles(JavaFiles javaFiles, String classType, String stringToEndOn) throws SamePropertyTwiceException, IOException, TokenException {
@@ -161,9 +161,9 @@ public class XMLExerciseLoader implements ExerciseLoader {
 
 	/**
 	 * Parses the Config structure in the xml file
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {

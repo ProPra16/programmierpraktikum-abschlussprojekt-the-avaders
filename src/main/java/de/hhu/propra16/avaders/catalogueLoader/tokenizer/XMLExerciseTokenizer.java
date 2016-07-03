@@ -4,8 +4,8 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingToken
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.ClassToken;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.ClassToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 
 import java.io.IOException;
 
@@ -38,9 +38,9 @@ public class XMLExerciseTokenizer {
 
 	/**
 	 * Advances the fileReader unless the end of file is reached and parses the line
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	public void advance() throws SamePropertyTwiceException, IOException, TokenException {
@@ -61,9 +61,9 @@ public class XMLExerciseTokenizer {
 
 	/**
 	 * Reads lines until an entire structure in the form <...> is read.
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	private void readStructure() throws SamePropertyTwiceException, IOException, TokenException {
@@ -79,9 +79,9 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Parses the current line and sets the current token to the one read in the line
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * Parses the current line and sets the current tokens to the one read in the line
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
      */
@@ -114,7 +114,7 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Removes unnecessary symbols from the token, only leaving the information needed.
+	 * Removes unnecessary symbols from the tokens, only leaving the information needed.
 	 * @return A string only holding the tokens necessary information
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
      */
@@ -128,12 +128,12 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads the content of a description and returns a token with the information stored
-	 * @param tokenWhichShouldBeRead the token which the content belongs to
+	 * Reads the content of a description and returns a tokens with the information stored
+	 * @param tokenWhichShouldBeRead the tokens which the content belongs to
 	 * @return A Token with the content stored
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-	 * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	public Token readContent(String tokenWhichShouldBeRead) throws IOException, SamePropertyTwiceException, TokenException {
@@ -143,13 +143,13 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads the content of a class or test token and a class token holdingthat information
+	 * Reads the content of a class or test tokens and a class tokens holdingthat information
 	 * @param stringToEndOn The String on which to end the reading on
 	 * @param classType the type of java file read test or class
 	 * @return A ClassToken instance or null if the stringToEndOn was reached
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws SamePropertyTwiceException If the same property was read twice in a token
-     * @throws TokenException If an unexpected token was read or a token was expected,
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
+     * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
 	public ClassToken readJavaFile(String stringToEndOn, String classType) throws IOException, SamePropertyTwiceException, TokenException {
@@ -159,7 +159,7 @@ public class XMLExerciseTokenizer {
 			return new ClassToken(classType, currentToken.value, classTemplate);
 		}
 		else {
-			// only skip the /classType token
+			// only skip the /classType tokens
 			advance();
 			return null;
 		}
@@ -203,14 +203,14 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * @return True if there is a next token, otherwise false
+	 * @return True if there is a next tokens, otherwise false
      */
 	public boolean hasNextToken(){
 		return (nextToken != null);
 	}
 
 	/**
-	 * @return The currently parsed token
+	 * @return The currently parsed tokens
      */
 	public Token currentToken(){
 		return currentToken;

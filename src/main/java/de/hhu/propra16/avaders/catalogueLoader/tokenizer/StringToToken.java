@@ -4,22 +4,22 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingToken
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.BabyStepsToken;
-import de.hhu.propra16.avaders.catalogueLoader.tokenizer.token.Token;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.BabyStepsToken;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.remove;
 
 /**
- * Converts strings into token instances and returns them
+ * Converts strings into tokens instances and returns them
  */
 public class StringToToken {
 	/**
 	 * Extract information from the given string and collects them
-	 * in a token that is then returned
+	 * in a tokens that is then returned
 	 * @param readString The string which will be analyzed
 	 * @param lineNr The current line number
-	 * @return A token instance with the information from the given string
-	 * @throws SamePropertyTwiceException if a property appears twice within the token
+	 * @return A tokens instance with the information from the given string
+	 * @throws SamePropertyTwiceException if a property appears twice within the tokens
 	 * @throws TokenException if an unexpected Token was read or a Token is missing
      */
 	public static Token convert(String readString, int lineNr) throws SamePropertyTwiceException, TokenException {
@@ -55,14 +55,14 @@ public class StringToToken {
 	}
 
 	/**
-	 * Parses a token which only holds a single property: a value
-	 * @param token The token which this value belongs to
+	 * Parses a tokens which only holds a single property: a value
+	 * @param token The tokens which this value belongs to
 	 * @param readString The string that holds the rest of the information
 	 * @param lineNr The current line number
-	 * @return The token with a value attached
-	 * @throws UnexpectedTokenException If there was a token that does not belong there
-	 * @throws SamePropertyTwiceException If value appears twice in the token
-	 * @throws MissingTokenException If a token like = is missing
+	 * @return The tokens with a value attached
+	 * @throws UnexpectedTokenException If there was a tokens that does not belong there
+	 * @throws SamePropertyTwiceException If value appears twice in the tokens
+	 * @throws MissingTokenException If a tokens like = is missing
      */
 	private static Token parseSingleValueToken(String token, String readString, int lineNr) throws UnexpectedTokenException, SamePropertyTwiceException, MissingTokenException {
 		String value = null;
@@ -105,7 +105,7 @@ public class StringToToken {
 	 * @param lineNr The line in which the fileReader is currently
 	 * @return A BabyStepsToken instance with the read information
 	 * @throws SamePropertyTwiceException If a property was found twice in the string
-	 * @throws TokenException If an unexpected token appeared
+	 * @throws TokenException If an unexpected tokens appeared
      */
 	private static Token parseBabySteps(String readString, int lineNr) throws SamePropertyTwiceException, TokenException {
 		String value = null;
@@ -139,7 +139,7 @@ public class StringToToken {
 	}
 
 	/**
-	 * Parses a property inside a token like atdd, timeTracking or babysteps
+	 * Parses a property inside a tokens like atdd, timeTracking or babysteps
 	 * @param readString The string which hold the property information
 	 * @param property The property the configuration belongs to
 	 * @param lineNr the current line number
@@ -160,8 +160,8 @@ public class StringToToken {
 	}
 
 	/**
-	 * Parses the name property of a token
-	 * @param token The token which this name belongs to
+	 * Parses the name property of a tokens
+	 * @param token The tokens which this name belongs to
 	 * @param readString The String from which the name will be read
 	 * @param lineNr the current line number
 	 * @return A Token with a name as value
@@ -186,9 +186,9 @@ public class StringToToken {
 	}
 
 	/**
-	 * Creates a token with a description as its value
+	 * Creates a tokens with a description as its value
 	 * @param descriptionContent The content of the description
-	 * @return The token that holds the descriptionContent as its value
+	 * @return The tokens that holds the descriptionContent as its value
      */
 	static Token convertDescription(String descriptionContent){
 		return new Token("description", descriptionContent);

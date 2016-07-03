@@ -1,4 +1,4 @@
-package de.hhu.propra16.avaders.catalogueLoader.tokenizer.token;
+package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
 
 /**
  * This Token holds the name and template of
