@@ -13,34 +13,58 @@ public class ExerciseConfig {
 	public ExerciseConfig(){
 	}
 
+	/**
+	 * @return True if babysteps is enabled
+     */
 	public boolean isBabySteps() {
 		return babySteps;
 	}
 
+	/**
+	 * @param babySteps The value babysteps will be set to
+     */
 	public void setBabySteps(boolean babySteps) {
 		this.babySteps = babySteps;
 	}
 
+	/**
+	 * @return The time (as string), specified by babysteps, until all changes are reverted
+     */
 	public String getBabyStepsTime() {
 		return time;
 	}
 
+	/**
+	 * @param time The time babystepsTime will beset to
+     */
 	public void setBabyStepsTime(String time) {
 		this.time = time;
 	}
 
+	/**
+	 * @return True if time tracking is enabled
+     */
 	public boolean isTimeTracking() {
 		return timeTracking;
 	}
 
+	/**
+	 * @param timeTracking The value timeTracking will be set to
+     */
 	public void setTimeTracking(boolean timeTracking) {
 		this.timeTracking = timeTracking;
 	}
 
+	/**
+	 * @return The value of atdd
+     */
 	public boolean isAtdd() {
 		return atdd;
 	}
 
+	/**
+	 * @param atdd The value atdd will be set to
+     */
 	public void setAtdd(boolean atdd) {
 		this.atdd = atdd;
 	}
