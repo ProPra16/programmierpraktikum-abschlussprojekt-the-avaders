@@ -10,5 +10,5 @@ import java.io.IOException;
  * An ExerciseLoader returns an ExerciseCatalogue
  */
 public interface ExerciseLoader {
-	ExerciseCatalogue loadExercise() throws SamePropertyTwiceException, IOException, TokenException, ParserException;
+	ExerciseCatalogue loadExerciseCatalogue() throws SamePropertyTwiceException, IOException, TokenException, ParserException;
 }
