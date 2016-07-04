@@ -65,12 +65,22 @@ public class TrackingTest {
 
 	@Test
 	public void testCompileError() throws Exception{
-		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ public static äää(){return} pribate nonstatic öö(){machzurück();}}", false);
+		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ " +
+																			"public penis(){ new penis();}"+
+																			"public int äää(){" +
+				"																return \"hohoho\";" +
+				"															} " +
+				"															private void öö(){" +
+				"																String[][] dsa = machzurück(3);" +
+				"															}" +
+				"															protected int[][] machzurück(int öärg){}" +
+																		"}", false);
 		JavaStringCompiler compiler = CompilerFactory.getCompiler(compilationUnit);
 		compiler.compileAndRunTests();
 		CompilerResult compilerResult = compiler.getCompilerResult();
 		Collection<CompileError> compilerErrorsForCompilationUnit = compilerResult.getCompilerErrorsForCompilationUnit(compilationUnit);
 		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
+		tracking.printCMap();
 	}
 
 	@Test

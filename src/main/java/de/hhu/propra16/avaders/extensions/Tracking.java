@@ -6,19 +6,31 @@ import difflib.DiffUtils;
 import difflib.Patch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.*;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Chart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import vk.core.api.CompileError;
 import vk.core.api.TestFailure;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static de.hhu.propra16.avaders.logik.Step.*;
 
 public class Tracking {
-	private int secondsGREEN = 0, secondsRED = 0, secondsREFACTOR = 0, secondsREFACTOR2 = 0;
+	protected int secondsGREEN = 0;
+	protected int secondsRED = 0;
+	protected int secondsREFACTOR = 0;
+	protected int secondsREFACTOR2 = 0;
 	private LocalTime currentStartTime;
 	private Step currentState;
-	private Map<String, Integer> compileErrorMap = new HashMap<>(), testErrorMap = new HashMap<>();
+	protected Map<String, Integer> compileErrorMapRED = new HashMap<>(), compileErrorMapREFACTOR = new HashMap<>(), testErrorMap = new HashMap<>();
 
 	/**
 	 * Creates an instance of Tracking with no current Step
@@ -129,10 +141,23 @@ public class Tracking {
 	 * @param compileErrors a Collection which holds the {@link CompileError}s
 	 */
 	public void addCompileExceptions(Collection<CompileError> compileErrors){
-		compileErrors.forEach(x -> {
-			if(compileErrorMap.containsKey(x.getMessage())) compileErrorMap.replace(x.getMessage(), compileErrorMap.get(x.getMessage()), compileErrorMap.get(x.getMessage())+1);
-			else compileErrorMap.put(x.getMessage(), 1);
-		});
+		if(currentState == RED) {
+			compileErrors.forEach(x -> {
+				if (compileErrorMapRED.containsKey(x.getMessage()))
+					compileErrorMapRED.replace(x.getMessage(), compileErrorMapRED.get(x.getMessage()), compileErrorMapRED.get(x.getMessage()) + 1);
+				else compileErrorMapRED.put(x.getMessage(), 1);
+			});
+		} else if(currentState == REFACTOR1){
+			compileErrors.forEach(x -> {
+				if (compileErrorMapREFACTOR.containsKey(x.getMessage()))
+					compileErrorMapREFACTOR.replace(x.getMessage(), compileErrorMapREFACTOR.get(x.getMessage()), compileErrorMapREFACTOR.get(x.getMessage()) + 1);
+				else compileErrorMapREFACTOR.put(x.getMessage(), 1);
+			});
+		}
+	}
+
+	public void printCMap(){
+		compileErrorMapRED.forEach((x, y) -> System.out.println(x+" "+y));
 	}
 
 	/**
@@ -141,7 +166,7 @@ public class Tracking {
 	 */
 	public void addTestExceptions(Collection<TestFailure> testErrors){
 		testErrors.forEach(x -> {
-			if(testErrorMap.containsKey(x.getMessage())) compileErrorMap.replace(x.getMessage(), compileErrorMap.get(x.getMessage()), compileErrorMap.get(x.getMessage())+1);
+			if(testErrorMap.containsKey(x.getMessage())) compileErrorMapRED.replace(x.getMessage(), compileErrorMapRED.get(x.getMessage()), compileErrorMapRED.get(x.getMessage())+1);
 			else testErrorMap.put(x.getMessage(), 1);
 		});
 	}
@@ -187,13 +212,35 @@ public class Tracking {
 	 * builds an BarCart showing the {@link CompileError}s and their number of occurence
 	 * @return the chart
 	 */
-	public Chart showCompileErrorChart(){
+	public Chart showCompileErrorREDChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
 		XYChart.Series<Number,String> series = new XYChart.Series<>();
-		compileErrorMap.forEach((s,m) -> series.getData().add(new XYChart.Data<>(m, s)));
+		compileErrorMapRED.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
 		chart.getData().add(series);
+		return chart;
+	}
+
+	public Chart showCompileErrorREFACTORChart(){
+		CategoryAxis categoryAxis = new CategoryAxis();
+		NumberAxis numberAxis = new NumberAxis();
+		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
+		XYChart.Series<Number,String> series = new XYChart.Series<>();
+		compileErrorMapREFACTOR.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
+		chart.getData().add(series);
+		return chart;
+	}
+
+	public Chart showCompileErrorChart(){
+		CategoryAxis categoryAxis = new CategoryAxis();
+		NumberAxis numberAxis = new NumberAxis();
+		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
+		XYChart.Series<Number,String> seriesRED = new XYChart.Series<>();
+		XYChart.Series<Number,String> seriesREFACTOR = new XYChart.Series<>();
+		compileErrorMapRED.forEach((s, m) -> seriesRED.getData().add(new XYChart.Data<>(m, s)));
+		compileErrorMapREFACTOR.forEach((s, m) -> seriesREFACTOR.getData().add(new XYChart.Data<>(m, s)));
+		chart.getData().addAll(seriesRED,seriesREFACTOR);
 		return chart;
 	}
 
