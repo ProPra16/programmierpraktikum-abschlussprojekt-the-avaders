@@ -4,7 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import vk.core.api.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static de.hhu.propra16.avaders.logik.Step.*;
 
@@ -69,6 +71,27 @@ public class TrackingTest {
 		CompilerResult compilerResult = compiler.getCompilerResult();
 		Collection<CompileError> compilerErrorsForCompilationUnit = compilerResult.getCompilerErrorsForCompilationUnit(compilationUnit);
 		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
-		tracking.randomPrintelnMethodlolRofl();
+	}
+
+	@Test
+	public void diffTest() throws Exception{
+		List<String> origin = new ArrayList<>();
+		List<String> current = new ArrayList<>();
+		origin.add("public class penis{");
+		origin.add("static äää(){return}");
+		origin.add("public  pribate nonstatic öö(){");
+		origin.add("machzurück();}");
+		origin.add("}");
+
+		current.add("public class penis{");
+		current.add("static äää(){");
+		current.add("	return;");
+		current.add("}");
+		current.add("public private nonstatic öö(){");
+		current.add("machzurück();}");
+		current.add("}");
+		current.add("");
+
+		tracking.diff(origin,current);
 	}
 }

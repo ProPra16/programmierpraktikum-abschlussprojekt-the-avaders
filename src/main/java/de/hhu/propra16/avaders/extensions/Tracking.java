@@ -1,6 +1,9 @@
 package de.hhu.propra16.avaders.extensions;
 
 import de.hhu.propra16.avaders.logik.Step;
+import difflib.Delta;
+import difflib.DiffUtils;
+import difflib.Patch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.*;
@@ -8,9 +11,7 @@ import vk.core.api.CompileError;
 import vk.core.api.TestFailure;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import static de.hhu.propra16.avaders.logik.Step.*;
 
 public class Tracking {
@@ -143,6 +144,13 @@ public class Tracking {
 			if(testErrorMap.containsKey(x.getMessage())) compileErrorMap.replace(x.getMessage(), compileErrorMap.get(x.getMessage()), compileErrorMap.get(x.getMessage())+1);
 			else testErrorMap.put(x.getMessage(), 1);
 		});
+	}
+
+	public void diff(List<String> origin, List<String> current){
+		Patch patch = DiffUtils.diff(origin, current/*,new MyersDiff()*/);
+		List<Delta> deltas = patch.getDeltas();
+		//deltas.forEach(x -> System.out.println(x.getRevised()+"\n"));
+		DiffUtils.generateUnifiedDiff("Brot", "Brot", origin, patch, 2).forEach(System.out::println);
 	}
 
 	/**
