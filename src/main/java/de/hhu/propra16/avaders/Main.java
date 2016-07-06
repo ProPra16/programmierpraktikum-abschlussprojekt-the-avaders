@@ -17,9 +17,6 @@ public class Main extends Application {
 		primaryStage = stage;
 		mainBase = FXMLLoader.load(getClass().getResource("applicationView.fxml"));
 		primaryStage.setTitle("Test Driven Developement Trainer");
-		mainBase.getCenter().setVisible(false);
-		mainBase.getBottom().setVisible(false);
-		
 		
 		Scene scene = new Scene(mainBase, 600, 400);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
