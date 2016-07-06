@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class MainController {
-	private Main       main;
-	private FileReader fileReader;
-	private Logik      logic;
+	private Main              main;
+	private ExerciseCatalogue exerciseCatalogue;
+	private Logik             logic;
 
 	//exercise-menuItems
     @FXML private MenuItem newExercise;
@@ -43,7 +43,7 @@ public class MainController {
     @FXML private TextArea userFieldRed;
     @FXML private TextArea userFieldCode;
 
-    //Handler
+	//Handler
     @FXML void handleRestart(ActionEvent event)  {}
     @FXML void handlePrePhase(ActionEvent event) {}
     @FXML void handleNextPhase(ActionEvent event){}
@@ -55,10 +55,13 @@ public class MainController {
 			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
 			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
 			XMLExerciseLoader    xmlExerciseLoader    = new XMLExerciseLoader(xmlExerciseTokenizer, exerciseCatalogue);
+			this.exerciseCatalogue = xmlExerciseLoader.loadExerciseCatalogue();
 		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
-			e.printStackTrace();
-			if(e instanceof ParserException)
+			if(e instanceof ParserException) {
 				System.out.println("Caught null from main.getExercise: No file selected");
+				return;
+			}
+			e.printStackTrace();
 		}
 	}
 
