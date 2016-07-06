@@ -1,11 +1,8 @@
 package de.hhu.propra16.avaders.logik;
 
-import de.hhu.propra16.avaders.testen.ITester;
-import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
-import de.hhu.propra16.avaders.konfig.IKonfigEintrag;
 import de.hhu.propra16.avaders.konfig.IKonfigWerte;
-import de.hhu.propra16.avaders.konfig.EinstellungNichtGefunden;
-import de.hhu.propra16.avaders.konfig.EintragKonvertierenFehler;
+import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
+import de.hhu.propra16.avaders.testen.ITester;
 import vk.core.api.CompilationUnit;
 
 /**
@@ -13,7 +10,6 @@ import vk.core.api.CompilationUnit;
  */
 public class Logik implements ILogik {
 	private final ITester tester;
-	private boolean refactor2;
 	private Step schritt;
 	
 	/**
@@ -24,40 +20,46 @@ public class Logik implements ILogik {
 	 */
 	public Logik(ITester tester, IKonfigWerte konfig) {
 		this.tester = tester;
-		try {
-			IKonfigEintrag einstellung = konfig.einstellungAbfragen("Refactor2");
-			refactor2 = einstellung.BooleanAbfragen();
-		} catch (EinstellungNichtGefunden e) {
-			refactor2 = true; //Default-Wert
-		} catch (EintragKonvertierenFehler e) {
-			refactor2 = true; //Default-Wert
-		}
 		schritt = Step.RED;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Step getSchritt() {
 		return schritt;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ITestenRueckgabe weiter(CompilationUnit[] sources) {
 		ITestenRueckgabe rueckgabe = tester.testen(sources);
 		switch (schritt) {
 			case RED:
-				redWeiter(rueckgabe);
+				if (!rueckgabe.isSuccessful()) {
+					schritt = Step.GREEN;
+				}
 				break;
 			
 			case GREEN:
-				greenWeiter(rueckgabe);
+				if (rueckgabe.isSuccessful()) {
+					schritt = Step.REFACTOR1;
+				}
 				break;
 			
 			case REFACTOR1:
-				refactor1Weiter(rueckgabe);
+				if (rueckgabe.isSuccessful()) {
+					schritt = Step.REFACTOR2;
+				}
 				break;
 			
 			case REFACTOR2:
-				refactor2Weiter(rueckgabe);
+				if (rueckgabe.isSuccessful()) {
+					schritt = Step.RED;
+				}
 				break;
 			
 			default:
@@ -65,39 +67,10 @@ public class Logik implements ILogik {
 		}
 		return rueckgabe;
 	}
-
-	private void redWeiter(ITestenRueckgabe rueckgabe) {
-		if (!rueckgabe.isSuccessful()) {
-			schritt = Step.GREEN;
-		}
-	}
-
-	private void greenWeiter(ITestenRueckgabe rueckgabe) {
-		if (rueckgabe.isSuccessful()) {
-			schritt = Step.REFACTOR1;
-		}
-	}
-
-	private void refactor1Weiter(ITestenRueckgabe rueckgabe) {
-		if (rueckgabe.isSuccessful()) {
-			if (refactor2) {
-				schritt = Step.REFACTOR2;
-			} else {
-				endeAufrufen(rueckgabe);
-			}
-		}
-	}
-
-	private void refactor2Weiter(ITestenRueckgabe rueckgabe) {
-		if (rueckgabe.isSuccessful()) {
-			endeAufrufen(rueckgabe);
-		}
-	}
-
-	private void endeAufrufen(ITestenRueckgabe rueckgabe) {
-		schritt = Step.RED;
-	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void abbrechen() {
 		if (schritt != Step.GREEN) {

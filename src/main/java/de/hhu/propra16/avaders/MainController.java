@@ -1,22 +1,22 @@
 package de.hhu.propra16.avaders;
 
-import de.hhu.propra16.avaders.gui.ExerciseFilePath;
+import de.hhu.propra16.avaders.konfig.KonfigWerte;
+import de.hhu.propra16.avaders.logik.Logik;
+import de.hhu.propra16.avaders.testen.Tester;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
 
 public class MainController {
+	private Main main;
+	private Path exerciseFilePath;
 
-	private static BorderPane mainBase;
-	private        Path       exerciseFilePath;
-
-	//excercise-menuItems
+	//exercise-menuItems
     @FXML private MenuItem newExercise;
     @FXML private MenuItem restart;
     
@@ -24,7 +24,7 @@ public class MainController {
     @FXML private Button stepBack;
     @FXML private Button stepFurther;
     
-    //Userinformation about activated modes and time left due activated babysteps
+    //User-information about activated modes and time left due activated 'babysteps'
     @FXML private Text activatedModes;
     @FXML private Text timeLeft;
 
@@ -38,12 +38,23 @@ public class MainController {
     @FXML void handlePrePhase(ActionEvent event) {}
     @FXML void handleNextPhase(ActionEvent event){}
 
-
     @FXML void handleNewExercise(ActionEvent event) {
-        this.exerciseFilePath = new ExerciseFilePath().getExercise();
+        this.exerciseFilePath = main.getExercise();
         userFieldRed.setEditable(false);
         userFieldCode.setDisable(false);
     }
+
+	@FXML
+	public void initialize(){
+		//build up logic
+		Tester      tester      = new Tester();
+		KonfigWerte konfigWerte = new KonfigWerte();
+		Logik       logic       = new Logik(tester, konfigWerte);
+	}
+
+	public void setMain(Main main){
+		this.main = main;
+	}
 
 
 

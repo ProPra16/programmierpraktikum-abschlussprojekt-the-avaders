@@ -13,7 +13,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Excercise">
             <items>
-              <MenuItem fx:id="newExercise" mnemonicParsing="false" onAction="#handleNewExcercise" text="New.." />
+              <MenuItem fx:id="newExercise" mnemonicParsing="false" onAction="#handleNewExercise" text="New.." />
                   <MenuItem fx:id="restart" mnemonicParsing="false" onAction="#handleRestart" text="Restart" />
             </items>
           </Menu>
