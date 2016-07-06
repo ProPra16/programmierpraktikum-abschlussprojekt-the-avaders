@@ -1,0 +1,25 @@
+Protokoll zum Gruppentreffen am 06.07.2016
+Protokollführer: David Geleßus (dgelessus)
+
+
+Themen:
+- Treffen mit Korrektor
+- APIs besprochen
+
+
+Ziele für diese Woche:
+
+Florian:
+Dokumentation der Logik aktualisieren, Entwürfe erweitern
+
+Thiemo:
+Komponenten (Config, Logik, Tracking) in GUI und Controller einbinden
+
+Nikita:
+XML-Parser: Kommentare erlauben, Unit-Tests an korrekten Ort verschieben
+
+David:
+Unit-Tests für Logik, Javadoc reparieren
+
+Lukas:
+Fehlende Dummy-Klasse pushen, Tracking fertigstellen
