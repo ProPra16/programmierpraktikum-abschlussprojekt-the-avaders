@@ -2,59 +2,39 @@ package de.hhu.propra16.avaders.konfig;
 
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
 
-/*
- * Klasse, die als Adapter zum XML-Lader fungieren soll
- * Erstellt mit einem XML-Lader eine Instanz von KonfigWerte
+/**
+ * Konvertiert Einstellungen aus einer {@link ExerciseConfig} in {@link IKonfigWerte}.
+ * 
  * @author Florian-Dt
  */
-
 public class KonfigAdapter {
-	private IKonfigWerte fWerte;
+	private IKonfigWerte werte;
 
-	/*
-	 * Erstelle eine neue Instanz von KonfigAdapter
-	 * @param werte Eine Instanz von {@link ExerciseConfig}, aus dem die Einstellungen gelesen werden
+	/**
+	 * Erstellt einen neuen {@link KonfigAdapter}.
+	 * 
+	 * @param config die {@link ExerciseConfig}, aus der die Einstellungen gelesen werden
 	 */
 	public KonfigAdapter(ExerciseConfig config) {
-		fWerte = new KonfigWerte();
+		werte = new KonfigWerte();
 		setzeATDD(config.isAtdd());
-		setzeRefactor2(true);        //Bisher noch nicht in ExerciseConfig implementiert
+	}
+	
+	private String booleanZuString(boolean wert) {
+		return wert ? "True" : "False";
 	}
 
-	/*
-	 * Setzt die Einstellung ATDD
-	 * @param wert Wert, auf den die Einstellung ATDD gesetzt werden soll
-	 * @return <i>Nichts</i>
-	 */
-	public void setzeATDD(boolean wert) {
-		IKonfigEintrag eintrag = new KonfigEintrag();
-		eintrag.wertSetzen(konvertieren(wert));
-		fWerte.einstellungEintragen("ATDD", eintrag);
+	private void setzeATDD(boolean wert) {
+		IKonfigEinstellung einstellung = new KonfigEinstellung();
+		einstellung.wertSetzen(booleanZuString(wert));
+		werte.einstellungEintragen("ATDD", einstellung);
 	}
 
-	/*
-	 * Setzt die Einstellung Refactor2
-	 * @param wert Wert, auf den die Einstellung Refactor2 gesetzt werden soll
-	 * @return <i>Nichts</i>
-	 */
-	public void setzeRefactor2(boolean wert) {
-		IKonfigEintrag eintrag = new KonfigEintrag();
-		eintrag.wertSetzen(konvertieren(wert));
-		fWerte.einstellungEintragen("Refactor2", eintrag);
-	}
-
-	/*
-	 * Gibt die Instanz von ExerciseConfig zurück, in die die Einstellungen geladen wurden
-	 * @param <i>Keine</i>
-	 * @return IKonfigWerte
+	/**
+	 * Gibt die {@link IKonfigWerte} zurück, die aus der {@link ExerciseConfig} erstellt wurden.
+	 * @return die {@link IKonfigWerte} zurück, die aus der {@link ExerciseConfig} erstellt wurden
 	 */
 	public IKonfigWerte konfigWerte() {
-		return fWerte;
-	}
-
-	/* Wandelt den angegebenen Wahrheitswert in eine Zeichenkette um */
-	String konvertieren(boolean wert) {
-		if (wert) return "True";
-		return "False";
+		return werte;
 	}
 }

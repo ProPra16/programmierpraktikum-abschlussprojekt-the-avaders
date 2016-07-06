@@ -2,37 +2,33 @@ package de.hhu.propra16.avaders.konfig;
 
 import java.util.HashMap;
 
-/*
- * Diese Klasse verwaltet Name-Wert-Paare mit den Einstellungen
- * @author Florian-Dt
+/**
+ * Implementierung von {@link IKonfigWerte}.
  */
-
 public class KonfigWerte implements IKonfigWerte {
-	private HashMap<String, IKonfigEintrag> eigenschaften;
+	private HashMap<String, IKonfigEinstellung> einstellungen;
 
-	/* Erstellt eine neue Instanz von KonfigWerte
-	 * @param <i>Keine</i>
+	/**
+	 * Erstellt eine leere Instanz von {@link KonfigWerte}.
 	 */
 	public KonfigWerte() {
-		eigenschaften = new HashMap<>();
+		einstellungen = new HashMap<>();
 	}
 
-	/* Erstellt einen neuen Eintrag in der Werteliste mit dem übergebenen Namen und Wert
-	 * oder setzt den Wert des Eintrags mit diesem Namen, falls er schon existiert
-	 * @param eigenschaft Name des Eintrags
-	 *        wert        Neuer wert des Eintrags
-	 * @return <i>Nichts</i>
+	/**
+	 * {@inheritDoc}
 	 */
-	public void einstellungEintragen(String eigenschaft, IKonfigEintrag wert) {
-		eigenschaften.put(eigenschaft, wert);
+	public void einstellungEintragen(String einstellung, IKonfigEinstellung wert) {
+		einstellungen.put(einstellung, wert);
 	}
 
-	/* Sucht nach dem Eintrag und gibt falls möglich seinen Wert zurück, sonst wird eine Exception geworfen
-	 * @param eigenschaft Name des gesuchten Eintrags
-	 * @return {@link IKonfigEintrag} Der Wert des Eintrags
+	/**
+	 * {@inheritDoc}
 	 */
-	public IKonfigEintrag einstellungAbfragen(String eigenschaft) throws EinstellungNichtGefunden {
-		if (!eigenschaften.containsKey(eigenschaft)) throw new EinstellungNichtGefunden(eigenschaft);
-		return eigenschaften.get(eigenschaft);
+	public IKonfigEinstellung einstellungAbfragen(String einstellung) throws EinstellungNichtGefundenException {
+		if (!einstellungen.containsKey(einstellung)) {
+			throw new EinstellungNichtGefundenException(einstellung);
+		}
+		return einstellungen.get(einstellung);
 	}
 }
