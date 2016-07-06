@@ -1,7 +1,5 @@
-package de.hhu.propra16.avaders.catalogueLoader.tests;
+package de.hhu.propra16.avaders.catalogueLoader;
 
-import de.hhu.propra16.avaders.catalogueLoader.ParserException;
-import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
@@ -22,7 +20,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_Exercise0() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/test.xml");
+			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.xml");
 		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -30,8 +28,8 @@ public class XMLExerciseLoaderTester {
 
 		// check exercise 0
 		// exercise
-		Assert.assertEquals("Römische Zahlen", exercise.getExerciseName());
-		Assert.assertEquals("Konvertiert arabische in römische Zahlen.", exercise.getDescription());
+		Assert.assertEquals("Roemische Zahlen", exercise.getExerciseName());
+		Assert.assertEquals("Konvertiert arabische in roemische Zahlen.", exercise.getDescription());
 
 		// source code
 		Assert.assertEquals("RomanNumberConverter", exercise.getClassName(0));
@@ -69,7 +67,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_Exercise1() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(1, "java/de/hhu/propra16/avaders/catalogueLoader/tests/test.xml");
+			exercise = setup(1, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.xml");
 		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -77,7 +75,7 @@ public class XMLExerciseLoaderTester {
 
 		// check exercise 1
 		Assert.assertEquals("Arabische Zahlen", exercise.getExerciseName());
-		Assert.assertEquals("Konvertiert römische in arabische Zahlen.", exercise.getDescription());
+		Assert.assertEquals("Konvertiert roemische in arabische Zahlen.", exercise.getDescription());
 
 		// source code
 		Assert.assertEquals("ArabNumberConverter", exercise.getClassName(0));
@@ -103,7 +101,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_ExerciseLineBreaks() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testLotsOfLineBreaks.xml");
+			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testLotsOfLineBreaks.xml");
 		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -111,8 +109,8 @@ public class XMLExerciseLoaderTester {
 
 		// check exercise 0
 		// exercise
-		Assert.assertEquals("Römische Zahlen", exercise.getExerciseName());
-		Assert.assertEquals("Konvertiert arabische in römische Zahlen.", exercise.getDescription());
+		Assert.assertEquals("Roemische Zahlen", exercise.getExerciseName());
+		Assert.assertEquals("Konvertiert arabische in roemische Zahlen.", exercise.getDescription());
 
 		// source code
 		Assert.assertEquals("RomanNumberConverter", exercise.getClassName(0));
@@ -150,7 +148,7 @@ public class XMLExerciseLoaderTester {
 		MissingTokenException missingTokenException = new MissingTokenException("</test>", 26);
 
 		try {
-			setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testMissingEndToken.xml");
+			setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testMissingEndToken.xml");
 		}catch(MissingTokenException e){
 			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
@@ -165,7 +163,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_EmptyConfig() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testEmptyConfig.xml");
+			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testEmptyConfig.xml");
 		} catch (IOException | SamePropertyTwiceException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -180,7 +178,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_StandardBabySteps() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "java/de/hhu/propra16/avaders/catalogueLoader/tests/testStandardBabySteps.xml");
+			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testStandardBabySteps.xml");
 		}catch(MissingTokenException e){
 			System.out.println(e.getMessage());
 			return;

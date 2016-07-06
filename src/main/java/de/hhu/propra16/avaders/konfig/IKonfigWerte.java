@@ -1,21 +1,25 @@
 package de.hhu.propra16.avaders.konfig;
 
-/*
- * Interface einer Klasse, die Name-Wert-Paare mit den Einstellungen verwaltet
+/**
+ * Verwaltet Konfig-Einstellungen als Name-Wert-Paare.
+ * 
  * @author Florian-Dt
  */
 public interface IKonfigWerte {
-	/* Erstellt einen neuen Eintrag in der Werteliste mit dem übergebenen Namen und Wert
-	 * oder setzt den Wert des Eintrags mit diesem Namen, falls er schon existiert
-	 * @param eigenschaft Name des Eintrags
-	 *        wert        Neuer wert des Eintrags
-	 * @return <i>Nichts</i>
+	/**
+	 * Setzt den Wert für eine Einstellung. Falls sie noch nicht existiert, wird sie erstellt.
+	 * 
+	 * @param einstellung der Name der Einstellung
+	 * @param wert der Wert der Einstellung
 	 */
-	public void einstellungEintragen(String eigenschaft, IKonfigEintrag wert);
+	public void einstellungEintragen(String einstellung, IKonfigEinstellung wert);
 
-	/* Sucht nach dem Eintrag und gibt falls möglich seinen Wert zurück, sonst wird eine Exception geworfen
-	 * @param eigenschaft Name des gesuchten Eintrags
-	 * @return {@link IKonfigEintrag} Der Wert des Eintrags
+	/**
+	 * Gibt den Wert der gegebenen Einstellung zurück.
+	 * 
+	 * @param einstellung der Name der gesuchten Einstellung
+	 * @return der Wert der Einstellung
+	 * @throws EinstellungNichtGefundenException wenn die Einstellung nicht existiert
 	 */
-	public IKonfigEintrag einstellungAbfragen(String Eigenschaft) throws EinstellungNichtGefunden;
+	public IKonfigEinstellung einstellungAbfragen(String einstellung) throws EinstellungNichtGefundenException;
 }
