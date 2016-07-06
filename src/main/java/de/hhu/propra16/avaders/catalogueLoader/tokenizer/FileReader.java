@@ -1,5 +1,7 @@
 package de.hhu.propra16.avaders.catalogueLoader.tokenizer;
 
+import de.hhu.propra16.avaders.catalogueLoader.ParserException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,13 +16,10 @@ public class FileReader implements LineReader {
     private BufferedReader bufferedReader;
 	private String path;
 
-	public FileReader(Path filePath) {
+	public FileReader(Path filePath) throws IOException, ParserException {
+		if (filePath == null) throw new ParserException("Path cannot be null");
 		this.path = filePath.toString().toLowerCase();
-        try {
-            bufferedReader = Files.newBufferedReader(filePath);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+		bufferedReader = Files.newBufferedReader(filePath);
     }
 
 	/**
