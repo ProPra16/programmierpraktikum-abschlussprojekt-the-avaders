@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 import static junit.framework.TestCase.fail;
 
 public class XMLExerciseTokenizerTester {
-	XMLExerciseTokenizer xmlExerciseTokenizer = null;
+	private XMLExerciseTokenizer xmlExerciseTokenizer = null;
 	@Test
 	public void test_BeginExercisesToken(){
 		try {
@@ -252,7 +252,12 @@ public class XMLExerciseTokenizerTester {
 	@Test
 	public void test_WrongExtension(){
 		IOException ioException = new IOException("Please choose a file with the \".xml\" extension.");
-		FileReader fileReader = new FileReader(Paths.get("src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.txt"));
+		FileReader fileReader = null;
+		try {
+			fileReader = new FileReader(Paths.get("src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.txt"));
+		} catch (IOException | ParserException e) {
+			e.printStackTrace();
+		}
 
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader);
