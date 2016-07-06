@@ -1,4 +1,4 @@
-package de.hhu.propra16.avaders.catalogueLoader.tests;
+package de.hhu.propra16.avaders.catalogueLoader;
 
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
@@ -86,22 +86,6 @@ public class XMLExerciseTokenizerTester {
 
 		Assert.assertEquals("test Description", token.value);
 	}
-
-	//TODO: make work
-	/*
-	@Test
-	public void test_ExerciseNameBeforeDescription(){
-		try {
-			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "<exercise name = \"test\"> <description>   Konvertiert arabische in römische Zahlen.   </description >\n");
-			xmlExerciseTokenizer.advance();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			fail();
-		}
-
-		Assert.assertEquals("exercise name", xmlExerciseTokenizer.currentToken().name);
-	}
-	*/
 
 
 	@Test
@@ -268,7 +252,7 @@ public class XMLExerciseTokenizerTester {
 	@Test
 	public void test_WrongExtension(){
 		IOException ioException = new IOException("Please choose a file with the \".xml\" extension.");
-		FileReader fileReader = new FileReader(Paths.get("java\\de\\hhu\\propra16\\avaders\\catalogueLoader\\tests\\test.txt"));
+		FileReader fileReader = new FileReader(Paths.get("src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.txt"));
 
 		try {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader);
