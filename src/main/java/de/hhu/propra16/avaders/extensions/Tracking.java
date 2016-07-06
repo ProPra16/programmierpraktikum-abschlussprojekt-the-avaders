@@ -65,11 +65,9 @@ public class Tracking {
 	 * stops counting the time and adds the time to the complete time of GREEN-Step
 	 */
 	public void finishedGREEN(){
-		System.out.println(!currentState.equals(Step.GREEN));
-		if(!currentState.equals(GREEN)) return;
+		if(currentState != GREEN) return;
 		secondsGREEN += currentStartTime.until(LocalTime.now(), ChronoUnit.SECONDS);
 		currentState = null;
-		System.out.println("finished GREEN");
 	}
 
 	/**
@@ -129,8 +127,8 @@ public class Tracking {
 	 */
 	public void finishedStepAndMoveOn(boolean refactor2Enabled){
 		switch (currentState){
-			case RED: finishedGREEN(); currentState = GREEN; break;
-			case GREEN: finishedRED(); currentState = REFACTOR1; break;
+			case RED: finishedRED(); currentState = GREEN; break;
+			case GREEN: finishedGREEN(); currentState = REFACTOR1; break;
 			case REFACTOR1: finishedREFACTOR1(); if(!refactor2Enabled)currentState = RED;else currentState = REFACTOR2; break;
 			case REFACTOR2: finishedREFACTOR2(); currentState = RED; break;
 		}
