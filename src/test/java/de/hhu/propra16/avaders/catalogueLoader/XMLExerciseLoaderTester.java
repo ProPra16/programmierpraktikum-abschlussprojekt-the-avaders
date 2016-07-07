@@ -60,7 +60,7 @@ public class XMLExerciseLoaderTester {
 
 		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
 		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
-		Assert.assertEquals(false, exercise.atdd());
+		Assert.assertEquals(false, exercise.atddIsEnabled());
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class XMLExerciseLoaderTester {
 		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
 		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
 		Assert.assertEquals(120, exercise.babyStepsTime());
-		Assert.assertEquals(true, exercise.atdd());
+		Assert.assertEquals(true, exercise.atddIsEnabled());
 	}
 
 	@Test
@@ -170,7 +170,7 @@ public class XMLExerciseLoaderTester {
 		}
 
 		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
-		Assert.assertEquals(false, exercise.atdd());
+		Assert.assertEquals(false, exercise.atddIsEnabled());
 		Assert.assertEquals(false, exercise.timeTrackingIsEnabled());
 	}
 
@@ -189,7 +189,7 @@ public class XMLExerciseLoaderTester {
 
 		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
 		Assert.assertEquals(120, exercise.babyStepsTime());
-		Assert.assertEquals(false, exercise.atdd());
+		Assert.assertEquals(false, exercise.atddIsEnabled());
 		Assert.assertEquals(false, exercise.timeTrackingIsEnabled());
 	}
 

@@ -105,7 +105,7 @@ public class Exercise {
 	/**
 	 * @return True if atdd is enabled
      */
-	public boolean atdd() {
+	public boolean atddIsEnabled() {
 		return exerciseConfig.isAtdd();
 	}
 }
