@@ -109,7 +109,7 @@ public class BabystepsTest extends Application{
 
 	private void startHTMLTimer(GridPane gridPane, HTMLEditor htmlEditor) {
 		Button bbutton = new Button("start Babysteps");
-		bbutton.setOnAction(evt -> {Babysteps babysteps = new Babysteps(htmlEditor); babysteps.startTimerHTML(10);});
+		bbutton.setOnAction(evt -> {Babysteps babysteps = new Babysteps(htmlEditor); babysteps.startTimer(10);});
 		gridPane.add(bbutton,1,0);
 
 	}
