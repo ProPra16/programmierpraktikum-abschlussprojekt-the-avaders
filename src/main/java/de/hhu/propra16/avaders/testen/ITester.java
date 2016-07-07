@@ -9,5 +9,5 @@ public interface ITester {
 	 * @param sources die zu testenden {@link CompilationUnit}s
 	 * @return die Compiler- und Testergebnisse
 	 */
-	public ITestenRueckgabe testen(CompilationUnit[] sources);
+	public ITestenRueckgabe testen(CompilationUnit... sources);
 }

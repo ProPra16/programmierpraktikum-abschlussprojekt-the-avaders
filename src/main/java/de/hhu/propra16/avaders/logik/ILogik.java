@@ -15,11 +15,13 @@ public interface ILogik {
 	/**
 	 * Kompiliert und testet die gegebenen {@link CompilationUnit}s und geht zum nächsten Schritt über,
 	 * sofern alle Bedingungen erfüllt sind (siehe {@link Step} für Details).
+	 * Ist ATDD eingeschaltet, muss der Akzeptanztest bei jedem Schritt als letztes Element im Array
+	 * übergeben werden, wird allerdings nur nach {@link Step#REFACTOR2} ausgeführt.
 	 * 
 	 * @param sources die zu kompilierenden {@link CompilationUnit}s
 	 * @return die Testergebnisse wie von {@link ITester#testen(CompilationUnit[])} zurückgegeben
 	 */
-	public ITestenRueckgabe weiter(CompilationUnit[] sources);
+	public ITestenRueckgabe weiter(CompilationUnit... sources);
 	
 	/**
 	 * Bricht den {@link Step#GREEN}-Schritt ab und geht zurück zu {@link Step#RED}.

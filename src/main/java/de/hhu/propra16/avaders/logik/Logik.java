@@ -1,5 +1,8 @@
 package de.hhu.propra16.avaders.logik;
 
+import java.util.Arrays;
+
+import de.hhu.propra16.avaders.konfig.EinstellungNichtGefundenException;
 import de.hhu.propra16.avaders.konfig.IKonfigWerte;
 import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
 import de.hhu.propra16.avaders.testen.ITester;
@@ -10,6 +13,7 @@ import vk.core.api.CompilationUnit;
  */
 public class Logik implements ILogik {
 	private final ITester tester;
+	private final boolean atdd;
 	private Step schritt;
 	
 	/**
@@ -20,7 +24,14 @@ public class Logik implements ILogik {
 	 */
 	public Logik(ITester tester, IKonfigWerte konfig) {
 		this.tester = tester;
-		schritt = Step.RED;
+		boolean atdd;
+		try {
+			atdd = konfig.einstellungAbfragen("ATDD").booleanAbfragen();
+		} catch (EinstellungNichtGefundenException exc) {
+			atdd = false;
+		}
+		this.atdd = atdd;
+		schritt = this.atdd ? Step.ACCEPTANCE_RED : Step.RED;
 	}
 	
 	/**
@@ -35,9 +46,23 @@ public class Logik implements ILogik {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ITestenRueckgabe weiter(CompilationUnit[] sources) {
-		ITestenRueckgabe rueckgabe = tester.testen(sources);
+	public ITestenRueckgabe weiter(CompilationUnit... sources) {
+		CompilationUnit[] normalSources;
+		if (atdd) {
+			normalSources = Arrays.copyOfRange(sources, 0, sources.length-1);
+		} else {
+			normalSources = sources;
+		}
+		ITestenRueckgabe rueckgabe = tester.testen(normalSources);
+		ITestenRueckgabe acceptanceRueckgabe;
 		switch (schritt) {
+			case ACCEPTANCE_RED:
+				acceptanceRueckgabe = tester.testen(sources);
+				if (!acceptanceRueckgabe.isSuccessful()) {
+					schritt = Step.RED;
+				}
+				break;
+			
 			case RED:
 				if (!rueckgabe.isSuccessful()) {
 					schritt = Step.GREEN;
@@ -58,7 +83,12 @@ public class Logik implements ILogik {
 			
 			case REFACTOR2:
 				if (rueckgabe.isSuccessful()) {
-					schritt = Step.RED;
+					if (atdd) {
+						acceptanceRueckgabe = tester.testen(sources);
+						schritt = acceptanceRueckgabe.isSuccessful() ? Step.ACCEPTANCE_RED : Step.RED;
+					} else {
+						schritt = Step.RED;
+					}
 				}
 				break;
 			
