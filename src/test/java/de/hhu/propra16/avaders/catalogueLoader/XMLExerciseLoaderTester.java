@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.*;
 
 public class XMLExerciseLoaderTester {
 	@Test
@@ -28,28 +29,28 @@ public class XMLExerciseLoaderTester {
 
 		// check exercise 0
 		// exercise
-		Assert.assertEquals("Roemische Zahlen", exercise.getExerciseName());
-		Assert.assertEquals("Konvertiert arabische in roemische Zahlen.", exercise.getDescription());
+		assertEquals("Roemische Zahlen", exercise.getExerciseName());
+		assertEquals("Konvertiert arabische in roemische Zahlen.", exercise.getDescription());
 
 		// source code
-		Assert.assertEquals("RomanNumberConverter", exercise.getClassName(0));
-		Assert.assertEquals("RomanNumberConverter2", exercise.getClassName(1));
-		Assert.assertEquals("RomanNumberConverter3", exercise.getClassName(2));
-		Assert.assertEquals("public class RomanNumberConverter {\n}", exercise.getClassTemplate(0));
-		Assert.assertEquals("public class RomanNumberConverter2 {\n}", exercise.getClassTemplate(1));
-		Assert.assertEquals("public class RomanNumberConverter3 {\n}", exercise.getClassTemplate(2));
+		assertEquals("RomanNumberConverter", exercise.getClassName(0));
+		assertEquals("RomanNumberConverter2", exercise.getClassName(1));
+		assertEquals("RomanNumberConverter3", exercise.getClassName(2));
+		assertEquals("public class RomanNumberConverter {\n}", exercise.getClassTemplate(0));
+		assertEquals("public class RomanNumberConverter2 {\n}", exercise.getClassTemplate(1));
+		assertEquals("public class RomanNumberConverter3 {\n}", exercise.getClassTemplate(2));
 
 		// test code
-		Assert.assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
-		Assert.assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
-		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+		assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
+		assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
+		assertEquals("import static org.junit.Assert.*;\n" +
 							"import org.junit.Test;\n" +
 							"public class RomanNumbersTest {\n" +
 							"@Test\n" +
 							"public void testSomething() {\n" +
 							"}\n" +
 							"}", 									exercise.getTestTemplates(0));
-		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class RomanNumbersTest2 {\n" +
 				"@Test\n" +
@@ -58,9 +59,9 @@ public class XMLExerciseLoaderTester {
 				"}", 									exercise.getTestTemplates(1));
 
 
-		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
-		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
-		Assert.assertEquals(false, exercise.atddIsEnabled());
+		assertEquals(false, exercise.getExerciseConfig().isBabySteps());
+		assertEquals(true, exercise.getExerciseConfig().isTimeTracking());
+		assertEquals(false, exercise.getExerciseConfig().isAtdd());
 	}
 
 	@Test
@@ -74,16 +75,16 @@ public class XMLExerciseLoaderTester {
 		}
 
 		// check exercise 1
-		Assert.assertEquals("Arabische Zahlen", exercise.getExerciseName());
-		Assert.assertEquals("Konvertiert roemische in arabische Zahlen.", exercise.getDescription());
+		assertEquals("Arabische Zahlen", exercise.getExerciseName());
+		assertEquals("Konvertiert roemische in arabische Zahlen.", exercise.getDescription());
 
 		// source code
-		Assert.assertEquals("ArabNumberConverter", exercise.getClassName(0));
-		Assert.assertEquals("public class ArabNumberConverter {\n}", exercise.getClassTemplate(0));
+		assertEquals("ArabNumberConverter", exercise.getClassName(0));
+		assertEquals("public class ArabNumberConverter {\n}", exercise.getClassTemplate(0));
 
 		// test code
-		Assert.assertEquals("ArabNumberConverterTest", exercise.getTestName(0));
-		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+		assertEquals("ArabNumberConverterTest", exercise.getTestName(0));
+		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class ArabNumbersTest {\n" +
 				"@Test\n" +
@@ -91,10 +92,10 @@ public class XMLExerciseLoaderTester {
 				"}\n" +
 				"}", 									exercise.getTestTemplates(0));
 
-		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
-		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
-		Assert.assertEquals(120, exercise.babyStepsTime());
-		Assert.assertEquals(true, exercise.atddIsEnabled());
+		assertEquals(true, exercise.getExerciseConfig().isAtdd());
+		assertEquals(true, exercise.getExerciseConfig().isBabySteps());
+		assertEquals(120, exercise.getExerciseConfig().getBabyStepsTime());
+		assertEquals(true, exercise.getExerciseConfig().isTimeTracking());
 	}
 
 	@Test
@@ -109,28 +110,28 @@ public class XMLExerciseLoaderTester {
 
 		// check exercise 0
 		// exercise
-		Assert.assertEquals("Roemische Zahlen", exercise.getExerciseName());
-		Assert.assertEquals("Konvertiert arabische in roemische Zahlen.", exercise.getDescription());
+		assertEquals("Roemische Zahlen", exercise.getExerciseName());
+		assertEquals("Konvertiert arabische in roemische Zahlen.", exercise.getDescription());
 
 		// source code
-		Assert.assertEquals("RomanNumberConverter", exercise.getClassName(0));
-		Assert.assertEquals("RomanNumberConverter2", exercise.getClassName(1));
-		Assert.assertEquals("RomanNumberConverter3", exercise.getClassName(2));
-		Assert.assertEquals("public class RomanNumberConverter {\n}", exercise.getClassTemplate(0));
-		Assert.assertEquals("public class RomanNumberConverter2 {\n}", exercise.getClassTemplate(1));
-		Assert.assertEquals("public class RomanNumberConverter3 {\n}", exercise.getClassTemplate(2));
+		assertEquals("RomanNumberConverter", exercise.getClassName(0));
+		assertEquals("RomanNumberConverter2", exercise.getClassName(1));
+		assertEquals("RomanNumberConverter3", exercise.getClassName(2));
+		assertEquals("public class RomanNumberConverter {\n}", exercise.getClassTemplate(0));
+		assertEquals("public class RomanNumberConverter2 {\n}", exercise.getClassTemplate(1));
+		assertEquals("public class RomanNumberConverter3 {\n}", exercise.getClassTemplate(2));
 
 		// test code
-		Assert.assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
-		Assert.assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
-		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+		assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
+		assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
+		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class RomanNumbersTest {\n" +
 				"@Test\n" +
 				"public void testSomething() {\n" +
 				"}\n" +
 				"}", 									exercise.getTestTemplates(0));
-		Assert.assertEquals("import static org.junit.Assert.*;\n" +
+		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class RomanNumbersTest2 {\n" +
 				"@Test\n" +
@@ -139,8 +140,8 @@ public class XMLExerciseLoaderTester {
 				"}", 									exercise.getTestTemplates(1));
 
 
-		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
-		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
+		assertEquals(false, exercise.getExerciseConfig().isBabySteps());
+		assertEquals(true, exercise.getExerciseConfig().isTimeTracking());
 	}
 
 	@Test
@@ -150,7 +151,7 @@ public class XMLExerciseLoaderTester {
 		try {
 			setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testMissingEndToken.xml");
 		}catch(MissingTokenException e){
-			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
+			assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		} catch (IOException | SamePropertyTwiceException | TokenException | ParserException e) {
 			e.printStackTrace();
@@ -169,9 +170,9 @@ public class XMLExerciseLoaderTester {
 			fail();
 		}
 
-		Assert.assertEquals(false, exercise.babyStepsIsEnabled());
-		Assert.assertEquals(false, exercise.atddIsEnabled());
-		Assert.assertEquals(false, exercise.timeTrackingIsEnabled());
+		assertEquals(false, exercise.getExerciseConfig().isBabySteps());
+		assertEquals(false, exercise.getExerciseConfig().isTimeTracking());
+		assertEquals(false, exercise.getExerciseConfig().isAtdd());
 	}
 
 	@Test
@@ -187,10 +188,10 @@ public class XMLExerciseLoaderTester {
 			fail();
 		}
 
-		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
-		Assert.assertEquals(120, exercise.babyStepsTime());
-		Assert.assertEquals(false, exercise.atddIsEnabled());
-		Assert.assertEquals(false, exercise.timeTrackingIsEnabled());
+		assertEquals(true, exercise.getExerciseConfig().isBabySteps());
+		assertEquals(120, exercise.getExerciseConfig().getBabyStepsTime());
+		assertEquals(false, exercise.getExerciseConfig().isTimeTracking());
+		assertEquals(false, exercise.getExerciseConfig().isAtdd());
 	}
 
 	private Exercise setup(int exerciseNr, String path)

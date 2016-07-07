@@ -52,27 +52,6 @@ public class Exercise {
 	}
 
 	/**
-	 * @return True if babysteps is enabled in this exercise
-     */
-	public boolean babyStepsIsEnabled(){
-		return exerciseConfig.isBabySteps();
-	}
-
-	/**
-	 * @return True if time tracking is enabled in this exercise
-     */
-	public boolean timeTrackingIsEnabled(){
-		return exerciseConfig.isTimeTracking();
-	}
-
-	/**
-	 * @return The time (as string), specified by babysteps, until all changes are reverted
-	 */
-	public int babyStepsTime(){
-		return exerciseConfig.getBabyStepsTime();
-	}
-
-	/**
 	 * @param classNumber The index of the class of which the name should be returned
 	 * @return The name of the class
      */
@@ -84,28 +63,20 @@ public class Exercise {
 	 * @param testNumber The index of the test of which the name should be returned
 	 * @return The name of the test
      */
-	public String getTestName(int testNumber) {
-		return testTemplates.getJavaFile(testNumber).className;
-	}
+	public String getTestName(int testNumber){	return testTemplates.getJavaFile(testNumber).className;	}
 
 	/**
-	 * @return the number of classes in this exercise
+	 * @return The number of classes in this exercise
      */
-	public int getNumberOfClasses(){
-		return classTemplates.size();
-	}
+	public int getNumberOfClasses(){	return classTemplates.size();	}
 
 	/**
-	 * @return the number of tests in this exercise
+	 * @return The number of tests in this exercise
      */
-	public int getNumberOfTests(){
-		return testTemplates.size();
-	}
+	public int getNumberOfTests(){	return testTemplates.size(); }
 
 	/**
-	 * @return True if atdd is enabled
+	 * @return The Config of this Exercise
      */
-	public boolean atddIsEnabled() {
-		return exerciseConfig.isAtdd();
-	}
+	public ExerciseConfig getExerciseConfig(){	return exerciseConfig; }
 }
