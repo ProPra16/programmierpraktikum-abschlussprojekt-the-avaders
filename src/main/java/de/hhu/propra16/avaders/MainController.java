@@ -2,6 +2,7 @@ package de.hhu.propra16.avaders;
 
 import de.hhu.propra16.avaders.catalogueLoader.ParserException;
 import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
@@ -35,8 +37,9 @@ public class MainController {
     @FXML private Button stepFurther;
     
     //User-information about activated modes and time left due activated 'babysteps'
-    @FXML private Text activatedModes;
-    @FXML private Text timeLeft;
+    @FXML private Label activatedModes;
+    @FXML private Label timeLeft;
+	@FXML private Label timeLeftTitle;
 
     //input-areas for user
     @FXML private TextArea greenRefactor;
@@ -51,7 +54,7 @@ public class MainController {
     @FXML void handleNewExercise(ActionEvent event) {
 		Path exercisePath = main.getExercise();
 		try {
-			FileReader fileReader = new FileReader(exercisePath);
+			FileReader           fileReader           = new FileReader(exercisePath);
 			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
 			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
 			XMLExerciseLoader    xmlExerciseLoader    = new XMLExerciseLoader(xmlExerciseTokenizer, exerciseCatalogue);
@@ -63,6 +66,28 @@ public class MainController {
 			}
 			e.printStackTrace();
 		}
+
+		Exercise exercise = exerciseCatalogue.getExercise(1);
+		this.userFieldRed.setText(exercise.getTestTemplates(0));
+		this.activatedModes.setText(getModes(exercise));
+	}
+
+	private String getModes(Exercise exercise){
+		String modesDisplay = "";
+		if(exercise.babyStepsIsEnabled()) {
+			modesDisplay += "Babysteps, ";
+			timeLeft.setText(exercise.babyStepsTime());
+			timeLeftTitle.setVisible(true);
+			timeLeft.setVisible(true);
+		}
+		if(exercise.timeTrackingIsEnabled())
+		    modesDisplay += "Tracking, ";
+		if(exercise.atdd())
+			modesDisplay += "ATDD, ";
+		if(modesDisplay.contentEquals(""))
+			return "<None>";
+		System.out.println(modesDisplay);
+		return modesDisplay.substring(0, modesDisplay.length() - 2);
 	}
 
 	@FXML
@@ -70,6 +95,9 @@ public class MainController {
 		Tester      tester      = new Tester();
 		KonfigWerte konfigWerte = new KonfigWerte();
 		Logik       logic       = new Logik(tester, konfigWerte);
+
+		timeLeftTitle.setVisible(false);
+		timeLeft.setVisible(false);
 	}
 
 	public void setMain(Main main){
