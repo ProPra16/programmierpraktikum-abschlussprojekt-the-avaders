@@ -1,5 +1,7 @@
+<!-- header comment -->
 <exercises>
 	<exercise name="Roemische Zahlen">
+		<!-- one line comment -->
 		<tests>
 			<test name="RomanNumberConverterTest">
 				import static org.junit.Assert.*;
@@ -21,11 +23,17 @@
 			</test>
 		</tests>
 
+		<!-- multiple
+		line
+		comment
+		-->
 		<classes>
+			<!-- comment here -->
 			<class name="RomanNumberConverter">
 				public class RomanNumberConverter {
 				}
 			</class>
+			<!-- another comment here -->
 			<class name="RomanNumberConverter2">
 				public class RomanNumberConverter2 {
 				}
@@ -39,7 +47,7 @@
 		<description> Konvertiert arabische in roemische Zahlen. </description>
 		<config>
 			<timetracking value="True" />
-
+			<!-- comment there -->
 			<babysteps value="False" />
 		</config>
 	</exercise>

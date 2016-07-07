@@ -11,7 +11,6 @@ public class BabyStepsToken extends Token {
 	public BabyStepsToken(String value, int time){
 		super("babysteps", value);
 
-		//TODO: make time integer and change everything accordingly
 		if(time != 0) this.time = time;
 		else this.time = 120; // standard time
 	}

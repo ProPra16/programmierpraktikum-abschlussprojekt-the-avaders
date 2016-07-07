@@ -73,6 +73,10 @@ public class XMLExerciseTokenizer {
 			fullToken = fullToken + readLine;
 		}
 
+		if(fullToken != null && fullToken.contains("<!--"))
+			fullToken = fullToken.substring(0, fullToken.indexOf("<!--")) +
+						fullToken.substring(fullToken.indexOf("-->") + 3);
+
 		readLine = fullToken;
 	}
 

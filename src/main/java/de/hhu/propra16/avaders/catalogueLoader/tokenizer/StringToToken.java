@@ -149,7 +149,7 @@ public class StringToToken {
 
 		return readString.substring(0, indexOfQuote).trim();
 	}
-	
+
 	/**
 	 * Parses the name property of a tokens
 	 * @param token The tokens which this name belongs to
