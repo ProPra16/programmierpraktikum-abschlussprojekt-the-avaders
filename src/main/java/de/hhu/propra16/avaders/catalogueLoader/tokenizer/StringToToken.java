@@ -13,7 +13,7 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations
 /**
  * Converts strings into tokens instances and returns them
  */
-class StringToToken {
+public class StringToToken {
 	/**
 	 * Extract information from the given string and collects them
 	 * in a tokens that is then returned
@@ -23,7 +23,7 @@ class StringToToken {
 	 * @throws SamePropertyTwiceException if a property appears twice within the tokens
 	 * @throws TokenException if an unexpected Token was read or a Token is missing
      */
-	static Token convert(String readString, int lineNumber) throws SamePropertyTwiceException, TokenException {
+	public static Token convert(String readString, int lineNumber) throws SamePropertyTwiceException, TokenException {
 		if (readString.startsWith("/")) readString = readString.replaceAll("\\s","");
 
 		if(readString.startsWith("exercises") 		|| readString.startsWith("/exercises")	||
