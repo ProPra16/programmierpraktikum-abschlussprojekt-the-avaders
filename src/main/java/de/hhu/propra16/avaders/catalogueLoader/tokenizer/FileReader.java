@@ -42,7 +42,7 @@ public class FileReader implements LineReader {
 	/**
 	 * @return The path this reader operates on as String
      */
-	public String getPath(){
+	String getPath(){
 		return path;
 	}
 }

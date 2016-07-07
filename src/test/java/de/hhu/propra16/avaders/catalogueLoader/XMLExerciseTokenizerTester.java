@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.*;
 
 public class XMLExerciseTokenizerTester {
 	private XMLExerciseTokenizer xmlExerciseTokenizer = null;
@@ -28,8 +29,8 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("exercises", xmlExerciseTokenizer.currentToken().name);
-		Assert.assertEquals(null, xmlExerciseTokenizer.currentToken().value);
+		assertEquals("exercises", xmlExerciseTokenizer.currentToken().name);
+		assertEquals(null, xmlExerciseTokenizer.currentToken().value);
 	}
 
 	@Test
@@ -42,8 +43,8 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("/exercises", xmlExerciseTokenizer.currentToken().name);
-		Assert.assertEquals(null, xmlExerciseTokenizer.currentToken().value);
+		assertEquals("/exercises", xmlExerciseTokenizer.currentToken().name);
+		assertEquals(null, xmlExerciseTokenizer.currentToken().value);
 	}
 
 	@Test
@@ -56,7 +57,7 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals(false, xmlExerciseTokenizer.hasNextToken());
+		assertEquals(false, xmlExerciseTokenizer.hasNextToken());
 	}
 
 	@Test
@@ -70,7 +71,7 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("test Description", token.value);
+		assertEquals("test Description", token.value);
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("test Description", token.value);
+		assertEquals("test Description", token.value);
 	}
 
 
@@ -98,7 +99,7 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("classes", xmlExerciseTokenizer.currentToken().name);
+		assertEquals("classes", xmlExerciseTokenizer.currentToken().name);
 	}
 
 	@Test
@@ -111,7 +112,7 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("/classes", xmlExerciseTokenizer.currentToken().name);
+		assertEquals("/classes", xmlExerciseTokenizer.currentToken().name);
 	}
 
 	@Test
@@ -124,8 +125,8 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("exercise", xmlExerciseTokenizer.currentToken().name);
-		Assert.assertEquals("test", xmlExerciseTokenizer.currentToken().value);
+		assertEquals("exercise", xmlExerciseTokenizer.currentToken().name);
+		assertEquals("test", xmlExerciseTokenizer.currentToken().value);
 	}
 
 	@Test
@@ -136,7 +137,7 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  babysteps value = \t \"false \n />\n");
 			xmlExerciseTokenizer.advance();
 		} catch (MissingTokenException e) {
-			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
+			assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -153,7 +154,7 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          <  babysteps value  \t \"false\" \n />\n");
 			xmlExerciseTokenizer.advance();
 		} catch (MissingTokenException e) {
-			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
+			assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -173,8 +174,8 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("babysteps", xmlExerciseTokenizer.currentToken().name);
-		Assert.assertEquals("false", xmlExerciseTokenizer.currentToken().value);
+		assertEquals("babysteps", xmlExerciseTokenizer.currentToken().name);
+		assertEquals("false", xmlExerciseTokenizer.currentToken().value);
 	}
 
 	@Test
@@ -187,9 +188,9 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("babysteps", xmlExerciseTokenizer.currentToken().name);
-		Assert.assertEquals("true", xmlExerciseTokenizer.currentToken().value);
-		Assert.assertEquals(135, ((BabyStepsToken)xmlExerciseTokenizer.currentToken()).time);
+		assertEquals("babysteps", xmlExerciseTokenizer.currentToken().name);
+		assertEquals("true", xmlExerciseTokenizer.currentToken().value);
+		assertEquals(135, ((BabyStepsToken)xmlExerciseTokenizer.currentToken()).time);
 	}
 
 	@Test
@@ -202,7 +203,7 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer.advance();
 		}
 		catch (TokenException e){
-			Assert.assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
+			assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -224,7 +225,7 @@ public class XMLExerciseTokenizerTester {
 			xmlExerciseTokenizer.advance();
 		}
 		catch (UnexpectedTokenException e){
-			Assert.assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
+			assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -246,7 +247,7 @@ public class XMLExerciseTokenizerTester {
 			fail();
 		}
 
-		Assert.assertEquals("/test", xmlExerciseTokenizer.currentToken().name);
+		assertEquals("/test", xmlExerciseTokenizer.currentToken().name);
 	}
 
 	@Test
@@ -265,7 +266,7 @@ public class XMLExerciseTokenizerTester {
 			e.printStackTrace();
 			fail();
 		} catch (IOException e){
-			Assert.assertEquals(ioException.getMessage(), e.getMessage());
+			assertEquals(ioException.getMessage(), e.getMessage());
 			return;
 		}
 		fail();

@@ -25,7 +25,7 @@ public class JavaFiles {
 	 * @return The file with the corresponding index
 	 * @throws IndexOutOfBoundsException - if the index is out of range
      */
-	public JavaFile getJavaFile(int javaFileNumber){
+	JavaFile getJavaFile(int javaFileNumber){
 		return javaFiles.get(javaFileNumber);
 	}
 

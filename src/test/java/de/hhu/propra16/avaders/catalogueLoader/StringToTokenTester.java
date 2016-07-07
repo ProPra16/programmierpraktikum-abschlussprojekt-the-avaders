@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.*;
 
 public class StringToTokenTester {
 	 @Test
@@ -23,8 +24,8 @@ public class StringToTokenTester {
 			 fail();
 		 }
 
-		 Assert.assertEquals("exercises", token.name);
-		 Assert.assertEquals(null, token.value);
+		 assertEquals("exercises", token.name);
+		 assertEquals(null, token.value);
 	 }
 
 	@Test
@@ -37,8 +38,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("/exercises", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("/exercises", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -51,8 +52,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("classes", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("classes", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -65,8 +66,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("/classes", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("/classes", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -79,8 +80,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("tests", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("tests", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -93,8 +94,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("/tests", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("/tests", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -107,8 +108,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("test", token.name);
-		Assert.assertEquals("testName", token.value);
+		assertEquals("test", token.name);
+		assertEquals("testName", token.value);
 	}
 
 	@Test
@@ -121,8 +122,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("config", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("config", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -134,8 +135,8 @@ public class StringToTokenTester {
 			System.out.println(e.getMessage());
 			fail();
 		}
-		Assert.assertEquals("/config", token.name);
-		Assert.assertEquals(null, token.value);
+		assertEquals("/config", token.name);
+		assertEquals(null, token.value);
 	}
 
 	@Test
@@ -148,8 +149,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("exercise", token.name);
-		Assert.assertEquals("Römische Zahlen", token.value);
+		assertEquals("exercise", token.name);
+		assertEquals("Römische Zahlen", token.value);
 	}
 
 	@Test
@@ -161,8 +162,8 @@ public class StringToTokenTester {
 			System.out.println(e.getMessage());
 			fail();
 		}
-		Assert.assertEquals("class", token.name);
-		Assert.assertEquals("test", token.value);
+		assertEquals("class", token.name);
+		assertEquals("test", token.value);
 	}
 
 	@Test
@@ -174,8 +175,8 @@ public class StringToTokenTester {
 			System.out.println(e.getMessage());
 			fail();
 		}
-		Assert.assertEquals("babysteps", token.name);
-		Assert.assertEquals("false", token.value);
+		assertEquals("babysteps", token.name);
+		assertEquals("false", token.value);
 	}
 
 
@@ -189,9 +190,9 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("babysteps", token.name);
-		Assert.assertEquals("true", token.value);
-		Assert.assertEquals(120, ((BabyStepsToken)token).time);
+		assertEquals("babysteps", token.name);
+		assertEquals("true", token.value);
+		assertEquals(120, ((BabyStepsToken)token).time);
 	}
 
 	@Test
@@ -203,9 +204,9 @@ public class StringToTokenTester {
 			System.out.println(e.getMessage());
 			fail();
 		}
-		Assert.assertEquals("babysteps", token.name);
-		Assert.assertEquals("true", token.value);
-		Assert.assertEquals(120, ((BabyStepsToken)token).time);
+		assertEquals("babysteps", token.name);
+		assertEquals("true", token.value);
+		assertEquals(120, ((BabyStepsToken)token).time);
 	}
 
 	@Test
@@ -217,8 +218,8 @@ public class StringToTokenTester {
 			System.out.println(e.getMessage());
 			fail();
 		}
-		Assert.assertEquals("timetracking", token.name);
-		Assert.assertEquals("false", token.value);
+		assertEquals("timetracking", token.name);
+		assertEquals("false", token.value);
 	}
 
 	@Test
@@ -230,8 +231,8 @@ public class StringToTokenTester {
 			System.out.println(e.getMessage());
 			fail();
 		}
-		Assert.assertEquals("timetracking", token.name);
-		Assert.assertEquals("true", token.value);
+		assertEquals("timetracking", token.name);
+		assertEquals("true", token.value);
 	}
 
 	@Test
@@ -242,7 +243,7 @@ public class StringToTokenTester {
 		try {
 			StringToToken.convert("timetracking time=\"  true \t \"", 1);
 		} catch (Exception e) {
-			Assert.assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
+			assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		fail();
@@ -255,7 +256,7 @@ public class StringToTokenTester {
 		try {
 			StringToToken.convert("babysteps \t time = \"2:00\"   time=\"2:00\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
-			Assert.assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
+			assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
 		} catch (Exception e){
 			fail();
@@ -270,7 +271,7 @@ public class StringToTokenTester {
 		try {
 			StringToToken.convert("babysteps \t value = \"true\"   value=\"false\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
-			Assert.assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
+			assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -286,7 +287,7 @@ public class StringToTokenTester {
 		try {
 			StringToToken.convert("exercise = \"fail\"", 1);
 		} catch (MissingTokenException e) {
-			Assert.assertEquals(missingTokenException.getMessage(), e.getMessage());
+			assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
 		}
 		catch (Exception e){
@@ -305,8 +306,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("atdd", token.name);
-		Assert.assertEquals("true", token.value);
+		assertEquals("atdd", token.name);
+		assertEquals("true", token.value);
 	}
 
 	@Test
@@ -319,8 +320,8 @@ public class StringToTokenTester {
 			fail();
 		}
 
-		Assert.assertEquals("atdd", token.name);
-		Assert.assertEquals("false", token.value);
+		assertEquals("atdd", token.name);
+		assertEquals("false", token.value);
 	}
 
 	@Test
@@ -330,7 +331,7 @@ public class StringToTokenTester {
 		try {
 			StringToToken.convert("atdd \t value = \"false\" value = \"true\"\n", 1);
 		} catch (SamePropertyTwiceException e){
-			Assert.assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
+			assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
 		} catch (TokenException e) {
 			e.printStackTrace();
