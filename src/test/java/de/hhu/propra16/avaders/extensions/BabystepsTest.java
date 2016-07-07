@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import vk.core.api.*;
@@ -23,7 +24,7 @@ import static de.hhu.propra16.avaders.logik.Step.REFACTOR1;
 public class BabystepsTest extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		GridPane gridPane = new GridPane();
+		StackPane gridPane = new StackPane();
 		primaryStage.setScene(new Scene(gridPane,200,200));
 		//HTMLEditor htmlEditor = new HTMLEditor();
 		//htmlEditor.addEventHandler(KeyEvent.KEY_RELEASED,evt -> {htmlEditor.setHtmlText(highlight(htmlEditor.getHtmlText()));
@@ -49,9 +50,13 @@ public class BabystepsTest extends Application{
 		Chart chart = dummy.showCompileErrorChart();
 		chart.setMaxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(chart, Priority.ALWAYS);
-		gridPane.add(chart,0,0,2,2);
-		gridPane.add(dummy.showTimeChart(true),0,3);
-		gridPane.setGridLinesVisible(true);
+		gridPane.getChildren().add(chart);
+		gridPane.getChildren().add(dummy.showTimeChart(false));
+		//gridPane.setGridLinesVisible(true);
+		System.out.println(dummy.getTimeForRED());
+		System.out.println(dummy.getTimeForGREEN());
+		System.out.println(dummy.getTimeForREFACTOR1());
+		System.out.println(dummy.getTimeForREFACTOR2());
 		primaryStage.show();
 		//startTimer(gridPane);
 		//startHTMLTimer(gridPane, htmlEditor);
@@ -104,7 +109,7 @@ public class BabystepsTest extends Application{
 
 	private void startHTMLTimer(GridPane gridPane, HTMLEditor htmlEditor) {
 		Button bbutton = new Button("start Babysteps");
-		bbutton.setOnAction(evt -> {Babysteps babysteps = new Babysteps(htmlEditor); babysteps.startTimerHTML(10);});
+		bbutton.setOnAction(evt -> {Babysteps babysteps = new Babysteps(htmlEditor); babysteps.startTimer(10);});
 		gridPane.add(bbutton,1,0);
 
 	}

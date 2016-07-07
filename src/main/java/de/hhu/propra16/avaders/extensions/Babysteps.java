@@ -11,6 +11,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.web.HTMLEditor;
 import javafx.util.Duration;
 
+/**
+ * Diese Klasse implementiert die {@link Babysteps}-Erweiterung.
+ * Mit dieser kann eine bestimmte (oder eine standard) Methode nach einer bestimmten Zeit ausgeführt werden
+ */
 public class Babysteps {
 	private Timeline timeline;
 	private volatile TextArea currentlyEditableArea;
@@ -19,12 +23,13 @@ public class Babysteps {
 	private NumberBinding remaining = Bindings.subtract(maxSeconds,seconds);
 	private BooleanBinding hasTimeLeft = Bindings.notEqual(seconds,maxSeconds);
 	private Runnable onTimeout;
-
 	private HTMLEditor currentlyEditableHtmlEditor;
 
 	/**
-	 * Creates a new instance of Babysteps with the default onTimeout-method.
-	 * @param t the TextAre which you would like to attatch the Babysteps
+	 * Erzeugt eine neue Instanz von {@link Babysteps}, welche mit dem übergebenen {@link TextArea} verknüpft wird.
+	 * Hierbei wird die Standard-Methode, welche aufgerufen wird, wenn die Zeit ausläuft, geladen, welche
+	 * das {@link TextArea} sperrt und den vorherigen Text wiederherstellt.
+	 * @param t Das {@link TextArea} mit welchem diese Instanz verknüpft wird.
 	 */
 	public Babysteps(TextArea t){
 		currentlyEditableArea = t;
@@ -34,7 +39,7 @@ public class Babysteps {
 	}
 
 	/**
-	 * Creates a new instance of Babysteps with an empty onTimeout-method
+	 * Erzeugt eine neue Instanz von {@link Babysteps}.
 	 */
 	public Babysteps(){
 		onTimeout = () -> {};
@@ -49,6 +54,12 @@ public class Babysteps {
 					}}));
 	}
 
+	/**
+	 * Erzeugt eine neue Instanz von {@link Babysteps}, welche mit dem übergebenen {@link HTMLEditor} verknüpft wird.
+	 * Hierbei wird die Standard-Methode, welche aufgerufen wird, wenn die Zeit ausläuft, geladen, welche
+	 * das {@link TextArea} sperrt und den vorherigen Text wiederherstellt.
+	 * @param htmlEditor Der {@link HTMLEditor} mit welchem diese Instanz verknüpft wird.
+	 */
 	public Babysteps(HTMLEditor htmlEditor){
 		currentlyEditableHtmlEditor = htmlEditor;
 		oldText = htmlEditor.getHtmlText();
@@ -61,16 +72,10 @@ public class Babysteps {
 					}}));
 	}
 
-	public void startTimerHTML(int maxSeconds){
-		this.maxSeconds.set(maxSeconds);
-		timeline.setCycleCount(maxSeconds);
-		timeline.play();
-	}
-
 	/**
-	 * starts the timer which counts the remaining time
-	 * if the timer runs out, it will trigger the onTimeout-mehod
-	 * @param maxSeconds the maximum amount of seconds for the user to edit the code
+	 * Startet den Timer welcher von der übergebenen Zeit bis 0 runter zählt,
+	 * wenn dei Zeit abgelaufen ist, wird die mit der {@link Babysteps#setOnTimeout(Runnable) setOnTimeout}-Methode gesetzten oder die Standard-Methode ausgeführt.
+	 * @param maxSeconds Die Zeit in Sekunden, wie lange der Timer laufen soll.
 	 */
 	public void startTimer(int maxSeconds){
 		this.maxSeconds.set(maxSeconds);
@@ -79,21 +84,29 @@ public class Babysteps {
 	}
 
 	/**
-	 * stops the Timer
+	 * Stoppt den Timer.
 	 */
 	public void stopTimer(){
 		timeline.stop();
 	}
 
 	/**
-	 * resets the timer, but does not stops it.
+	 * Setzt die verstrichene Zeit auf 0, aber stoppt den Timer nicht.
 	 */
 	public void reset(){
 		seconds.set(0);
 	}
 
 	/**
-	 * restarts the timer
+	 * Stoppt den Timer und setzt die vertrichene Zeit auf 0.
+	 */
+	public void resetAndStop(){
+		timeline.stop();
+		seconds.set(0);
+	}
+
+	/**
+	 * Setzt die verstrichene Zeit auf 0 und startet ihn erneut.
 	 */
 	public void restart(){
 		timeline.stop();
@@ -102,8 +115,8 @@ public class Babysteps {
 	}
 
 	/**
-	 * changes the current TextArea
-	 * @param t the TextArea
+	 * Ändert das verknüpfte {@link TextArea}
+	 * @param t Das zu verknüpfende {@link TextArea}
 	 */
 	public void setCurrentlyEditableArea(TextArea t){
 		currentlyEditableArea = t;
@@ -111,32 +124,32 @@ public class Babysteps {
 	}
 
 	/**
-	 * returns the remaining seconds for the user to edit his code
-	 * @return remaining seconds
+	 * Gibt die verbleibende Zeit, bis der Timer ausgelaufen ist, zurück.
+	 * @return Die verbleibenden Sekunden
 	 */
 	public int getRemainingSeconds(){
 		return remaining.intValue();
 	}
 
 	/**
-	 * returns a boolean represents, whether the user has still time left or not
-	 * @return current value
+	 * Gibt einen Wahrheitswert zurück, welcher zeigt, ob der Timer noch läuft.
+	 * @return der Wahrheitswert
 	 */
 	public boolean hasTimeLeft(){
 		return hasTimeLeft.get();
 	}
 
 	/**
-	 * returns the text placed in the TextArea when the instance of this Object were created
-	 * @return old text
+	 * Gibt den Text, welcher in der Textkomponente während der verknüpfung enthalten war, zurück.
+	 * @return Der ursprüngliche Text
 	 */
 	public String getOldText(){
 		return oldText;
 	}
 
 	/**
-	 * sets the onTimeout-method
-	 * @param onTimeout the method which triggers if the timer runs out
+	 * Setzt die Methode, welche aufgerufen wird, wenn der Timer ausläuft.
+	 * @param onTimeout Die Methode, welche aufgerufen wird, wenn der Timer ausläuft.
 	 */
 	public void setOnTimeout(Runnable onTimeout) {
 		this.onTimeout = onTimeout;
