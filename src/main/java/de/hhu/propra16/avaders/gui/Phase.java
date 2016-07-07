@@ -5,7 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 
-abstract class Phase {
+public class Phase {
 	//save userinput from textarea
 	public String userInput; 
 	
