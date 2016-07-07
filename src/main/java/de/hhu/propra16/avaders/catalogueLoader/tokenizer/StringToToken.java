@@ -149,7 +149,7 @@ public class StringToToken {
 
 		return readString.substring(0, indexOfQuote).trim();
 	}
-
+	
 	/**
 	 * Parses the name property of a tokens
 	 * @param token The tokens which this name belongs to
@@ -163,14 +163,9 @@ public class StringToToken {
 			throw new MissingTokenException(token + ", name or =", lineNumber);
 
 		readString = remove(readString, token);
-		readString = remove(readString, "name");
-		readString = remove(readString, "=");
+		readString = parseProperty(readString, "name", lineNumber);
 
-		if(readString.startsWith("\"") && readString.endsWith("\"")){
-			readString = readString.substring(1,readString.length()-1);
-			return new Token(token, readString);
-		}
-		else throw new MissingTokenException("\"", lineNumber);
+		return new Token(token, readString);
 	}
 
 	/**
