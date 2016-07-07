@@ -23,7 +23,7 @@ public class TrackingTest {
 		tracking.startGREEN();
 		Thread.sleep(5000);
 		tracking.finishedGREEN();
-		Assert.assertEquals(5, tracking.getTimeForGREEN());
+		Assert.assertEquals(5, tracking.getTimeForGREEN(),1);
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class TrackingTest {
 		tracking.finishedGREEN();
 		tracking.finishedRED();
 		Assert.assertEquals(0, tracking.getTimeForGREEN());
-		Assert.assertEquals(6,tracking.getTimeForRED());
+		Assert.assertEquals(6,tracking.getTimeForRED(),1);
 	}
 
 	@Test
@@ -43,34 +43,44 @@ public class TrackingTest {
 		tracking.startREFACTOR1();
 		Thread.sleep(4000);
 		tracking.finishedREFACTOR1();
-		Assert.assertEquals(4, tracking.getTimeForREFACTOR1());
+		Assert.assertEquals(4, tracking.getTimeForREFACTOR1(),1);
 	}
 
 	@Test
 	public void testCycle() throws Exception{
 		tracking.setState(GREEN);
 		tracking.startGREEN();
-		Thread.sleep(1000);
-		tracking.finishedStepAndMoveOn(false);
-		tracking.startRED();
 		Thread.sleep(2000);
 		tracking.finishedStepAndMoveOn(false);
+		Assert.assertEquals(2, tracking.getTimeForGREEN(),1);
 		tracking.startREFACTOR1();
-		Thread.sleep(1000);
-		tracking.finishedREFACTOR1();
-		Assert.assertEquals(1, tracking.getTimeForGREEN());
-		Assert.assertEquals(2, tracking.getTimeForRED());
-		Assert.assertEquals(1, tracking.getTimeForREFACTOR1());
+		Thread.sleep(4000);
+		tracking.finishedStepAndMoveOn(false);
+		Assert.assertEquals(4, tracking.getTimeForREFACTOR1(),1);
+		tracking.startRED();
+		Thread.sleep(2000);
+		tracking.finishedRED();
+		Assert.assertEquals(2, tracking.getTimeForRED(),1);
 	}
 
 	@Test
 	public void testCompileError() throws Exception{
-		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ public static äää(){return} pribate nonstatic öö(){machzurück();}}", false);
+		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ " +
+																			"public penis(){ new penis();}"+
+																			"public int äää(){" +
+				"																return \"hohoho\";" +
+				"															} " +
+				"															private void öö(){" +
+				"																String[][] dsa = machzurück(3);" +
+				"															}" +
+				"															protected int[][] machzurück(int öärg){}" +
+																		"}", false);
 		JavaStringCompiler compiler = CompilerFactory.getCompiler(compilationUnit);
 		compiler.compileAndRunTests();
 		CompilerResult compilerResult = compiler.getCompilerResult();
 		Collection<CompileError> compilerErrorsForCompilationUnit = compilerResult.getCompilerErrorsForCompilationUnit(compilationUnit);
 		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
+		tracking.printCMap();
 	}
 
 	@Test

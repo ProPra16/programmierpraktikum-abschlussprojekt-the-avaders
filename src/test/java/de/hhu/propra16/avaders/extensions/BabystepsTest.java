@@ -1,25 +1,15 @@
 package de.hhu.propra16.avaders.extensions;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.Chart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.web.HTMLEditor;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import org.junit.Assert;
 import vk.core.api.*;
 
 import java.util.Collection;
@@ -27,7 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.hhu.propra16.avaders.logik.Step.GREEN;
-import static org.junit.Assert.*;
+import static de.hhu.propra16.avaders.logik.Step.RED;
+import static de.hhu.propra16.avaders.logik.Step.REFACTOR1;
 
 public class BabystepsTest extends Application{
 	@Override
@@ -35,27 +26,32 @@ public class BabystepsTest extends Application{
 		GridPane gridPane = new GridPane();
 		primaryStage.setScene(new Scene(gridPane,200,200));
 		//HTMLEditor htmlEditor = new HTMLEditor();
-		/*htmlEditor.addEventHandler(KeyEvent.KEY_RELEASED,evt -> {htmlEditor.setHtmlText(highlight(htmlEditor.getHtmlText()));
-			System.out.println(htmlEditor.getHtmlText());
-			((WebView)htmlEditor.lookup("WebView")).getEngine().loadContent(htmlEditor.getHtmlText());
-			((WebView)htmlEditor.lookup("WebView")).getEngine().executeScript("document.getElementById('my-id').focus()");
-			System.out.println(htmlEditor.isFocused());
-		});*/
-		/*HBox hBox = new HBox();
-		hBox.getChildren().add(htmlEditor);
-		gridPane.add(hBox,0,1);
-		Node[] nodes = htmlEditor.lookupAll(".tool-bar").toArray(new Node[0]);
-		for(Node node : nodes)
-		{
-			node.setVisible(false);
-			node.setManaged(false);
-		}
-
-		Button style = new Button("style");
-		style.setOnAction(evt -> htmlEditor.setHtmlText(highlight(htmlEditor.getHtmlText())));
-		gridPane.add(style,0,0);*/
-		gridPane.add(testCompileError(),0,0);
-		gridPane.add(testCycle(),1,0);
+		//htmlEditor.addEventHandler(KeyEvent.KEY_RELEASED,evt -> {htmlEditor.setHtmlText(highlight(htmlEditor.getHtmlText()));
+		//	System.out.println(htmlEditor.getHtmlText());
+		//	((WebView)htmlEditor.lookup("WebView")).getEngine().loadContent(htmlEditor.getHtmlText());
+		//	((WebView)htmlEditor.lookup("WebView")).getEngine().executeScript("document.getElementById('my-id').focus()");
+		//	System.out.println(htmlEditor.isFocused());
+		//});
+		//HBox hBox = new HBox();
+		//hBox.getChildren().add(htmlEditor);
+		//gridPane.add(hBox,0,1);
+		//Node[] nodes = htmlEditor.lookupAll(".tool-bar").toArray(new Node[0]);
+		//for(Node node : nodes)
+		//{
+		//	node.setVisible(false);
+		//	node.setManaged(false);
+		//}
+		//Button style = new Button("style");
+		//style.setOnAction(evt -> htmlEditor.setHtmlText(highlight(htmlEditor.getHtmlText())));
+		//gridPane.add(style,0,0);
+		TrackingTestDummy dummy = new TrackingTestDummy();
+		dummy.generateRandomData();
+		Chart chart = dummy.showCompileErrorChart();
+		chart.setMaxWidth(Double.MAX_VALUE);
+		HBox.setHgrow(chart, Priority.ALWAYS);
+		gridPane.add(chart,0,0,2,2);
+		gridPane.add(dummy.showTimeChart(true),0,3);
+		gridPane.setGridLinesVisible(true);
 		primaryStage.show();
 		//startTimer(gridPane);
 		//startHTMLTimer(gridPane, htmlEditor);
@@ -114,12 +110,14 @@ public class BabystepsTest extends Application{
 	}
 
 	public Chart testCompileError(){
-		Tracking tracking = new Tracking();
+		Tracking tracking = new Tracking(RED);
 		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ public static äää(){return} pribate nonstatic öö(){machzurück();}}", false);
 		JavaStringCompiler compiler = CompilerFactory.getCompiler(compilationUnit);
 		compiler.compileAndRunTests();
 		CompilerResult compilerResult = compiler.getCompilerResult();
 		Collection<CompileError> compilerErrorsForCompilationUnit = compilerResult.getCompilerErrorsForCompilationUnit(compilationUnit);
+		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
+		tracking.setState(REFACTOR1);
 		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
 		return tracking.showCompileErrorChart();
 	}
