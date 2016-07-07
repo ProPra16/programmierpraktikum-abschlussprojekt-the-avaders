@@ -12,8 +12,10 @@ import javafx.scene.chart.Chart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.util.Pair;
 import vk.core.api.CompileError;
 import vk.core.api.TestFailure;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -23,38 +25,46 @@ import java.util.Map;
 
 import static de.hhu.propra16.avaders.logik.Step.*;
 
+/**
+ * Diese Klasse erhebt Statistiken über das Programmierverhalten des Benutzers.
+ * Dafür kann sie die benötigte Zeit der einzelnen {@link Step}s speichern
+ * und die Häufigkeit von {@link CompileError}s und {@link TestFailure}s.
+ * Diese können auch in hübschen {@link Chart Diagrammen} dargestellt werden.
+ */
 public class Tracking {
 	protected int secondsGREEN = 0;
 	protected int secondsRED = 0;
 	protected int secondsREFACTOR = 0;
 	protected int secondsREFACTOR2 = 0;
+	protected int secondsAcceptance = 0;
 	private LocalTime currentStartTime;
 	private Step currentState;
-	protected Map<String, Integer> compileErrorMapRED = new HashMap<>(), compileErrorMapREFACTOR = new HashMap<>(), testErrorMap = new HashMap<>();
+	protected Map<String, Integer> compileErrorMapGREEN = new HashMap<>(), compileErrorMapREFACTOR = new HashMap<>(), testErrorMap = new HashMap<>();
 
 	/**
-	 * Creates an instance of Tracking with no current Step
+	 * Erzeugt eine Instanz von {@link Tracking}, ohne einen aktuellen {@link Step} zu setzen.
 	 */
 	public Tracking(){}
 
 	/**
-	 * Creates an instance of Tracking with the given Step as current Step
-	 * @param currentState the current Step
+	 * Erzeugt eine Instanz von {@link Tracking} und setzt dabei den aktuellen {@link Step}.
+	 * @param currentState Der aktuelle {@link Step}
 	 */
 	public Tracking(Step currentState){
 		this.currentState = currentState;
 	}
 
 	/**
-	 * sets the current Step
-	 * @param currentStep the new current Step
+	 * Setzt den aktuellen {@link Step}.
+	 * @param currentStep Der neue, aktuelle {@link Step}.
 	 */
 	public void setState(Step currentStep){
 		currentState = currentStep;
 	}
 
 	/**
-	 * starts counting the Time for the GREEN-Step if it's the current Step
+	 * Wenn der aktuelle {@link Step} {@link Step#GREEN GREEN} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#GREEN GREEN}-{@link Step} gezählt.
 	 */
 	public void startGREEN(){
 		if(!currentState.equals(GREEN)) return;
@@ -62,7 +72,9 @@ public class Tracking {
 	}
 
 	/**
-	 * stops counting the time and adds the time to the complete time of GREEN-Step
+	 * Wenn der aktuelle {@link Step} {@link Step#GREEN GREEN} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#GREEN GREEN}-Zeit aufsummiert.
+	 * Es wird nun nicht weiter gezählt.
 	 */
 	public void finishedGREEN(){
 		if(currentState != GREEN) return;
@@ -71,7 +83,8 @@ public class Tracking {
 	}
 
 	/**
-	 * starts counting the Time for the RED-Step if it's the current Step
+	 * Wenn der aktuelle {@link Step} {@link Step#RED RED} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#RED RED}-{@link Step} gezählt.
 	 */
 	public void startRED(){
 		if(!currentState.equals(RED)) return;
@@ -79,7 +92,9 @@ public class Tracking {
 	}
 
 	/**
-	 * stops counting the time and adds the time to the complete time of RED-Step
+	 * Wenn der aktuelle {@link Step} {@link Step#RED RED} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#RED RED}-Zeit aufsummiert.
+	 * Es wird nun nicht weiter gezählt.
 	 */
 	public void finishedRED(){
 		if(!currentState.equals(RED)) return;
@@ -88,7 +103,8 @@ public class Tracking {
 	}
 
 	/**
-	 * starts counting the Time for the REFACTOR1-Step if it's the current Step
+	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR1 REFACTOR1} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#REFACTOR1 REFACTOR1}-{@link Step} gezählt.
 	 */
 	public void startREFACTOR1(){
 		if(!currentState.equals(REFACTOR1)) return;
@@ -96,7 +112,9 @@ public class Tracking {
 	}
 
 	/**
-	 * stops counting the time and adds the time to the complete time of REFACTOR1-Step
+	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR1 REFACTOR1} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#REFACTOR1 REFACTOR1}-Zeit aufsummiert.
+	 * Es wird nun nicht weiter gezählt.
 	 */
 	public void finishedREFACTOR1(){
 		if(!currentState.equals(REFACTOR1)) return;
@@ -105,7 +123,8 @@ public class Tracking {
 	}
 
 	/**
-	 * starts counting the Time for the REFACTOR2-Step if it's the current Step
+	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR2 REFACTOR2} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#REFACTOR2 REFACTOR2}-{@link Step} gezählt.
 	 */
 	public void startREFACTOR2(){
 		if(!currentState.equals(REFACTOR2)) return;
@@ -113,7 +132,9 @@ public class Tracking {
 	}
 
 	/**
-	 * stops counting the time and adds the time to the complete time of REFACTOR1-Step
+	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR2 REFACTOR2} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#REFACTOR2 REFACTOR2}-Zeit aufsummiert.
+	 * Es wird nun nicht weiter gezählt.
 	 */
 	public void finishedREFACTOR2() {
 		if(!currentState.equals(REFACTOR2)) return;
@@ -122,129 +143,189 @@ public class Tracking {
 	}
 
 	/**
-	 * stops the current Step, adds the needet time and set's the current Step to the next Step
-	 * @param refactor2Enabled idicates whether REFACTOR2 is enabled or not
+	 * Wenn der aktuelle {@link Step} {@link Step#ACCEPTANCE_RED ACCEPTANCE_RED} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#ACCEPTANCE_RED ACCEPTANCE_RED}-{@link Step} gezählt.
 	 */
-	public void finishedStepAndMoveOn(boolean refactor2Enabled){
+	public void startACCEPTANCE(){
+		if(!currentState.equals(ACCEPTANCE_RED)) return;
+		currentStartTime = LocalTime.now();
+	}
+
+	/**
+	 * Wenn der aktuelle {@link Step} {@link Step#ACCEPTANCE_RED ACCEPTANCE_RED} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#ACCEPTANCE_RED ACCEPTANCE_RED}-Zeit aufsummiert.
+	 * Es wird nun nicht weiter gezählt.
+	 */
+	public void finishedACCEPTANCE() {
+		if(!currentState.equals(ACCEPTANCE_RED)) return;
+		secondsAcceptance += currentStartTime.until(LocalTime.now(), ChronoUnit.SECONDS);
+		currentState = null;
+	}
+
+	/**
+	 * Beendet den aktuellen {@link Step} und summiert die verstichene Zeit auf.
+	 * Wechselt daraufhin zum nächsten {@link Step}
+	 * @param acceptanceEnabled Zeigt an, ob die Akzeptanztest genutzt werden.
+	 */
+	public void finishedStepAndMoveOn(boolean acceptanceEnabled){
 		switch (currentState){
 			case RED: finishedRED(); currentState = GREEN; break;
 			case GREEN: finishedGREEN(); currentState = REFACTOR1; break;
-			case REFACTOR1: finishedREFACTOR1(); if(!refactor2Enabled)currentState = RED;else currentState = REFACTOR2; break;
-			case REFACTOR2: finishedREFACTOR2(); currentState = RED; break;
+			case REFACTOR1: finishedREFACTOR1(); currentState = REFACTOR2; break;
+			case REFACTOR2: finishedREFACTOR2(); if(acceptanceEnabled)currentState = ACCEPTANCE_RED; else currentState = RED; break;
+			case ACCEPTANCE_RED: finishedACCEPTANCE(); currentState = RED; break;
 		}
 	}
 
 	/**
-	 * Trackes the Compile-errors of the user
-	 * @param compileErrors a Collection which holds the {@link CompileError}s
+	 * Speichert die {@link CompileError}s, welche der Benutzer in dem {@link Step#GREEN GREEN}- oder {@link Step#REFACTOR1 REFACTOR1}-{@link Step} erzeugt.
+	 * @param compileErrors Eine {@link Collection} welche die {@link CompileError}s enthält.
 	 */
 	public void addCompileExceptions(Collection<CompileError> compileErrors){
 		if(currentState == RED) {
 			compileErrors.forEach(x -> {
-				if (compileErrorMapRED.containsKey(x.getMessage()))
-					compileErrorMapRED.replace(x.getMessage(), compileErrorMapRED.get(x.getMessage()), compileErrorMapRED.get(x.getMessage()) + 1);
-				else compileErrorMapRED.put(x.getMessage(), 1);
+				String s = x.getMessage();
+				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
+				if(s.contains("incompatible types:"))  s = "incompatible types:";
+				if (compileErrorMapGREEN.containsKey(s))
+					compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s) + 1);
+				else compileErrorMapGREEN.put(s, 1);
 			});
 		} else if(currentState == REFACTOR1){
 			compileErrors.forEach(x -> {
-				if (compileErrorMapREFACTOR.containsKey(x.getMessage()))
-					compileErrorMapREFACTOR.replace(x.getMessage(), compileErrorMapREFACTOR.get(x.getMessage()), compileErrorMapREFACTOR.get(x.getMessage()) + 1);
-				else compileErrorMapREFACTOR.put(x.getMessage(), 1);
+				String s = x.getMessage();
+				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
+				if(s.contains("incompatible types:"))  s = "incompatible types:";
+				if (compileErrorMapREFACTOR.containsKey(s))
+					compileErrorMapREFACTOR.replace(s, compileErrorMapREFACTOR.get(s), compileErrorMapREFACTOR.get(s) + 1);
+				else compileErrorMapREFACTOR.put(s, 1);
 			});
 		}
 	}
 
-	public void printCMap(){
-		compileErrorMapRED.forEach((x, y) -> System.out.println(x+" "+y));
+	void printCMap(){
+		compileErrorMapGREEN.forEach((x, y) -> System.out.println(x+" "+y));
 	}
 
 	/**
-	 * Trackes the Test-errors of the user
-	 * @param testErrors a Collection which holds the {@link TestFailure}s
+	 * Speichert die {@link TestFailure}s, welche vom Benutzer erzeugt werden.
+	 * @param testErrors Eine {@link Collection} welche die {@link TestFailure}s enthält.
 	 */
 	public void addTestExceptions(Collection<TestFailure> testErrors){
 		testErrors.forEach(x -> {
-			if(testErrorMap.containsKey(x.getMessage())) compileErrorMapRED.replace(x.getMessage(), compileErrorMapRED.get(x.getMessage()), compileErrorMapRED.get(x.getMessage())+1);
-			else testErrorMap.put(x.getMessage(), 1);
+			String s = x.getMessage();
+			if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
+			if(s.contains("incompatible types:"))  s = "incompatible types:";
+			if(testErrorMap.containsKey(s)) compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s)+1);
+			else testErrorMap.put(s, 1);
 		});
 	}
 
-	public void diff(List<String> origin, List<String> current){
+	/**
+	 * Nimmt zwei {@link List}en, welche Dateien repräsentieren, und erzeugt ein {@link Pair},
+	 * welches den Zeitpunkt und die Unterschiede enthält.
+	 * @param origin Die Ursprungsdatei
+	 * @param current Die geänderte Datei
+	 * @param className Der Klassenname der Datei
+	 * @return das {@link Pair}
+	 */
+	public Pair<LocalDateTime, List<String>> diff(List<String> origin, List<String> current, String className){
 		Patch patch = DiffUtils.diff(origin, current/*,new MyersDiff()*/);
 		List<Delta> deltas = patch.getDeltas();
-		//deltas.forEach(x -> System.out.println(x.getRevised()+"\n"));
-		DiffUtils.generateUnifiedDiff("Brot", "Brot", origin, patch, 2).forEach(System.out::println);
+		List<String> diffList = DiffUtils.generateUnifiedDiff(className, className, origin, patch, 2);
+		return new Pair<>(LocalDateTime.now(), diffList);
 	}
 
 	/**
-	 * returns the time used for GREEN
-	 * @return the current value
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#GREEN GREEN}-{@link Step} verbracht hat.
+	 * @return Der aktuelle Wert.
 	 */
 	public int getTimeForGREEN(){
 		return secondsGREEN;
 	}
 
 	/**
-	 * returns the time used for RED
-	 * @return the current value
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#RED RED}-{@link Step} verbracht hat.
+	 * @return Der aktuelle Wert.
 	 */
 	public int getTimeForRED(){
 		return secondsRED;
 	}
 
 	/**
-	 * returns the time used for REFACTOR
-	 * @return the current value
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#REFACTOR1 REFACTOR1}-{@link Step} verbracht hat.
+	 * @return Der aktuelle Wert.
 	 */
 	public int getTimeForREFACTOR1(){
 		return secondsREFACTOR;
 	}
 
 	/**
-	 * returns maybe the time used for REFACTOR2
-	 * @return randomValueOfDoom rofl
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#REFACTOR2 REFACTOR2}-{@link Step} verbracht hat.
+	 * @return Der aktuelle Wert.
 	 */
 	public int getTimeForREFACTOR2() {return secondsREFACTOR2; }
 
 	/**
-	 * builds an BarCart showing the {@link CompileError}s and their number of occurence
-	 * @return the chart
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#ACCEPTANCE_RED ACCEPTANCE_RED}-{@link Step} verbracht hat.
+	 * @return Der aktuelle Wert.
 	 */
-	public Chart showCompileErrorREDChart(){
+	public int getTimeForACCEPTANCE(){
+		return secondsREFACTOR;
+	}
+
+	/**
+	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#RED RED}-{@link Step} darstellt.
+	 * @return Das Diagramm.
+	 */
+	public Chart showCompileErrorGREENChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
 		XYChart.Series<Number,String> series = new XYChart.Series<>();
-		compileErrorMapRED.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
+		series.setName("GREEN");
+		compileErrorMapGREEN.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
 		chart.getData().add(series);
 		return chart;
 	}
 
+	/**
+	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#REFACTOR1 REFACTOR1}-{@link Step} darstellt..
+	 * @return Das Diagramm.
+	 */
 	public Chart showCompileErrorREFACTORChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
 		XYChart.Series<Number,String> series = new XYChart.Series<>();
+		series.setName("REFACTOR");
 		compileErrorMapREFACTOR.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
 		chart.getData().add(series);
 		return chart;
 	}
 
+	/**
+	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#RED RED}- und {@link Step#REFACTOR1 REFACTOR1}-{@link Step} darstellt.
+	 * @return Das Diagramm.
+	 */
 	public Chart showCompileErrorChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
-		XYChart.Series<Number,String> seriesRED = new XYChart.Series<>();
+		XYChart.Series<Number,String> seriesGREEN = new XYChart.Series<>();
+		seriesGREEN.setName("GREEN");
 		XYChart.Series<Number,String> seriesREFACTOR = new XYChart.Series<>();
-		compileErrorMapRED.forEach((s, m) -> seriesRED.getData().add(new XYChart.Data<>(m, s)));
+		seriesREFACTOR.setName("REFACTOR");
+		compileErrorMapGREEN.forEach((s, m) -> seriesGREEN.getData().add(new XYChart.Data<>(m, s)));
 		compileErrorMapREFACTOR.forEach((s, m) -> seriesREFACTOR.getData().add(new XYChart.Data<>(m, s)));
-		chart.getData().addAll(seriesRED,seriesREFACTOR);
+		chart.getData().add(seriesGREEN);
+		chart.getData().add(seriesREFACTOR);
 		return chart;
 	}
 
 	/**
-	 * builds an BarCart showing the {@link TestFailure}s and their number of occurence
-	 * @return the chart
+	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link TestFailure}s und ihre Häufigkeit darstellt.
+	 * @return Das Diagramm.
 	 */
 	public Chart showTestErrorChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
@@ -257,19 +338,21 @@ public class Tracking {
 	}
 
 	/**
-	 * builds a PieChart showing the used time for the different Steps
-	 * @param refactor2Enabled idicates whether REFACTOR2 is enabled or not
-	 * @return the chart
+	 * Erzeugt ein {@link PieChart Kuchendiagramm}, welches die Zeit, die der Benutzer in den einzelnen {@link Step}s verbracht hat, anzeigt.
+	 * @param acceptanceEnabled Zeigt an, ob die Akzeptanztest benutzt werden.
+	 * @return Das Diagramm
 	 */
-	public Chart showTimeChart(boolean refactor2Enabled){
+	public Chart showTimeChart(boolean acceptanceEnabled){
+		String s = "vier";
 		ObservableList<PieChart.Data> chartData =
 				FXCollections.observableArrayList(
-						new PieChart.Data("GREEN)", secondsGREEN),
 						new PieChart.Data("RED", secondsRED),
-						new PieChart.Data("REFACTOR1", secondsREFACTOR));
-		if(refactor2Enabled) chartData.add(new PieChart.Data("REFACTOR2", secondsREFACTOR2));
+						new PieChart.Data("GREEN", secondsGREEN),
+						new PieChart.Data("REFACTOR1", secondsREFACTOR),
+						new PieChart.Data("REFACTOR2", secondsREFACTOR2));
+		if(acceptanceEnabled){ chartData.add(new PieChart.Data("ACCEPTANCE", secondsAcceptance)); s = "fünf";}
 		PieChart chart = new PieChart(chartData);
-		chart.setTitle("Verteilung der Arbeitzzeit auf die drei Phasen");
+		chart.setTitle("Verteilung der Arbeitszeit auf die "+s+" Phasen");
 		return chart;
 	}
 }

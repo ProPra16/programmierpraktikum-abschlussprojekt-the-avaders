@@ -32,7 +32,7 @@ public class TrackingTestDummy extends Tracking {
 
 		int x = 0;
 		while (x < 12){
-			compileErrorMapRED.put(exceptionDummys.get(x),(int)(Math.random()*20));
+			compileErrorMapGREEN.put(exceptionDummys.get(x),(int)(Math.random()*20));
 			compileErrorMapREFACTOR.put(exceptionDummys.get(x),(int)(Math.random()*20));
 			x++;
 		}

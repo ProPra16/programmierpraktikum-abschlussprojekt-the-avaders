@@ -51,12 +51,20 @@ public class TrackingTest {
 		tracking.setState(GREEN);
 		tracking.startGREEN();
 		Thread.sleep(2000);
-		tracking.finishedStepAndMoveOn(false);
+		tracking.finishedStepAndMoveOn(true);
 		Assert.assertEquals(2, tracking.getTimeForGREEN(),1);
 		tracking.startREFACTOR1();
 		Thread.sleep(4000);
-		tracking.finishedStepAndMoveOn(false);
+		tracking.finishedStepAndMoveOn(true);
 		Assert.assertEquals(4, tracking.getTimeForREFACTOR1(),1);
+		tracking.startREFACTOR2();
+		Thread.sleep(3000);
+		tracking.finishedStepAndMoveOn(true);
+		Assert.assertEquals(3, tracking.getTimeForREFACTOR2(), 1);
+		tracking.startACCEPTANCE();
+		Thread.sleep(5000);
+		tracking.finishedStepAndMoveOn(true);
+		Assert.assertEquals(5, tracking.getTimeForACCEPTANCE(), 1);
 		tracking.startRED();
 		Thread.sleep(2000);
 		tracking.finishedRED();
@@ -65,15 +73,16 @@ public class TrackingTest {
 
 	@Test
 	public void testCompileError() throws Exception{
+		tracking.setState(RED);
 		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ " +
 																			"public penis(){ new penis();}"+
 																			"public int äää(){" +
-				"																return \"hohoho\";" +
-				"															} " +
-				"															private void öö(){" +
-				"																String[][] dsa = machzurück(3);" +
-				"															}" +
-				"															protected int[][] machzurück(int öärg){}" +
+																				"return \"hohoho\";" +
+																			"} " +
+																			"private void öö(){" +
+																				"String[][] dsa = machzurück(3); return new penis();" +
+																			"}" +
+																			"protected int[][] machzurück(int öärg;){}" +
 																		"}", false);
 		JavaStringCompiler compiler = CompilerFactory.getCompiler(compilationUnit);
 		compiler.compileAndRunTests();
@@ -102,6 +111,6 @@ public class TrackingTest {
 		current.add("}");
 		current.add("");
 
-		tracking.diff(origin,current);
+		tracking.diff(origin,current, "Brot");
 	}
 }
