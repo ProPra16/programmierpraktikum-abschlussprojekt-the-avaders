@@ -53,7 +53,6 @@ public class Main extends Application {
 		File exerciseFile = exerciseChoosePopup.showOpenDialog(primaryStage);
 		if(exerciseFile != null)
 			return Paths.get(exerciseFile.getAbsolutePath());
-		System.err.println("No file selected! getExercise() returns null");
 		return null;
 	}
 
