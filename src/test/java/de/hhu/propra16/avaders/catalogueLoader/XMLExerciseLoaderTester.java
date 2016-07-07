@@ -93,7 +93,7 @@ public class XMLExerciseLoaderTester {
 
 		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
 		Assert.assertEquals(true, exercise.timeTrackingIsEnabled());
-		Assert.assertEquals("2:00", exercise.babyStepsTime());
+		Assert.assertEquals(120, exercise.babyStepsTime());
 		Assert.assertEquals(true, exercise.atdd());
 	}
 
@@ -188,7 +188,7 @@ public class XMLExerciseLoaderTester {
 		}
 
 		Assert.assertEquals(true, exercise.babyStepsIsEnabled());
-		Assert.assertEquals("2:00", exercise.babyStepsTime());
+		Assert.assertEquals(120, exercise.babyStepsTime());
 		Assert.assertEquals(false, exercise.atdd());
 		Assert.assertEquals(false, exercise.timeTrackingIsEnabled());
 	}
@@ -196,14 +196,12 @@ public class XMLExerciseLoaderTester {
 	private Exercise setup(int exerciseNr, String path)
 			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		FileReader lineReader;
-		XMLExerciseTokenizer xmlExerciseTokenizer = null;
+		XMLExerciseTokenizer xmlExerciseTokenizer;
 		lineReader = new FileReader(Paths.get(path));
-		ExerciseCatalogue exerciseCatalogue = null;
+		ExerciseCatalogue exerciseCatalogue;
 
 		xmlExerciseTokenizer = new XMLExerciseTokenizer(lineReader);
-
 		XMLExerciseLoader xmlExerciseLoader = new XMLExerciseLoader(xmlExerciseTokenizer, new ExerciseCatalogue());
-
 		exerciseCatalogue = xmlExerciseLoader.loadExerciseCatalogue();
 
 		return exerciseCatalogue.getExercise(exerciseNr);

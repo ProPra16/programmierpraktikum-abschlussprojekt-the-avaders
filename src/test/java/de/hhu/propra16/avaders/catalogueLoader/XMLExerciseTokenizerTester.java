@@ -189,7 +189,7 @@ public class XMLExerciseTokenizerTester {
 
 		Assert.assertEquals("babysteps", xmlExerciseTokenizer.currentToken().name);
 		Assert.assertEquals("true", xmlExerciseTokenizer.currentToken().value);
-		Assert.assertEquals("2:15", ((BabyStepsToken)xmlExerciseTokenizer.currentToken()).time);
+		Assert.assertEquals(135, ((BabyStepsToken)xmlExerciseTokenizer.currentToken()).time);
 	}
 
 	@Test

@@ -6,7 +6,7 @@ package de.hhu.propra16.avaders.catalogueLoader.exercises;
  */
 public class ExerciseConfig {
 	private boolean babySteps;
-	private String time;
+	private int time;
 	private boolean timeTracking;
 	private boolean atdd;
 
@@ -30,14 +30,14 @@ public class ExerciseConfig {
 	/**
 	 * @return The time (as string), specified by babysteps, until all changes are reverted
      */
-	public String getBabyStepsTime() {
+	public int getBabyStepsTime() {
 		return time;
 	}
 
 	/**
 	 * @param time The time babystepsTime will beset to
      */
-	public void setBabyStepsTime(String time) {
+	public void setBabyStepsTime(int time) {
 		this.time = time;
 	}
 

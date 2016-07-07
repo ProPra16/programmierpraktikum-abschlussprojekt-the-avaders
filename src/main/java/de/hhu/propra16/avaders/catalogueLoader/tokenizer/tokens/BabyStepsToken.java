@@ -6,12 +6,13 @@ package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
  * and the time it was set to
  */
 public class BabyStepsToken extends Token {
-	public final String time; // standard time
+	public final int time; // standard time
 
-	public BabyStepsToken(String value, String time){
+	public BabyStepsToken(String value, int time){
 		super("babysteps", value);
 
-		if(time != null) this.time = time;
-		else this.time = "2:00"; // standard time
+		//TODO: make time integer and change everything accordingly
+		if(time != 0) this.time = time;
+		else this.time = 120; // standard time
 	}
 }

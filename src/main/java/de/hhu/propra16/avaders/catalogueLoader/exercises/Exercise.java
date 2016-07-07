@@ -68,7 +68,7 @@ public class Exercise {
 	/**
 	 * @return The time (as string), specified by babysteps, until all changes are reverted
 	 */
-	public String babyStepsTime(){
+	public int babyStepsTime(){
 		return exerciseConfig.getBabyStepsTime();
 	}
 

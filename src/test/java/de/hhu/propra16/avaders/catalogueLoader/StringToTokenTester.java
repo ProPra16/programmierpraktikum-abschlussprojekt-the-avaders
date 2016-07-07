@@ -191,7 +191,7 @@ public class StringToTokenTester {
 
 		Assert.assertEquals("babysteps", token.name);
 		Assert.assertEquals("true", token.value);
-		Assert.assertEquals("2:00", ((BabyStepsToken)token).time);
+		Assert.assertEquals(120, ((BabyStepsToken)token).time);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class StringToTokenTester {
 		}
 		Assert.assertEquals("babysteps", token.name);
 		Assert.assertEquals("true", token.value);
-		Assert.assertEquals("2:00", ((BabyStepsToken)token).time);
+		Assert.assertEquals(120, ((BabyStepsToken)token).time);
 	}
 
 	@Test

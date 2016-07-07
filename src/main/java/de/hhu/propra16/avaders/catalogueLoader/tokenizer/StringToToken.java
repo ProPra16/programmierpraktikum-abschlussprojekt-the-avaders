@@ -7,6 +7,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTo
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.BabyStepsToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 
+import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.*;
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.remove;
 
 /**
@@ -125,7 +126,7 @@ public class StringToToken {
 		if(!readString.equals(""))
 			throw new UnexpectedTokenException("property: time or value", readString, lineNumber);
 
-		return new BabyStepsToken(value, time);
+		return new BabyStepsToken(value, StringTimeToSeconds(time));
 	}
 
 	/**
