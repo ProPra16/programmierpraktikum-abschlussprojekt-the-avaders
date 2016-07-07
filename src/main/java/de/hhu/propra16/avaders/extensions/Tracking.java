@@ -12,8 +12,10 @@ import javafx.scene.chart.Chart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.util.Pair;
 import vk.core.api.CompileError;
 import vk.core.api.TestFailure;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -30,7 +32,7 @@ public class Tracking {
 	protected int secondsREFACTOR2 = 0;
 	private LocalTime currentStartTime;
 	private Step currentState;
-	protected Map<String, Integer> compileErrorMapRED = new HashMap<>(), compileErrorMapREFACTOR = new HashMap<>(), testErrorMap = new HashMap<>();
+	protected Map<String, Integer> compileErrorMapGREEN = new HashMap<>(), compileErrorMapREFACTOR = new HashMap<>(), testErrorMap = new HashMap<>();
 
 	/**
 	 * Creates an instance of Tracking with no current Step
@@ -123,13 +125,13 @@ public class Tracking {
 
 	/**
 	 * stops the current Step, adds the needet time and set's the current Step to the next Step
-	 * @param refactor2Enabled idicates whether REFACTOR2 is enabled or not
+	 * @param aceptanceEnabled idicates whether REFACTOR2 is enabled or not
 	 */
-	public void finishedStepAndMoveOn(boolean refactor2Enabled){
+	public void finishedStepAndMoveOn(boolean aceptanceEnabled){ //TODO: implement aceptanceTestTracking
 		switch (currentState){
 			case RED: finishedRED(); currentState = GREEN; break;
 			case GREEN: finishedGREEN(); currentState = REFACTOR1; break;
-			case REFACTOR1: finishedREFACTOR1(); if(!refactor2Enabled)currentState = RED;else currentState = REFACTOR2; break;
+			case REFACTOR1: finishedREFACTOR1(); currentState = REFACTOR2; break;
 			case REFACTOR2: finishedREFACTOR2(); currentState = RED; break;
 		}
 	}
@@ -141,21 +143,27 @@ public class Tracking {
 	public void addCompileExceptions(Collection<CompileError> compileErrors){
 		if(currentState == RED) {
 			compileErrors.forEach(x -> {
-				if (compileErrorMapRED.containsKey(x.getMessage()))
-					compileErrorMapRED.replace(x.getMessage(), compileErrorMapRED.get(x.getMessage()), compileErrorMapRED.get(x.getMessage()) + 1);
-				else compileErrorMapRED.put(x.getMessage(), 1);
+				String s = x.getMessage();
+				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
+				if(s.contains("incompatible types:"))  s = "incompatible types:";
+				if (compileErrorMapGREEN.containsKey(s))
+					compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s) + 1);
+				else compileErrorMapGREEN.put(s, 1);
 			});
 		} else if(currentState == REFACTOR1){
 			compileErrors.forEach(x -> {
-				if (compileErrorMapREFACTOR.containsKey(x.getMessage()))
-					compileErrorMapREFACTOR.replace(x.getMessage(), compileErrorMapREFACTOR.get(x.getMessage()), compileErrorMapREFACTOR.get(x.getMessage()) + 1);
-				else compileErrorMapREFACTOR.put(x.getMessage(), 1);
+				String s = x.getMessage();
+				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
+				if(s.contains("incompatible types:"))  s = "incompatible types:";
+				if (compileErrorMapREFACTOR.containsKey(s))
+					compileErrorMapREFACTOR.replace(s, compileErrorMapREFACTOR.get(s), compileErrorMapREFACTOR.get(s) + 1);
+				else compileErrorMapREFACTOR.put(s, 1);
 			});
 		}
 	}
 
 	public void printCMap(){
-		compileErrorMapRED.forEach((x, y) -> System.out.println(x+" "+y));
+		compileErrorMapGREEN.forEach((x, y) -> System.out.println(x+" "+y));
 	}
 
 	/**
@@ -164,16 +172,27 @@ public class Tracking {
 	 */
 	public void addTestExceptions(Collection<TestFailure> testErrors){
 		testErrors.forEach(x -> {
-			if(testErrorMap.containsKey(x.getMessage())) compileErrorMapRED.replace(x.getMessage(), compileErrorMapRED.get(x.getMessage()), compileErrorMapRED.get(x.getMessage())+1);
-			else testErrorMap.put(x.getMessage(), 1);
+			String s = x.getMessage();
+			if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
+			if(s.contains("incompatible types:"))  s = "incompatible types:";
+			if(testErrorMap.containsKey(s)) compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s)+1);
+			else testErrorMap.put(s, 1);
 		});
 	}
 
-	public void diff(List<String> origin, List<String> current){
+	/**
+	 * Nimmt zwei {@link List}en, welche Dateien repräsentieren, und erzeugt ein {@link Pair},
+	 * welches den Zeitpunkt und die Unterschiede enthält.
+	 * @param origin Die Ursprungsdatei
+	 * @param current Die geänderte Datei
+	 * @param className Der Klassenname der Datei
+	 * @return das {@link Pair}
+	 */
+	public Pair<LocalDateTime, List<String>> diff(List<String> origin, List<String> current, String className){
 		Patch patch = DiffUtils.diff(origin, current/*,new MyersDiff()*/);
 		List<Delta> deltas = patch.getDeltas();
-		//deltas.forEach(x -> System.out.println(x.getRevised()+"\n"));
-		DiffUtils.generateUnifiedDiff("Brot", "Brot", origin, patch, 2).forEach(System.out::println);
+		List<String> diffList = DiffUtils.generateUnifiedDiff(className, className, origin, patch, 2);
+		return new Pair<>(LocalDateTime.now(), diffList);
 	}
 
 	/**
@@ -207,38 +226,51 @@ public class Tracking {
 	public int getTimeForREFACTOR2() {return secondsREFACTOR2; }
 
 	/**
-	 * builds an BarCart showing the {@link CompileError}s and their number of occurence
+	 * builds an BarCart showing the {@link CompileError}s and their number of occurrence in RED-Step
 	 * @return the chart
 	 */
-	public Chart showCompileErrorREDChart(){
+	public Chart showCompileErrorGREENChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
 		XYChart.Series<Number,String> series = new XYChart.Series<>();
-		compileErrorMapRED.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
+		series.setName("GREEN");
+		compileErrorMapGREEN.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
 		chart.getData().add(series);
 		return chart;
 	}
 
+	/**
+	 * builds an BarCart showing the {@link CompileError}s and their number of occurrence in REFACTOR1-Step
+	 * @return the chart
+	 */
 	public Chart showCompileErrorREFACTORChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
 		XYChart.Series<Number,String> series = new XYChart.Series<>();
+		series.setName("REFACTOR");
 		compileErrorMapREFACTOR.forEach((s, m) -> series.getData().add(new XYChart.Data<>(m, s)));
 		chart.getData().add(series);
 		return chart;
 	}
 
+	/**
+	 * builds an BarCart showing the {@link CompileError}s and their number of occurrence in RED- and REFACTOR1-Step
+	 * @return the chart
+	 */
 	public Chart showCompileErrorChart(){
 		CategoryAxis categoryAxis = new CategoryAxis();
 		NumberAxis numberAxis = new NumberAxis();
 		BarChart<Number, String> chart = new BarChart<>(numberAxis, categoryAxis);
-		XYChart.Series<Number,String> seriesRED = new XYChart.Series<>();
+		XYChart.Series<Number,String> seriesGREEN = new XYChart.Series<>();
+		seriesGREEN.setName("GREEN");
 		XYChart.Series<Number,String> seriesREFACTOR = new XYChart.Series<>();
-		compileErrorMapRED.forEach((s, m) -> seriesRED.getData().add(new XYChart.Data<>(m, s)));
+		seriesREFACTOR.setName("REFACTOR");
+		compileErrorMapGREEN.forEach((s, m) -> seriesGREEN.getData().add(new XYChart.Data<>(m, s)));
 		compileErrorMapREFACTOR.forEach((s, m) -> seriesREFACTOR.getData().add(new XYChart.Data<>(m, s)));
-		chart.getData().addAll(seriesRED,seriesREFACTOR);
+		chart.getData().add(seriesGREEN);
+		chart.getData().add(seriesREFACTOR);
 		return chart;
 	}
 
@@ -264,12 +296,13 @@ public class Tracking {
 	public Chart showTimeChart(boolean refactor2Enabled){
 		ObservableList<PieChart.Data> chartData =
 				FXCollections.observableArrayList(
-						new PieChart.Data("GREEN)", secondsGREEN),
 						new PieChart.Data("RED", secondsRED),
-						new PieChart.Data("REFACTOR1", secondsREFACTOR));
-		if(refactor2Enabled) chartData.add(new PieChart.Data("REFACTOR2", secondsREFACTOR2));
+						new PieChart.Data("GREEN", secondsGREEN),
+						new PieChart.Data("REFACTOR1", secondsREFACTOR),
+						new PieChart.Data("REFACTOR2", secondsREFACTOR2));
+		//if(refactor2Enabled) chartData.add(new PieChart.Data("aceptance", secondsREFACTOR2));//TODO: stuff
 		PieChart chart = new PieChart(chartData);
-		chart.setTitle("Verteilung der Arbeitzzeit auf die drei Phasen");
+		chart.setTitle("Verteilung der Arbeitszeit auf die drei Phasen");
 		return chart;
 	}
 }

@@ -65,15 +65,16 @@ public class TrackingTest {
 
 	@Test
 	public void testCompileError() throws Exception{
+		tracking.setState(RED);
 		CompilationUnit compilationUnit = new CompilationUnit("penis", "public class penis{ " +
 																			"public penis(){ new penis();}"+
 																			"public int äää(){" +
-				"																return \"hohoho\";" +
-				"															} " +
-				"															private void öö(){" +
-				"																String[][] dsa = machzurück(3);" +
-				"															}" +
-				"															protected int[][] machzurück(int öärg){}" +
+																				"return \"hohoho\";" +
+																			"} " +
+																			"private void öö(){" +
+																				"String[][] dsa = machzurück(3); return new penis();" +
+																			"}" +
+																			"protected int[][] machzurück(int öärg;){}" +
 																		"}", false);
 		JavaStringCompiler compiler = CompilerFactory.getCompiler(compilationUnit);
 		compiler.compileAndRunTests();
@@ -102,6 +103,6 @@ public class TrackingTest {
 		current.add("}");
 		current.add("");
 
-		tracking.diff(origin,current);
+		tracking.diff(origin,current, "Brot");
 	}
 }
