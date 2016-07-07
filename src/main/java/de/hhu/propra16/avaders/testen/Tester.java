@@ -6,7 +6,7 @@ import vk.core.api.JavaStringCompiler;
 
 public class Tester implements ITester {
 	@Override
-	public ITestenRueckgabe testen(CompilationUnit[] sources) {
+	public ITestenRueckgabe testen(CompilationUnit... sources) {
 		JavaStringCompiler compiler = CompilerFactory.getCompiler(sources);
 		compiler.compileAndRunTests();
 		return new TestenRueckgabe(compiler.getCompilerResult(), compiler.getTestResult());
