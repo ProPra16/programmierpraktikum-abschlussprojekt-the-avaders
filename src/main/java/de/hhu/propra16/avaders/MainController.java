@@ -125,6 +125,11 @@ public class MainController {
 	//HelpMethods
 	private void setupStart(){
 		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
+		ViewTools.disable(stepBack);
+		ViewTools.disable(stepFurther);
+		ViewTools.disable(timeLeftTitle);
+		ViewTools.disable(timeLeft);
+		ViewTools.disable(activatedModes);
 	}
 
 	private Logik initLogic(){
