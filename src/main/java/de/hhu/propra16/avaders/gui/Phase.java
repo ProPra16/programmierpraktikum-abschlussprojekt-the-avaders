@@ -9,7 +9,7 @@ public class Phase {
 	//save userinput from textarea
 	public String userInput; 
 	
-	//this method will be overriden by subclasses Red,Green,Refactor to set appropriate states 
+	//this method will be overriden by subclasses Red,Green,CodeRefactor to set appropriate states
 	
 	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
 	}

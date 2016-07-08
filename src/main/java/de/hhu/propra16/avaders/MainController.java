@@ -4,11 +4,12 @@ import de.hhu.propra16.avaders.catalogueLoader.ParserException;
 import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
-import de.hhu.propra16.avaders.gui.Phase;
+import de.hhu.propra16.avaders.gui.*;
 import de.hhu.propra16.avaders.konfig.KonfigWerte;
 import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
@@ -20,16 +21,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
+import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
+
 
 
 public class MainController {
 	private Main              main;
 	private ExerciseCatalogue exerciseCatalogue;
-	private Map<Step,Phase>   steps;
+	private Phases            phases;
 	private Logik             logic;
 
 	//exercise-menuItems
@@ -54,8 +56,16 @@ public class MainController {
 
 	//Handler
     @FXML void handleRestart(ActionEvent event)  {}
-    @FXML void handlePrePhase(ActionEvent event) {}
-    @FXML void handleNextPhase(ActionEvent event){}
+    @FXML void handlePrePhase(ActionEvent event) {
+		logic.abbrechen();
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther);
+	}
+
+    @FXML void handleNextPhase(ActionEvent event){
+		Exercise current = exerciseCatalogue.getExercise(1);
+		logic.weiter(new CompilationUnit(current.getTestName(0), current.getTestTemplates(0), true ));
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther);
+	}
 
     @FXML void handleNewExercise(ActionEvent event) {
 		Path exercisePath = main.getExercise();
@@ -72,47 +82,20 @@ public class MainController {
 			}
 			e.printStackTrace();
 		}
-		userFieldRed.setVisible(true);
-		userFieldRed.setEditable(true);
-		userFieldCode.setVisible(false);
-		stepBack.setVisible(false);
-		stepFurther.setVisible(true);
-		stepFurther.setText("Green");
 
 		Exercise exercise = exerciseCatalogue.getExercise(1);
 		this.userFieldRed.setText(exercise.getTestTemplates(0));
-		this.activatedModes.setText(getModes(exercise));
+		this.activatedModes.setText(getModes(exercise.getExerciseConfig()));
+		setTime(exercise);
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther);
 	}
 
-	private String getModes(Exercise exercise){
-		String modesDisplay = "";
-		if(exercise.babyStepsIsEnabled()) {
-			modesDisplay += "Babysteps, ";
-			timeLeft.setText(exercise.babyStepsTime());
-			timeLeftTitle.setVisible(true);
-			timeLeft.setVisible(true);
-		}
-		if(exercise.timeTrackingIsEnabled())
-		    modesDisplay += "Tracking, ";
-		if(exercise.atdd())
-			modesDisplay += "ATDD, ";
-		if(modesDisplay.contentEquals(""))
-			return "<None>";
-		System.out.println(modesDisplay);
-		return modesDisplay.substring(0, modesDisplay.length() - 2);
-	}
+
 
 	@FXML
 	public void initialize(){
-		Tester      tester      = new Tester();
-		KonfigWerte konfigWerte = new KonfigWerte();
-		Logik       logic       = new Logik(tester, konfigWerte);
-		userFieldCode.setVisible(false);
-		userFieldRed.setVisible(false);
-		stepBack.setVisible(false);
-		stepFurther.setVisible(false);
-		timeLeftTitle.setVisible(false);
-		timeLeft.setVisible(false);
+		this.phases = new Phases(new Welcome(), new Red(), new Green(), new CodeRefactor(), new TestRefactor());
+		this.logic  = initLogic();
 	}
 
 	public void setMain(Main main){
@@ -121,4 +104,33 @@ public class MainController {
 
 
 
+
+
+	//HelpMethods
+	private Logik initLogic(){
+		Tester      tester      = new Tester();
+		KonfigWerte konfigWerte = new KonfigWerte();
+		return new Logik(tester, konfigWerte);
+	}
+
+	private String getModes(ExerciseConfig config){
+		String modesDisplay = "";
+		if(config.isBabySteps())
+			modesDisplay += "Babysteps, ";
+		if(config.isTimeTracking())
+			modesDisplay += "Tracking, ";
+		if(config.isAtdd())
+			modesDisplay += "ATDD, ";
+		if(modesDisplay.contentEquals(""))
+			return "<None>";
+		System.out.println(modesDisplay);
+		return modesDisplay.substring(0, modesDisplay.length() - 2);
+	}
+
+	private void setTime(Exercise exercise){
+		if(exercise.getExerciseConfig().isBabySteps()){
+			ViewTools.enable(timeLeftTitle);
+			ViewTools.enable(timeLeft, "<Time>");
+		}
+	}
 }

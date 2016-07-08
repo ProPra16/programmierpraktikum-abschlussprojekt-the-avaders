@@ -71,17 +71,17 @@ public class Logik implements ILogik {
 			
 			case GREEN:
 				if (rueckgabe.isSuccessful()) {
-					schritt = Step.REFACTOR1;
+					schritt = Step.CODE_REFACTOR;
 				}
 				break;
 			
-			case REFACTOR1:
+			case CODE_REFACTOR:
 				if (rueckgabe.isSuccessful()) {
-					schritt = Step.REFACTOR2;
+					schritt = Step.TEST_REFACTOR;
 				}
 				break;
 			
-			case REFACTOR2:
+			case TEST_REFACTOR:
 				if (rueckgabe.isSuccessful()) {
 					if (atdd) {
 						acceptanceRueckgabe = tester.testen(sources);

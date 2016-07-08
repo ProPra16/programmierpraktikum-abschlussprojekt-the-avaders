@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 
 import static de.hhu.propra16.avaders.logik.Step.GREEN;
 import static de.hhu.propra16.avaders.logik.Step.RED;
-import static de.hhu.propra16.avaders.logik.Step.REFACTOR1;
+import static de.hhu.propra16.avaders.logik.Step.CODE_REFACTOR;
 
 public class BabystepsTest extends Application{
 	@Override
@@ -122,7 +122,7 @@ public class BabystepsTest extends Application{
 		CompilerResult compilerResult = compiler.getCompilerResult();
 		Collection<CompileError> compilerErrorsForCompilationUnit = compilerResult.getCompilerErrorsForCompilationUnit(compilationUnit);
 		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
-		tracking.setState(REFACTOR1);
+		tracking.setState(CODE_REFACTOR);
 		tracking.addCompileExceptions(compilerErrorsForCompilationUnit);
 		return tracking.showCompileErrorChart();
 	}

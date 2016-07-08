@@ -23,7 +23,7 @@ public enum Step {
 	/**
 	 * <p>Alle Tests müssen erfüllt werden.</p>
 	 * <p>In diesem Schritt darf nur der normale Code bearbeitet werden.</p>
-	 * <p>Es wird zu {@link #REFACTOR1} übergegangen, sobald kein Test mehr fehlschlägt.</p>
+	 * <p>Es wird zu {@link #CODE_REFACTOR} übergegangen, sobald kein Test mehr fehlschlägt.</p>
 	 */
 	GREEN,
 	
@@ -31,9 +31,9 @@ public enum Step {
 	 * <p>Der geschriebene Code darf verbessert werden.</p>
 	 * <p>In diesem Schritt darf nur der normale Code bearbeitet werden.</p>
 	 * <p>Der Nutzer bestimmt, wann zum nächsten Schritt weitergegangen wird.
-	 * Ist die REFACTOR2-Erweiterung aktiviert, wird mit {@link #REFACTOR2} fortgefahren, ansonsten mit {@link #RED}.</p>
+	 * Ist die TEST_REFACTOR-Erweiterung aktiviert, wird mit {@link #TEST_REFACTOR} fortgefahren, ansonsten mit {@link #RED}.</p>
 	 */
-	REFACTOR1,
+	CODE_REFACTOR,
 	
 	/**
 	 * <p>Die geschriebenen Tests dürfen verbessert werden.</p>
@@ -41,5 +41,5 @@ public enum Step {
 	 * <p>Der Nutzer bestimmt, wann wieder zu {@link #RED} weitergegangen wird.
 	 * Ist ATDD eingeschaltet und sind hiernach alle Akzeptanztests erfüllt, wird stattdessen zu {@link #ACCEPTANCE_RED} weitergegangen.</p>
 	 */
-	REFACTOR2,
+	TEST_REFACTOR, WELCOME,
 }

@@ -103,41 +103,41 @@ public class Tracking {
 	}
 
 	/**
-	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR1 REFACTOR1} ist,
-	 * wird nun die verstrichene Zeit für den {@link Step#REFACTOR1 REFACTOR1}-{@link Step} gezählt.
+	 * Wenn der aktuelle {@link Step} {@link Step#CODE_REFACTOR CODE_REFACTOR} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#CODE_REFACTOR CODE_REFACTOR}-{@link Step} gezählt.
 	 */
 	public void startREFACTOR1(){
-		if(!currentState.equals(REFACTOR1)) return;
+		if(!currentState.equals(CODE_REFACTOR)) return;
 		currentStartTime = LocalTime.now();
 	}
 
 	/**
-	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR1 REFACTOR1} ist,
-	 * wird die verstrichene Zeit zur gesammt {@link Step#REFACTOR1 REFACTOR1}-Zeit aufsummiert.
+	 * Wenn der aktuelle {@link Step} {@link Step#CODE_REFACTOR CODE_REFACTOR} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#CODE_REFACTOR CODE_REFACTOR}-Zeit aufsummiert.
 	 * Es wird nun nicht weiter gezählt.
 	 */
 	public void finishedREFACTOR1(){
-		if(!currentState.equals(REFACTOR1)) return;
+		if(!currentState.equals(CODE_REFACTOR)) return;
 		secondsREFACTOR += currentStartTime.until(LocalTime.now(), ChronoUnit.SECONDS);
 		currentState = null;
 	}
 
 	/**
-	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR2 REFACTOR2} ist,
-	 * wird nun die verstrichene Zeit für den {@link Step#REFACTOR2 REFACTOR2}-{@link Step} gezählt.
+	 * Wenn der aktuelle {@link Step} {@link Step#TEST_REFACTOR TEST_REFACTOR} ist,
+	 * wird nun die verstrichene Zeit für den {@link Step#TEST_REFACTOR TEST_REFACTOR}-{@link Step} gezählt.
 	 */
 	public void startREFACTOR2(){
-		if(!currentState.equals(REFACTOR2)) return;
+		if(!currentState.equals(TEST_REFACTOR)) return;
 		currentStartTime = LocalTime.now();
 	}
 
 	/**
-	 * Wenn der aktuelle {@link Step} {@link Step#REFACTOR2 REFACTOR2} ist,
-	 * wird die verstrichene Zeit zur gesammt {@link Step#REFACTOR2 REFACTOR2}-Zeit aufsummiert.
+	 * Wenn der aktuelle {@link Step} {@link Step#TEST_REFACTOR TEST_REFACTOR} ist,
+	 * wird die verstrichene Zeit zur gesammt {@link Step#TEST_REFACTOR TEST_REFACTOR}-Zeit aufsummiert.
 	 * Es wird nun nicht weiter gezählt.
 	 */
 	public void finishedREFACTOR2() {
-		if(!currentState.equals(REFACTOR2)) return;
+		if(!currentState.equals(TEST_REFACTOR)) return;
 		secondsREFACTOR2 += currentStartTime.until(LocalTime.now(), ChronoUnit.SECONDS);
 		currentState = null;
 	}
@@ -170,15 +170,15 @@ public class Tracking {
 	public void finishedStepAndMoveOn(boolean acceptanceEnabled){
 		switch (currentState){
 			case RED: finishedRED(); currentState = GREEN; break;
-			case GREEN: finishedGREEN(); currentState = REFACTOR1; break;
-			case REFACTOR1: finishedREFACTOR1(); currentState = REFACTOR2; break;
-			case REFACTOR2: finishedREFACTOR2(); if(acceptanceEnabled)currentState = ACCEPTANCE_RED; else currentState = RED; break;
+			case GREEN: finishedGREEN(); currentState = CODE_REFACTOR; break;
+			case CODE_REFACTOR: finishedREFACTOR1(); currentState = TEST_REFACTOR; break;
+			case TEST_REFACTOR: finishedREFACTOR2(); if(acceptanceEnabled)currentState = ACCEPTANCE_RED; else currentState = RED; break;
 			case ACCEPTANCE_RED: finishedACCEPTANCE(); currentState = RED; break;
 		}
 	}
 
 	/**
-	 * Speichert die {@link CompileError}s, welche der Benutzer in dem {@link Step#GREEN GREEN}- oder {@link Step#REFACTOR1 REFACTOR1}-{@link Step} erzeugt.
+	 * Speichert die {@link CompileError}s, welche der Benutzer in dem {@link Step#GREEN GREEN}- oder {@link Step#CODE_REFACTOR CODE_REFACTOR}-{@link Step} erzeugt.
 	 * @param compileErrors Eine {@link Collection} welche die {@link CompileError}s enthält.
 	 */
 	public void addCompileExceptions(Collection<CompileError> compileErrors){
@@ -191,7 +191,7 @@ public class Tracking {
 					compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s) + 1);
 				else compileErrorMapGREEN.put(s, 1);
 			});
-		} else if(currentState == REFACTOR1){
+		} else if(currentState == CODE_REFACTOR){
 			compileErrors.forEach(x -> {
 				String s = x.getMessage();
 				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
@@ -253,7 +253,7 @@ public class Tracking {
 	}
 
 	/**
-	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#REFACTOR1 REFACTOR1}-{@link Step} verbracht hat.
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#CODE_REFACTOR CODE_REFACTOR}-{@link Step} verbracht hat.
 	 * @return Der aktuelle Wert.
 	 */
 	public int getTimeForREFACTOR1(){
@@ -261,7 +261,7 @@ public class Tracking {
 	}
 
 	/**
-	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#REFACTOR2 REFACTOR2}-{@link Step} verbracht hat.
+	 * Gibt die Zeit, welche der Benutzer in dem {@link Step#TEST_REFACTOR TEST_REFACTOR}-{@link Step} verbracht hat.
 	 * @return Der aktuelle Wert.
 	 */
 	public int getTimeForREFACTOR2() {return secondsREFACTOR2; }
@@ -290,7 +290,7 @@ public class Tracking {
 	}
 
 	/**
-	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#REFACTOR1 REFACTOR1}-{@link Step} darstellt..
+	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#CODE_REFACTOR CODE_REFACTOR}-{@link Step} darstellt..
 	 * @return Das Diagramm.
 	 */
 	public Chart showCompileErrorREFACTORChart(){
@@ -305,7 +305,7 @@ public class Tracking {
 	}
 
 	/**
-	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#RED RED}- und {@link Step#REFACTOR1 REFACTOR1}-{@link Step} darstellt.
+	 * Erzeugt ein {@link BarChart Balkendiagramm}, welches die {@link CompileError}s und ihre Häufigkeit im {@link Step#RED RED}- und {@link Step#CODE_REFACTOR CODE_REFACTOR}-{@link Step} darstellt.
 	 * @return Das Diagramm.
 	 */
 	public Chart showCompileErrorChart(){
@@ -348,8 +348,8 @@ public class Tracking {
 				FXCollections.observableArrayList(
 						new PieChart.Data("RED", secondsRED),
 						new PieChart.Data("GREEN", secondsGREEN),
-						new PieChart.Data("REFACTOR1", secondsREFACTOR),
-						new PieChart.Data("REFACTOR2", secondsREFACTOR2));
+						new PieChart.Data("CODE_REFACTOR", secondsREFACTOR),
+						new PieChart.Data("TEST_REFACTOR", secondsREFACTOR2));
 		if(acceptanceEnabled){ chartData.add(new PieChart.Data("ACCEPTANCE", secondsAcceptance)); s = "fünf";}
 		PieChart chart = new PieChart(chartData);
 		chart.setTitle("Verteilung der Arbeitszeit auf die "+s+" Phasen");

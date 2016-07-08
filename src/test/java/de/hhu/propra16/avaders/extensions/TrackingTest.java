@@ -39,7 +39,7 @@ public class TrackingTest {
 
 	@Test
 	public void countREFACTOR() throws Exception{
-		tracking.setState(REFACTOR1);
+		tracking.setState(CODE_REFACTOR);
 		tracking.startREFACTOR1();
 		Thread.sleep(4000);
 		tracking.finishedREFACTOR1();

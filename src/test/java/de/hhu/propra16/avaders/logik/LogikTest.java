@@ -43,31 +43,31 @@ public class LogikTest {
 		
 		// Advance without failed tests
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(1, 0))));
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR1);
+		Assert.assertEquals(logik.getSchritt(), Step.CODE_REFACTOR);
 		
-		/* REFACTOR1 */
+		/* CODE_REFACTOR */
 		
 		// No advance with compilation error
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(true), new TestResultDummy(0, 0))));
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR1);
+		Assert.assertEquals(logik.getSchritt(), Step.CODE_REFACTOR);
 		
 		// No advance with failed tests
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 1))));
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR1);
+		Assert.assertEquals(logik.getSchritt(), Step.CODE_REFACTOR);
 		
 		// Advance without failed tests
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(1, 0))));
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR2);
+		Assert.assertEquals(logik.getSchritt(), Step.TEST_REFACTOR);
 		
-		/* REFACTOR2 */
+		/* TEST_REFACTOR */
 		
 		// No advance with compilation error
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(true), new TestResultDummy(0, 0))));
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR2);
+		Assert.assertEquals(logik.getSchritt(), Step.TEST_REFACTOR);
 		
 		// No advance with failed tests
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 1))));
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR2);
+		Assert.assertEquals(logik.getSchritt(), Step.TEST_REFACTOR);
 		
 		// Advance without failed tests
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(1, 0))));
@@ -104,7 +104,7 @@ public class LogikTest {
 		);
 		Assert.assertEquals(logik.getSchritt(), Step.RED);
 		
-		/* Continue to REFACTOR2 */
+		/* Continue to TEST_REFACTOR */
 		
 		logik.weiter(
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 1))),
@@ -116,15 +116,15 @@ public class LogikTest {
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(1, 0))),
 			acceptanceTestFail
 		);
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR1);
+		Assert.assertEquals(logik.getSchritt(), Step.CODE_REFACTOR);
 		
 		logik.weiter(
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(1, 0))),
 			acceptanceTestFail
 		);
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR2);
+		Assert.assertEquals(logik.getSchritt(), Step.TEST_REFACTOR);
 		
-		/* REFACTOR2 */
+		/* TEST_REFACTOR */
 		
 		// Advance to RED with failing acceptance test
 		logik.weiter(
@@ -133,7 +133,7 @@ public class LogikTest {
 		);
 		Assert.assertEquals(logik.getSchritt(), Step.RED);
 		
-		/* Continue to REFACTOR2 */
+		/* Continue to TEST_REFACTOR */
 		
 		logik.weiter(
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(1, 1))),
@@ -145,15 +145,15 @@ public class LogikTest {
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(2, 0))),
 			acceptanceTestPass
 		);
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR1);
+		Assert.assertEquals(logik.getSchritt(), Step.CODE_REFACTOR);
 		
 		logik.weiter(
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(2, 0))),
 			acceptanceTestPass
 		);
-		Assert.assertEquals(logik.getSchritt(), Step.REFACTOR2);
+		Assert.assertEquals(logik.getSchritt(), Step.TEST_REFACTOR);
 		
-		/* REFACTOR2 */
+		/* TEST_REFACTOR */
 		
 		// Advance to ACCEPTANCE_RED with passing acceptance test
 		logik.weiter(

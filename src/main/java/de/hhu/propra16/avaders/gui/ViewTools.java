@@ -2,7 +2,11 @@ package de.hhu.propra16.avaders.gui;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
+
+import java.util.Arrays;
 
 /**
  * Created by Batman140 on 08.07.2016.
@@ -13,10 +17,16 @@ public class ViewTools {
 		node.setDisable(false);
 	}
 
-	public static void enable(Button button, String text){
-		button.setVisible(true);
-		button.setDisable(false);
-		button.setText(text);
+	public static void setEditable(boolean state, TextInputControl... nodes){
+		Arrays.stream(nodes).forEach(node -> {
+			node.setEditable(state);
+		});
+	}
+
+	public static <T extends Labeled> void enable(T labeled, String text){
+		labeled.setVisible(true);
+		labeled.setDisable(false);
+		labeled.setText(text);
 	}
 
 
