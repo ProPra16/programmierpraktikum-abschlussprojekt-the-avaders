@@ -17,7 +17,7 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.co
 /**
  * Reads lexemes from a .xml file until the end of file is reached
  */
-public class XMLExerciseTokenizer {
+public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	private LineReader fileReader;
 	private Token currentToken;
 	private Token nextToken;
@@ -48,12 +48,9 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Advances the fileReader unless the end of file is reached and parses the line
-	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
-	 * but not found
-     */
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void advance() throws SamePropertyTwiceException, IOException, TokenException {
 		if (readLine != null && readLine.length() > 0) {
 			parseLine();
@@ -136,14 +133,9 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads the content of a description and returns a tokens with the information stored
-	 * @param tokenWhichShouldBeRead the tokens which the content belongs to
-	 * @return A Token with the content stored
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
-	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
-	 * but not found
-     */
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Token readContent(String tokenWhichShouldBeRead) throws IOException, SamePropertyTwiceException, TokenException {
 		String content = readLinesUntil(tokenWhichShouldBeRead);
 
@@ -151,15 +143,9 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads the content of a class or test tokens and returns a class tokens holding that information
-	 * @param stringToEndOn The String on which to end the reading on
-	 * @param classType the type of java file read test or class
-	 * @return A ClassToken instance or null if the stringToEndOn was reached
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
-	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
-     * @throws TokenException If an unexpected tokens was read or a tokens was expected,
-	 * but not found
-     */
+	 * {@inheritDoc}
+	 */
+	@Override
 	public ClassToken readJavaFile(String stringToEndOn, String classType) throws IOException, SamePropertyTwiceException, TokenException {
 		if(!nextToken.name.equals(stringToEndOn)) {
 			String classTemplate = readLinesUntil(classType);
@@ -209,20 +195,23 @@ public class XMLExerciseTokenizer {
 	/**
 	 * @return True if there is a next tokens, otherwise false
      */
+	@Override
 	public boolean hasNextToken(){
 		return (nextToken != null);
 	}
 
 	/**
-	 * @return The currently parsed tokens
-     */
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Token currentToken(){
 		return currentToken;
 	}
 
 	/**
-	 * @return the current line number
-     */
+	 * {@inheritDoc}
+	 */
+	@Override
 	public int getLineNumber() {
 		return lineNumber;
 	}

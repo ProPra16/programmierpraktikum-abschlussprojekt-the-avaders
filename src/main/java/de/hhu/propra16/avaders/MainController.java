@@ -5,6 +5,7 @@ import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.ExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
@@ -18,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
-import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -95,9 +95,9 @@ public class MainController {
 		Path cataloguePath = main.getExercise();
 		try {
 			FileReader           fileReader           = new FileReader(cataloguePath);
-			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
+			ExerciseTokenizer exerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
 			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
-			XMLExerciseLoader    xmlExerciseLoader    = new XMLExerciseLoader(xmlExerciseTokenizer, exerciseCatalogue);
+			XMLExerciseLoader    xmlExerciseLoader    = new XMLExerciseLoader(exerciseTokenizer, exerciseCatalogue);
 			this.exerciseCatalogue = xmlExerciseLoader.loadExerciseCatalogue();
 		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
 			if(e instanceof ParserException) {

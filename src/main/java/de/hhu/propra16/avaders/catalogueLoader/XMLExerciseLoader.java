@@ -15,9 +15,10 @@ import java.io.IOException;
 
 /**
  * Loads ExerciseCatalogues from .xml files
+ * @see ExerciseLoader
  */
 public class XMLExerciseLoader implements ExerciseLoader {
-	private final XMLExerciseTokenizer xmlExerciseTokenizer;
+	private final ExerciseTokenizer exerciseTokenizer;
 	private final ExerciseCatalogue loadedExerciseCatalogue;
 
 	private String exerciseName = null;
@@ -26,19 +27,29 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	private JavaFiles classes = null;
 	private JavaFiles tests = null;
 
-	public XMLExerciseLoader(XMLExerciseTokenizer xmlExerciseTokenizer, ExerciseCatalogue exerciseCatalogue){
-		this.xmlExerciseTokenizer = xmlExerciseTokenizer;
+	/**
+	 * Creates a {@link XMLExerciseLoader} instance that is able to load
+	 * an {@link ExerciseCatalogue} from a .xml-file
+	 * @see ExerciseLoader
+	 * @param exerciseTokenizer The {@link XMLExerciseTokenizer} from which
+	 *                             the tokens are read
+	 * @param exerciseCatalogue The {@link ExerciseCatalogue} to be filled with the
+	 *                          parsed exercises
+     */
+	public XMLExerciseLoader(ExerciseTokenizer exerciseTokenizer, ExerciseCatalogue exerciseCatalogue){
+		this.exerciseTokenizer = exerciseTokenizer;
 		this.loadedExerciseCatalogue = exerciseCatalogue;
 	}
 
 	/**
-	 * Parses the exercise catalogue and returns a ExerciseCatalogue instance with
+	 * Parses the exercise catalogue and returns a {@link ExerciseCatalogue} instance with
 	 * the parsed information
-	 * @return An ExerciseCatalogue with the read exercises
+	 * @return An {@link ExerciseCatalogue} with the read exercises
 	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws IOException If an I/O error occurs with the BufferedReader instance
 	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
+	 * @throws ParserException If an unexpected circumstance is occurs during parsing
      */
 	@Override
 	public ExerciseCatalogue loadExerciseCatalogue()
@@ -57,25 +68,25 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	private ExerciseCatalogue parseExercises()
 			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 
-		if(xmlExerciseTokenizer.currentToken() == null) throw new ParserException("The specified file is empty.");
+		if(exerciseTokenizer.currentToken() == null) throw new ParserException("The specified file is empty.");
 
-		if((xmlExerciseTokenizer.currentToken()).name.startsWith("exercises")
-				&& xmlExerciseTokenizer.hasNextToken()) xmlExerciseTokenizer.advance();
-		else throw new UnexpectedTokenException("<exercises>", xmlExerciseTokenizer.currentToken().name,
-				xmlExerciseTokenizer.getLineNumber());
+		if((exerciseTokenizer.currentToken()).name.startsWith("exercises")
+				&& exerciseTokenizer.hasNextToken()) exerciseTokenizer.advance();
+		else throw new UnexpectedTokenException("exercises", exerciseTokenizer.currentToken().name,
+				exerciseTokenizer.getLineNumber());
 
-		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercises")) {
+		while(exerciseTokenizer.hasNextToken() && !exerciseTokenizer.currentToken().name.equals("/exercises")) {
 			parseExercise();
-			xmlExerciseTokenizer.advance();
+			exerciseTokenizer.advance();
 		}
 
 		if(loadedExerciseCatalogue.size() == 0)
 			throw new ParserException("The specified catalogue does not contain an exercise.");
 
-		if(xmlExerciseTokenizer.currentToken() == null)
-			throw new MissingTokenException("</exercise> or </exercises>", xmlExerciseTokenizer.getLineNumber());
+		if(exerciseTokenizer.currentToken() == null)
+			throw new MissingTokenException("exercises", exerciseTokenizer.getLineNumber());
 
-		if(xmlExerciseTokenizer.currentToken().name.equals("/exercises") && !xmlExerciseTokenizer.hasNextToken())
+		if(exerciseTokenizer.currentToken().name.equals("/exercises") && !exerciseTokenizer.hasNextToken())
 			return loadedExerciseCatalogue;
 
 		return null;
@@ -93,7 +104,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		exerciseConfig = new ExerciseConfig();
 		classes = new JavaFiles();
 
-		while(xmlExerciseTokenizer.hasNextToken() && !xmlExerciseTokenizer.currentToken().name.equals("/exercise"))
+		while(exerciseTokenizer.hasNextToken() && !exerciseTokenizer.currentToken().name.equals("/exercise"))
 			parseToken();
 
 		if(exerciseName != null && description != null && classes.size() > 0 && tests.size() > 0 && exerciseConfig != null) {
@@ -112,7 +123,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException {
-		Token token = xmlExerciseTokenizer.currentToken();
+		Token token = exerciseTokenizer.currentToken();
 		switch(token.name){
 			case "exercise": exerciseName = token.value; break;
 			case "description": {
@@ -125,9 +136,9 @@ public class XMLExerciseLoader implements ExerciseLoader {
 			case "config": parseConfig(); break;
 			default:
 				throw new UnexpectedTokenException("<exercise>, <description>, <classes>, <tests> or <config>",
-						token.name, xmlExerciseTokenizer.getLineNumber());
+						token.name, exerciseTokenizer.getLineNumber());
 		}
-		xmlExerciseTokenizer.advance();
+		exerciseTokenizer.advance();
 	}
 
 	/**
@@ -145,12 +156,12 @@ public class XMLExerciseLoader implements ExerciseLoader {
 		ClassToken classToken;
 
 		do {
-			classToken = xmlExerciseTokenizer.readJavaFile(stringToEndOn, classType);
+			classToken = exerciseTokenizer.readJavaFile(stringToEndOn, classType);
 			if(classToken != null) {
 				JavaFile javaFile = new JavaFile(classToken.value, classToken.classTemplate);
 				javaFiles.addJavaFile(javaFile);
 			}
-		}while(!xmlExerciseTokenizer.currentToken().name.equals(stringToEndOn) && classToken != null);
+		}while(!exerciseTokenizer.currentToken().name.equals(stringToEndOn) && classToken != null);
 	}
 
 	/**
@@ -161,13 +172,13 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * but not found
      */
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
-		Token token = xmlExerciseTokenizer.currentToken();
+		Token token = exerciseTokenizer.currentToken();
 
 		while(!token.name.equals("/config")) {
-			xmlExerciseTokenizer.advance();
-			token = xmlExerciseTokenizer.currentToken();
+			exerciseTokenizer.advance();
+			token = exerciseTokenizer.currentToken();
 
-			if(token == null) throw new MissingTokenException("</config>", xmlExerciseTokenizer.getLineNumber());
+			if(token == null) throw new MissingTokenException("</config>", exerciseTokenizer.getLineNumber());
 
 			switch (token.name) {
 				case "babysteps":
