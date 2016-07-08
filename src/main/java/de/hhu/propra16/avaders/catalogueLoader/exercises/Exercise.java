@@ -10,6 +10,14 @@ public class Exercise {
 	private JavaFiles testTemplates;
 	private ExerciseConfig exerciseConfig;
 
+	/**
+	 * Creates an {@link Exercise} with a name, description, templates {@link JavaFiles} and an {@link  ExerciseConfig}
+	 * @param exerciseName The name of the exercise
+	 * @param description The description of the exercise
+	 * @param classTemplates The templates for classes the exercise consists of
+	 * @param testTemplates The templates for classes the exercise consists of
+	 * @param exerciseConfig The configuration for this class
+     */
 	public Exercise(String exerciseName, String description, JavaFiles classTemplates, JavaFiles testTemplates, ExerciseConfig exerciseConfig){
 		this.exerciseName = exerciseName;
 		this.description = description;
@@ -76,7 +84,7 @@ public class Exercise {
 	public int getNumberOfTests(){	return testTemplates.size(); }
 
 	/**
-	 * @return The Config of this Exercise
+	 * @return The {@link ExerciseConfig} of this exercise
      */
 	public ExerciseConfig getExerciseConfig(){	return exerciseConfig; }
 }

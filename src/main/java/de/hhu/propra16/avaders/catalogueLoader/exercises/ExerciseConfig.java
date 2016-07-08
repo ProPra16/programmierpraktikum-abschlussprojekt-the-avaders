@@ -1,7 +1,7 @@
 package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
 /**
- * ExerciseConfig keeps track of configurations for the exercise
+ * ExerciseConfig keeps track of configurations for the {@link Exercise}
  * it is attached to
  */
 public class ExerciseConfig {
@@ -10,8 +10,9 @@ public class ExerciseConfig {
 	private boolean timeTracking;
 	private boolean atdd;
 
-	public ExerciseConfig(){
-	}
+	private static final int standardTime = 120;
+
+	public ExerciseConfig(){}
 
 	/**
 	 * @return True if babysteps is enabled
@@ -21,24 +22,27 @@ public class ExerciseConfig {
 	}
 
 	/**
-	 * @param babySteps The value babysteps will be set to
+	 * @param babySteps The value babySteps will be set to
      */
 	public void setBabySteps(boolean babySteps) {
 		this.babySteps = babySteps;
 	}
 
 	/**
-	 * @return The time (as string), specified by babysteps, until all changes are reverted
+	 * @return The time until all changes are to be reverted
      */
 	public int getBabyStepsTime() {
 		return time;
 	}
 
 	/**
-	 * @param time The time babystepsTime will beset to
+	 * @param time The time babystepsTime will be set to.
+	 *             If it is 0, then the standardTime ({@value standardTime} seconds)
+	 *             is set instead.
      */
-	public void setBabyStepsTime(int time) {
-		this.time = time;
+	public void setBabyStepsTime(int time){
+		if(time != 0)	this.time = time;
+		else this.time = standardTime;
 	}
 
 	/**

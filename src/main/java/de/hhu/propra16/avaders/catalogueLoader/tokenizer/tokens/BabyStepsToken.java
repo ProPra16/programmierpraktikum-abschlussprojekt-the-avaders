@@ -8,10 +8,14 @@ package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
 public class BabyStepsToken extends Token {
 	public final int time; // standard time
 
+	/**
+	 * Produces a BabyStepsToken, keeping record of the values
+	 * the lexeme carries
+	 * @param value The string whether or not babysteps is activated
+	 * @param time The time in seconds that were read in the lexeme
+     */
 	public BabyStepsToken(String value, int time){
 		super("babysteps", value);
-
-		if(time != 0) this.time = time;
-		else this.time = 120; // standard time
+		this.time = time;
 	}
 }

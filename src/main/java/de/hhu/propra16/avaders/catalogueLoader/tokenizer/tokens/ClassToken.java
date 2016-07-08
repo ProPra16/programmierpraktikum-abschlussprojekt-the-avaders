@@ -8,8 +8,14 @@ package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
 public class ClassToken extends Token{
 	public final String classTemplate;
 
-	public ClassToken(String name, String value, String classTemplate) {
-		super(name, value);
+	/**
+	 * Produces a token holding information from a class lexeme
+	 * @param name The name of the token
+	 * @param fileName The name of the class or test
+	 * @param classTemplate The template of this class
+     */
+	public ClassToken(String name, String fileName, String classTemplate) {
+		super(name, fileName);
 		this.classTemplate = classTemplate;
 	}
 }

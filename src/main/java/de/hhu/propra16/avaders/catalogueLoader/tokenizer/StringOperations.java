@@ -33,7 +33,7 @@ class StringOperations {
 	 * Parses a string in form "m:s" where m are minutes and s are seconds
 	 * and stores the amount of seconds these correspond to in an integer
 	 * @param time The string that holds the time in form "m:s"
-	 * @return An Integer holding the time in seconds
+	 * @return An integer holding the time in seconds
      */
 	static int StringTimeToSeconds(String time) throws NumberFormatException{
 		if(time == null) return 0;

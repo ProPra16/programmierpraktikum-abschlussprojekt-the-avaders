@@ -26,6 +26,17 @@ public class XMLExerciseTokenizer {
 
 	private static final int INCLUDE = 1;
 
+	/**
+	 * Produces a {@link XMLExerciseTokenizer} instance that reads lexemes from
+	 * the given {@link LineReader}
+	 * @param fileReader The {@link LineReader} instance from which the
+	 *                   lexemes are fetched
+	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
+	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
+	 * but not found
+	 * @see ExerciseTokenizer
+     */
 	public XMLExerciseTokenizer(LineReader fileReader) throws SamePropertyTwiceException, IOException, TokenException {
 		if(fileReader instanceof FileReader && !((FileReader)fileReader).getPath().endsWith(".xml"))
 			throw new IOException("Please choose a file with the \".xml\" extension.");
@@ -81,7 +92,8 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Parses the current line and sets the current tokens to the one read in the line
+	 * Parses the current line and sets the current {@link Token} to the one formed from
+	 * the information of the read lexeme
 	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
@@ -110,7 +122,7 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Removes unnecessary symbols from the tokens, only leaving the information needed.
+	 * Removes unnecessary symbols from the lexeme, only leaving the information needed.
 	 * @return A string only holding the tokens necessary information
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
      */
@@ -162,9 +174,9 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads lines until the given string and returns them as single string
+	 * Reads lines until the given string is encountered and returns them as single string
 	 * @param until The string until which the string is to be build
-	 * @return the lines that were read up until the given string
+	 * @return The lines that were read up until the given string
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
      */
 	private String readLinesUntil(String until) throws IOException, MissingTokenException {
@@ -186,7 +198,7 @@ public class XMLExerciseTokenizer {
 	}
 
 	/**
-	 * Reads the next line and increases the linenr counter
+	 * Reads the next line and increases the line counter
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
      */
 	private void readNextLine() throws IOException {

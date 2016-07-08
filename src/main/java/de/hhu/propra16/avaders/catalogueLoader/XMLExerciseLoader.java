@@ -1,6 +1,7 @@
 package de.hhu.propra16.avaders.catalogueLoader;
 
 import de.hhu.propra16.avaders.catalogueLoader.exercises.*;
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.ExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.MissingTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
