@@ -19,10 +19,12 @@ public class Main extends Application {
 	private MainController controller;
 	private BorderPane     mainBase;
 
+
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		initStage(primaryStage);
 		makeThisAccessibleFor(controller);
+
 	}
 
 	private void makeThisAccessibleFor(MainController controller){

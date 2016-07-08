@@ -9,10 +9,9 @@ public class Refactor extends Phase {
 	@Override 
 	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
 		listenTo(userFieldCode);
-		userFieldRed.setDisable(true);
-		userFieldCode.setDisable(false);
-		stepBack.setVisible(true);
-		stepBack.setText("Green");
-		stepFurther.setText("Finish");
+		userFieldRed.setEditable(false);
+		ViewTools.enable(userFieldCode);
+		ViewTools.enable(stepBack, "Test");
+		ViewTools.enable(stepFurther, "Finish");
 	}
 }

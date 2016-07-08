@@ -8,24 +8,28 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
+import de.hhu.propra16.avaders.gui.Phase;
 import de.hhu.propra16.avaders.konfig.KonfigWerte;
 import de.hhu.propra16.avaders.logik.Logik;
+import de.hhu.propra16.avaders.logik.Step;
 import de.hhu.propra16.avaders.testen.Tester;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.text.Text;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
+
 
 public class MainController {
 	private Main              main;
 	private ExerciseCatalogue exerciseCatalogue;
+	private Map<Step,Phase>   steps;
 	private Logik             logic;
 
 	//exercise-menuItems
@@ -40,6 +44,8 @@ public class MainController {
     @FXML private Label activatedModes;
     @FXML private Label timeLeft;
 	@FXML private Label timeLeftTitle;
+	@FXML private Label currentPhaseLabel;
+	@FXML private StackPane currentPhaseDisplay;
 
     //input-areas for user
     @FXML private TextArea greenRefactor;
@@ -66,6 +72,12 @@ public class MainController {
 			}
 			e.printStackTrace();
 		}
+		userFieldRed.setVisible(true);
+		userFieldRed.setEditable(true);
+		userFieldCode.setVisible(false);
+		stepBack.setVisible(false);
+		stepFurther.setVisible(true);
+		stepFurther.setText("Green");
 
 		Exercise exercise = exerciseCatalogue.getExercise(1);
 		this.userFieldRed.setText(exercise.getTestTemplates(0));
@@ -95,7 +107,10 @@ public class MainController {
 		Tester      tester      = new Tester();
 		KonfigWerte konfigWerte = new KonfigWerte();
 		Logik       logic       = new Logik(tester, konfigWerte);
-
+		userFieldCode.setVisible(false);
+		userFieldRed.setVisible(false);
+		stepBack.setVisible(false);
+		stepFurther.setVisible(false);
 		timeLeftTitle.setVisible(false);
 		timeLeft.setVisible(false);
 	}
