@@ -14,10 +14,10 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 import java.io.IOException;
 
 /**
- * Loads ExerciseCatalogues from .xml files
- * @see ExerciseLoader
+ * Loads ExerciseCatalogues
+ * @see CatalogueLoader
  */
-public class XMLExerciseLoader implements ExerciseLoader {
+public class ExerciseCatalogueLoader implements CatalogueLoader {
 	private final ExerciseTokenizer exerciseTokenizer;
 	private final ExerciseCatalogue loadedExerciseCatalogue;
 
@@ -28,15 +28,15 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	private JavaFiles tests = null;
 
 	/**
-	 * Creates a {@link XMLExerciseLoader} instance that is able to load
-	 * an {@link ExerciseCatalogue} from a .xml-file
-	 * @see ExerciseLoader
+	 * Creates a {@link ExerciseCatalogueLoader} instance that is able to load
+	 * an {@link ExerciseCatalogue} from a {@link ExerciseTokenizer}
+	 * @see CatalogueLoader
 	 * @param exerciseTokenizer The {@link XMLExerciseTokenizer} from which
 	 *                             the tokens are read
 	 * @param exerciseCatalogue The {@link ExerciseCatalogue} to be filled with the
 	 *                          parsed exercises
      */
-	public XMLExerciseLoader(ExerciseTokenizer exerciseTokenizer, ExerciseCatalogue exerciseCatalogue){
+	public ExerciseCatalogueLoader(ExerciseTokenizer exerciseTokenizer, ExerciseCatalogue exerciseCatalogue){
 		this.exerciseTokenizer = exerciseTokenizer;
 		this.loadedExerciseCatalogue = exerciseCatalogue;
 	}
@@ -52,7 +52,7 @@ public class XMLExerciseLoader implements ExerciseLoader {
 	 * @throws ParserException If an unexpected circumstance is occurs during parsing
      */
 	@Override
-	public ExerciseCatalogue loadExerciseCatalogue()
+	public ExerciseCatalogue loadCatalogue()
 			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		return parseExercises();
 	}

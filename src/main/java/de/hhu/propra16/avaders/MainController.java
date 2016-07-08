@@ -1,7 +1,7 @@
 package de.hhu.propra16.avaders;
 
 import de.hhu.propra16.avaders.catalogueLoader.ParserException;
-import de.hhu.propra16.avaders.catalogueLoader.XMLExerciseLoader;
+import de.hhu.propra16.avaders.catalogueLoader.ExerciseCatalogueLoader;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
@@ -97,8 +97,8 @@ public class MainController {
 			FileReader           fileReader           = new FileReader(cataloguePath);
 			ExerciseTokenizer exerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
 			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
-			XMLExerciseLoader    xmlExerciseLoader    = new XMLExerciseLoader(exerciseTokenizer, exerciseCatalogue);
-			this.exerciseCatalogue = xmlExerciseLoader.loadExerciseCatalogue();
+			ExerciseCatalogueLoader xmlExerciseLoader    = new ExerciseCatalogueLoader(exerciseTokenizer, exerciseCatalogue);
+			this.exerciseCatalogue = xmlExerciseLoader.loadCatalogue();
 		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
 			if(e instanceof ParserException) {
 				System.out.println("Caught null from main.getExercise: No file selected");

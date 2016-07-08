@@ -8,9 +8,9 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenExcepti
 import java.io.IOException;
 
 /**
- * An ExerciseLoader returns an ExerciseCatalogue
+ * An CatalogueLoader returns an ExerciseCatalogue
  */
-public interface ExerciseLoader {
+public interface CatalogueLoader {
 	/**
 	 * Loads Exercises from a source and returns them in an {@link ExerciseCatalogue} instance
 	 * @return An {@link ExerciseCatalogue} holding {@link Exercise} instances
@@ -20,5 +20,5 @@ public interface ExerciseLoader {
 	 * but not found
 	 * @throws ParserException If an unexpected circumstance is occurs during parsing
      */
-	ExerciseCatalogue loadExerciseCatalogue() throws SamePropertyTwiceException, IOException, TokenException, ParserException;
+	ExerciseCatalogue loadCatalogue() throws SamePropertyTwiceException, IOException, TokenException, ParserException;
 }

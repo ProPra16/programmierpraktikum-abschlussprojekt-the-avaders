@@ -40,7 +40,6 @@ class StringOperations {
 		int indexOfColon = time.indexOf(":");
 		String minutes = time.substring(0, indexOfColon);
 		String seconds = time.substring(indexOfColon+1);
-		System.out.println(parseInt(minutes)*60 + parseInt(seconds));
 		return parseInt(minutes)*60 + parseInt(seconds);
 	}
 }

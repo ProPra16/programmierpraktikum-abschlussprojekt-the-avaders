@@ -202,8 +202,8 @@ public class XMLExerciseLoaderTester {
 		ExerciseCatalogue exerciseCatalogue;
 
 		xmlExerciseTokenizer = new XMLExerciseTokenizer(lineReader);
-		XMLExerciseLoader xmlExerciseLoader = new XMLExerciseLoader(xmlExerciseTokenizer, new ExerciseCatalogue());
-		exerciseCatalogue = xmlExerciseLoader.loadExerciseCatalogue();
+		CatalogueLoader exerciseCatalogueLoader = new ExerciseCatalogueLoader(xmlExerciseTokenizer, new ExerciseCatalogue());
+		exerciseCatalogue = exerciseCatalogueLoader.loadCatalogue();
 
 		return exerciseCatalogue.getExercise(exerciseNr);
 	}
