@@ -1,7 +1,6 @@
 package de.hhu.propra16.avaders.gui;
 
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
@@ -9,7 +8,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.util.Arrays;
 
@@ -20,6 +18,19 @@ public class ViewTools {
 	public static void enable(Node node){
 		node.setVisible(true);
 		node.setDisable(false);
+	}
+
+	public static void setUneditable(TextInputControl... nodes){
+		for(TextInputControl node : nodes)
+			node.setEditable(false);
+	}
+
+	public static void hideNodes(Node... nodes){
+		for(Node node : nodes){
+			node.setDisable(true);
+			node.setVisible(false);
+		}
+
 	}
 
 	public static void editPhaseDisplay(Label labelOnStackPane, String text, Color textFill, Color backgroundFill ){

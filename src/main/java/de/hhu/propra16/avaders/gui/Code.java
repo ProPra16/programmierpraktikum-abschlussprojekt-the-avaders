@@ -8,7 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-public class Green extends Phase {
+public class Code extends Phase {
 	//Sets values to controls according to green-phase  and records input
 	@Override 
 	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){

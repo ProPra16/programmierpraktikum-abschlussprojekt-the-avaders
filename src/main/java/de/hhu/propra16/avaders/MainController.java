@@ -18,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
-import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -59,22 +58,27 @@ public class MainController {
 
 	@FXML private Tab      consoleTab;
 	@FXML private Tab      codeTab;
-	@FXML private Tab      refactorTab;
+	@FXML private Tab      codeRefactorTab;
+	@FXML private Tab      testRefactorTab;
 	@FXML private Tab      testTab;
+	@FXML private TextArea consoleInputArea;
 	@FXML private TextArea testInputArea;
 	@FXML private TextArea codeInputArea;
-	@FXML private TextArea refactorInputArea;
+	@FXML private TextArea codeRefactorInputArea;
+	@FXML private TextArea testRefactorInputArea;
 	@FXML private TextArea userInputField;
 
 
 	//Handler
     @FXML void handleStart(ActionEvent event)  {}
 	@FXML void handleProgress(ActionEvent event)  {}
-	@FXML void handleQuit(ActionEvent event)  {}
+	@FXML void handleQuit(ActionEvent event){
+		System.exit(0);
+	}
 
 	//initializer
 	@FXML public void initialize(){
-		this.phases = new Phases(new Welcome(), new Red(), new Green(), new CodeRefactor(), new TestRefactor());
+		this.phases = new Phases(new Welcome(), new Test(), new Code(), new CodeRefactor(), new TestRefactor());
 		this.logic  = initLogic();
 		setupStart();
 	}
@@ -119,17 +123,11 @@ public class MainController {
 	}
 
 
-
-
-
 	//HelpMethods
 	private void setupStart(){
 		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.disable(stepBack);
-		ViewTools.disable(stepFurther);
-		ViewTools.disable(timeLeftTitle);
-		ViewTools.disable(timeLeft);
-		ViewTools.disable(activatedModes);
+		ViewTools.setUneditable(new TextInputControl[]{consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea});
+		ViewTools.hideNodes(stepBack,stepFurther,timeLeft,timeLeftTitle,activatedModes);
 	}
 
 	private Logik initLogic(){
@@ -155,7 +153,7 @@ public class MainController {
 	private void setTime(Exercise exercise){
 		if(exercise.getExerciseConfig().isBabySteps()){
 			ViewTools.enable(timeLeftTitle);
-			ViewTools.enable(timeLeft, "m:ss");
+			ViewTools.enable(timeLeft, "" + exercise.getExerciseConfig().getBabyStepsTime());
 		}
 	}
 }
