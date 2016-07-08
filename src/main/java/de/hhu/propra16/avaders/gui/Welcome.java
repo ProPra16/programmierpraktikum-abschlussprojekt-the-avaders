@@ -1,8 +1,10 @@
 package de.hhu.propra16.avaders.gui;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 /**
  * Created by Batman140 on 08.07.2016.
@@ -10,11 +12,7 @@ import javafx.scene.layout.StackPane;
 public class Welcome extends Phase{
 	//Sets values to controls according to red-phase and records input
 	@Override
-	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther, StackPane currentPhaseDisplay){
-		userFieldRed.setEditable(false);
-		userFieldCode.setEditable(false);
-		ViewTools.disable(currentPhaseDisplay);
-		ViewTools.disable(stepBack);
-		ViewTools.enable(stepFurther, "Start");
+	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){
+		ViewTools.editPhaseDisplay(currentPhase, "WELCOME", Color.WHITE, Color.DARKORANGE);
 	}
 }

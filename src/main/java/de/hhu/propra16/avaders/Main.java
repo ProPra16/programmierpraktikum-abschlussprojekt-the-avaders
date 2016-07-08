@@ -1,9 +1,7 @@
 package de.hhu.propra16.avaders;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -42,7 +40,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 		primaryStage.setTitle("Test Driven Development Trainer");
-		Scene scene = new Scene(mainBase, 600, 400);
+		Scene scene = new Scene(mainBase, 800, 600);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();

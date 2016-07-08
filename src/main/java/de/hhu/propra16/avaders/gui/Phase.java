@@ -13,7 +13,7 @@ public class Phase {
 	
 	//this method will be overriden by subclasses Red,Green,CodeRefactor to set appropriate states
 	
-	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther, StackPane currentPhaseDisplay){
+	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){
 	}
 	
 	//listener for subclasses, to save userinput in textarea in this object. available in variable -> userInput

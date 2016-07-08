@@ -1,99 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.GridPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hhu.propra16.avaders.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hhu.propra16.avaders.MainController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Excercise">
-            <items>
-              <MenuItem fx:id="newExercise" mnemonicParsing="false" onAction="#handleNewExercise" text="New Exercise" />
-                  <MenuItem fx:id="restart" mnemonicParsing="false" onAction="#handleRestart" text="Restart" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <bottom>
-      <AnchorPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="BOTTOM_RIGHT">
+      <VBox prefHeight="70.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox layoutX="379.0" layoutY="86.0" prefHeight="30.0" prefWidth="275.0" spacing="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <MenuBar maxHeight="25.0" minHeight="25.0" prefHeight="25.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem fx:id="newCatalogue" mnemonicParsing="false" onAction="#handleNewCatalogue" text="New Catalogue" />
+                        <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#handleQuit" text="Quit" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="View">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="45.0" valignment="CENTER" vgrow="NEVER" />
+              </rowConstraints>
                <children>
-                  <Button fx:id="stepBack" mnemonicParsing="false" onAction="#handlePrePhase" prefWidth="100.0" text="&lt;PrePhase&gt;" />
-                  <Button fx:id="stepFurther" mnemonicParsing="false" onAction="#handleNextPhase" prefWidth="100.0" text="&lt;NextPhase&gt;" />
+                  <Button fx:id="stepFurther" mnemonicParsing="false" onAction="#handleNextPhase" prefWidth="100.0" text="&lt;Next&gt;" GridPane.columnIndex="4" />
+                  <Button fx:id="stepBack" mnemonicParsing="false" onAction="#handlePrePhase" prefWidth="100.0" text="&lt;Back&gt;" GridPane.columnIndex="3" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="start" maxWidth="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#handleStart" prefWidth="50.0" text="Start" HBox.hgrow="NEVER">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children></HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                     <children>
+                        <Label text="Progress:">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </Label>
+                        <ProgressBar fx:id="progress" onDragDetected="#handleProgress" prefWidth="130.0" progress="0.0">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </ProgressBar>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                     <children>
+                        <Label text="Phase: ">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <StackPane fx:id="currentPhaseDisplay" prefHeight="150.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="currentPhaseLabel" text="&lt;Phase&gt;" />
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </HBox.margin>
+                        </StackPane>
+                     </children>
+                  </HBox>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
+            </GridPane>
          </children>
-      </AnchorPane>
-   </bottom>
+      </VBox>
+   </top>
    <center>
-      <GridPane gridLinesVisible="false" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="45.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" percentWidth="45.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="30.0" minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" percentHeight="80.0" prefHeight="200.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
-               <children>
-                  <Label text="Active modes:" />
-                  <Label fx:id="activatedModes" text="&lt;None&gt;">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+      <SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+         <items>
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <TextArea fx:id="userFieldRed" layoutX="-36.0" prefHeight="263.0" prefWidth="246.0" promptText="red" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                     <children>
-                        <TextArea fx:id="userFieldCode" layoutX="-28.0" layoutY="14.0" prefHeight="263.0" prefWidth="246.0" promptText="code" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                        <SplitPane dividerPositions="0.27638190954773867" layoutX="162.0" layoutY="-32.0" prefHeight="96.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <items>
+                            <AnchorPane maxWidth="225.0" minHeight="0.0" minWidth="225.0" prefHeight="160.0" prefWidth="225.0" SplitPane.resizableWithParent="false">
+                                 <children>
+                                    <TableView fx:id="exerciseTable" minWidth="225.0" prefHeight="94.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <columns>
+                                          <TableColumn fx:id="exerciseColumn" minWidth="75.0" prefWidth="75.0" text="Exercise" />
+                                          <TableColumn fx:id="classColumn" minWidth="75.0" prefWidth="75.0" text="Class" />
+                                          <TableColumn fx:id="testColumn" minWidth="75.0" prefWidth="75.0" text="Test" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <TextArea fx:id="userInputField" prefHeight="234.0" prefWidth="587.0" promptText="Current Phase" VBox.vgrow="ALWAYS" />
+                                    <HBox alignment="CENTER_LEFT" maxHeight="25.0" minHeight="25.0" minWidth="360.0" prefHeight="25.0" prefWidth="360.0" spacing="5.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <Label text="Active Modes: ">
+                                             <padding>
+                                                <Insets left="5.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label fx:id="activatedModes" minWidth="150.0" text="&lt;Modes&gt;" />
+                                          <Label fx:id="timeLeftTitle" text="Time Left: " />
+                                          <Label fx:id="timeLeft" text="&lt;Time&gt;" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                     <tabs>
+                        <Tab fx:id="consoleTab" text="Console">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="consoleInputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="testTab" text="Test">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="testInputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Test-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="codeTab" text="Code">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="codeInputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Code-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="refactorTab" text="Refactor">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="refactorInputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
               </items>
             </SplitPane>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
-               <children>
-                  <Label fx:id="timeLeftTitle" text="Time left:" />
-                  <Label fx:id="timeLeft" text="&lt;time&gt;" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </HBox>
-            <StackPane fx:id="currentPhaseDisplay" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
-               <children>
-                  <Label fx:id="currentPhaseLabel" text="&lt;None&gt;" />
-               </children>
-            </StackPane>
-         </children>
-      </GridPane>
+         </items>
+      </SplitPane>
    </center>
 </BorderPane>

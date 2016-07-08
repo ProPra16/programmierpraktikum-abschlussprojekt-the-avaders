@@ -16,16 +16,12 @@ import de.hhu.propra16.avaders.logik.Step;
 import de.hhu.propra16.avaders.testen.Tester;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
 import java.nio.file.Path;
-
 
 
 public class MainController {
@@ -34,43 +30,71 @@ public class MainController {
 	private Phases            phases;
 	private Logik             logic;
 
-	//exercise-menuItems
-    @FXML private MenuItem newExercise;
+	//menuItems
+    @FXML private MenuItem newCatalogue;
     @FXML private MenuItem restart;
+	@FXML private MenuItem quit;
     
     //phase-switcher
+	@FXML private Button start;
     @FXML private Button stepBack;
     @FXML private Button stepFurther;
     
     //User-information about activated modes and time left due activated 'babysteps'
     @FXML private Label activatedModes;
+	@FXML private ProgressBar progress;
     @FXML private Label timeLeft;
 	@FXML private Label timeLeftTitle;
 	@FXML private Label currentPhaseLabel;
 	@FXML private StackPane currentPhaseDisplay;
 
-    //input-areas for user
+    //areas for user
+	@FXML private TableView exerciseTable;
+	@FXML private TableColumn exerciseColumn;
+	@FXML private TableColumn classColumn;
+	@FXML private TableColumn testColumn;
     @FXML private TextArea greenRefactor;
     @FXML private TextArea userFieldRed;
     @FXML private TextArea userFieldCode;
 
+	@FXML private Tab      consoleTab;
+	@FXML private Tab      codeTab;
+	@FXML private Tab      refactorTab;
+	@FXML private Tab      testTab;
+	@FXML private TextArea testInputArea;
+	@FXML private TextArea codeInputArea;
+	@FXML private TextArea refactorInputArea;
+	@FXML private TextArea userInputField;
+
+
 	//Handler
-    @FXML void handleRestart(ActionEvent event)  {}
-    @FXML void handlePrePhase(ActionEvent event) {
-		logic.abbrechen();
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
+    @FXML void handleStart(ActionEvent event)  {}
+	@FXML void handleProgress(ActionEvent event)  {}
+	@FXML void handleQuit(ActionEvent event)  {}
+
+	//initializer
+	@FXML public void initialize(){
+		this.phases = new Phases(new Welcome(), new Red(), new Green(), new CodeRefactor(), new TestRefactor());
+		this.logic  = initLogic();
+		setupStart();
+	}
+
+
+	@FXML void handlePrePhase(ActionEvent event) {
+		/*logic.abbrechen();
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);*/
 	}
 
     @FXML void handleNextPhase(ActionEvent event){
-		Exercise current = exerciseCatalogue.getExercise(1);
+		/*Exercise current = exerciseCatalogue.getExercise(1);
 		logic.weiter(new CompilationUnit(current.getTestName(0), current.getTestTemplates(0), true ));
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);*/
 	}
 
-    @FXML void handleNewExercise(ActionEvent event) {
-		Path exercisePath = main.getExercise();
+    @FXML void handleNewCatalogue(ActionEvent event) {
+		Path cataloguePath = main.getExercise();
 		try {
-			FileReader           fileReader           = new FileReader(exercisePath);
+			FileReader           fileReader           = new FileReader(cataloguePath);
 			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
 			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
 			XMLExerciseLoader    xmlExerciseLoader    = new XMLExerciseLoader(xmlExerciseTokenizer, exerciseCatalogue);
@@ -83,20 +107,11 @@ public class MainController {
 			e.printStackTrace();
 		}
 
-		Exercise exercise = exerciseCatalogue.getExercise(1);
-		this.userFieldRed.setText(exercise.getTestTemplates(0));
+		/*Exercise exercise = exerciseCatalogue.getExercise(1);
+		this.userFieldCode.setText(exercise.getTestTemplates(0));
 		this.userFieldCode.setText(exercise.getClassTemplate(0));
 		this.activatedModes.setText(getModes(exercise.getExerciseConfig()));
-		setTime(exercise);
-	}
-
-
-
-	@FXML
-	public void initialize(){
-		this.phases = new Phases(new Welcome(), new Red(), new Green(), new CodeRefactor(), new TestRefactor());
-		this.logic  = initLogic();
-		setupStart();
+		setTime(exercise);*/
 	}
 
 	public void setMain(Main main){
@@ -109,7 +124,7 @@ public class MainController {
 
 	//HelpMethods
 	private void setupStart(){
-		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
+		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
 	}
 
 	private Logik initLogic(){
@@ -135,7 +150,7 @@ public class MainController {
 	private void setTime(Exercise exercise){
 		if(exercise.getExerciseConfig().isBabySteps()){
 			ViewTools.enable(timeLeftTitle);
-			ViewTools.enable(timeLeft, "<Time>");
+			ViewTools.enable(timeLeft, "m:ss");
 		}
 	}
 }
