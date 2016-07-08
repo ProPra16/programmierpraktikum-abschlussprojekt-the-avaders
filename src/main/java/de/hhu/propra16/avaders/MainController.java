@@ -58,13 +58,13 @@ public class MainController {
     @FXML void handleRestart(ActionEvent event)  {}
     @FXML void handlePrePhase(ActionEvent event) {
 		logic.abbrechen();
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther);
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
 	}
 
     @FXML void handleNextPhase(ActionEvent event){
 		Exercise current = exerciseCatalogue.getExercise(1);
 		logic.weiter(new CompilationUnit(current.getTestName(0), current.getTestTemplates(0), true ));
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther);
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
 	}
 
     @FXML void handleNewExercise(ActionEvent event) {
@@ -85,9 +85,9 @@ public class MainController {
 
 		Exercise exercise = exerciseCatalogue.getExercise(1);
 		this.userFieldRed.setText(exercise.getTestTemplates(0));
+		this.userFieldCode.setText(exercise.getClassTemplate(0));
 		this.activatedModes.setText(getModes(exercise.getExerciseConfig()));
 		setTime(exercise);
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther);
 	}
 
 
@@ -96,6 +96,7 @@ public class MainController {
 	public void initialize(){
 		this.phases = new Phases(new Welcome(), new Red(), new Green(), new CodeRefactor(), new TestRefactor());
 		this.logic  = initLogic();
+		setupStart();
 	}
 
 	public void setMain(Main main){
@@ -107,6 +108,10 @@ public class MainController {
 
 
 	//HelpMethods
+	private void setupStart(){
+		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
+	}
+
 	private Logik initLogic(){
 		Tester      tester      = new Tester();
 		KonfigWerte konfigWerte = new KonfigWerte();

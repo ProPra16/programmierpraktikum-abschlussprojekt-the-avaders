@@ -3,7 +3,9 @@ package de.hhu.propra16.avaders.gui;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.StackPane;
 
 public class Phase {
 	//save userinput from textarea
@@ -11,7 +13,7 @@ public class Phase {
 	
 	//this method will be overriden by subclasses Red,Green,CodeRefactor to set appropriate states
 	
-	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
+	public void setStates(TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther, StackPane currentPhaseDisplay){
 	}
 	
 	//listener for subclasses, to save userinput in textarea in this object. available in variable -> userInput

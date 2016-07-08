@@ -3,6 +3,7 @@ package de.hhu.propra16.avaders.gui;
 import de.hhu.propra16.avaders.logik.Step;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.StackPane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class Phases {
 		phases.put(Step.TEST_REFACTOR, testRefactor);
 	}
 
-	public void setStates(Step step, TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther){
-		phases.get(step).setStates(userFieldRed, userFieldCode, stepBack, stepFurther);
+	public void setStates(Step step, TextArea userFieldRed, TextArea userFieldCode, Button stepBack, Button stepFurther, StackPane currentPhaseDisplay){
+		phases.get(step).setStates(userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);
 	}
 }
