@@ -4,7 +4,6 @@ import de.hhu.propra16.avaders.logik.Step;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.StackPane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +14,10 @@ import java.util.Map;
 public class Phases {
 	Map<Step,Phase> phases = new HashMap<>();
 
-	public Phases(Welcome welcome, Red red, Green green, CodeRefactor codeRefactor, TestRefactor testRefactor){
+	public Phases(Welcome welcome, Test test, Code code, CodeRefactor codeRefactor, TestRefactor testRefactor){
 		phases.put(Step.WELCOME, welcome);
-		phases.put(Step.RED, red);
-		phases.put(Step.GREEN, green);
+		phases.put(Step.RED, test);
+		phases.put(Step.GREEN, code);
 		phases.put(Step.CODE_REFACTOR, codeRefactor);
 		phases.put(Step.TEST_REFACTOR, testRefactor);
 	}
