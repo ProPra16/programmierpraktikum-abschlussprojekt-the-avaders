@@ -92,13 +92,14 @@ public class MainController {
 	}
 
     @FXML void handleNextPhase(ActionEvent event){
-		/*Exercise current = exerciseCatalogue.getExercise(1);
+		/*Exercise current = exerciseCatalogue.getCatalogue(1);
 		logic.weiter(new CompilationUnit(current.getTestName(0), current.getTestTemplates(0), true ));
 		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);*/
 	}
 
     @FXML void handleNewCatalogue(ActionEvent event) {
-		Path cataloguePath = main.getExercise();
+		Path cataloguePath = main.getCatalogue();
+
 		try {
 			FileReader           fileReader           = new FileReader(cataloguePath);
 			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
@@ -107,14 +108,14 @@ public class MainController {
 			this.exerciseCatalogue = xmlExerciseLoader.loadExerciseCatalogue();
 		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
 			if(e instanceof ParserException) {
-				System.out.println("Caught null from main.getExercise: No file selected");
+				System.out.println("Caught null from main.getCatalogue: No file selected");
 				return;
 			}
 			e.printStackTrace();
 		}
 
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
-		exercises.fill();
+		exercises.fill(cataloguePath.getFileName().toString().replace(".xml","") + "Catalogue");
 
 		//console-sampleoutput
 		System.out.println("Exercises: " + exerciseCatalogue.size());
@@ -124,7 +125,7 @@ public class MainController {
 		System.out.println("Name of First Test: " + exerciseCatalogue.getExercise(0).getTestName(0));
 		System.out.println("Tests in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfTests());
 
-		/*Exercise exercise = exerciseCatalogue.getExercise(1);
+		/*Exercise exercise = exerciseCatalogue.getCatalogue(1);
 		this.userFieldCode.setText(exercise.getTestTemplates(0));
 		this.userFieldCode.setText(exercise.getClassTemplate(0));
 		this.activatedModes.setText(getModes(exercise.getExerciseConfig()));

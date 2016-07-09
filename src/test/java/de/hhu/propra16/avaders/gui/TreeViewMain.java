@@ -24,22 +24,8 @@ public class TreeViewMain extends Application {
 
 
 
-		TreeView<String>  treeView = new TreeView();
-		TreeItem<String>  exercises = new TreeItem<>("Exercises");
-		TreeItem<String>  excerciseRoot2 = new TreeItem<>("Exercise2");
-		TreeItem<String>  exercise1 = new TreeItem<>("Exercise1");
-		TreeItem<String>  exercise2 = new TreeItem<>("Exercise2");
+		TreeView<Test>  treeView = new TreeView();
 
-		TreeItem<String>  test1  = new TreeItem<>("test1");
-		TreeItem<String>  class1 = new TreeItem<>("class1");
-		TreeItem<String>  test2  = new TreeItem<>("test2");
-		TreeItem<String>  class2 = new TreeItem<>("class2");
-
-		exercise1.getChildren().addAll(test1,class1);
-		exercise2.getChildren().addAll(test2,class2);
-		exercises.getChildren().addAll(exercise1,exercise2);
-		treeView.setShowRoot(false);
-		treeView.setRoot(exercises);
 
 		primaryStage.setTitle("TreeViewTester");
 		Scene scene = new Scene(treeView, 300, 200);

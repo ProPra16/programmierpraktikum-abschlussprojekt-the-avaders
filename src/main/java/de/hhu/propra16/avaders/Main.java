@@ -22,7 +22,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception{
 		initStage(primaryStage);
 		makeThisAccessibleFor(controller);
-
 	}
 
 	private void makeThisAccessibleFor(MainController controller){
@@ -46,13 +45,13 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	public Path getExercise() {
-		FileChooser exerciseChoosePopup = new FileChooser();
-		exerciseChoosePopup.setTitle("Choose Exercise");
-		exerciseChoosePopup.getExtensionFilters().add( new FileChooser.ExtensionFilter("xml files", "*.xml"));
-		File exerciseFile = exerciseChoosePopup.showOpenDialog(primaryStage);
-		if(exerciseFile != null)
-			return Paths.get(exerciseFile.getAbsolutePath());
+	public Path getCatalogue() {
+		FileChooser catalogueChoosePopup = new FileChooser();
+		catalogueChoosePopup.setTitle("Choose Exercise");
+		catalogueChoosePopup.getExtensionFilters().add( new FileChooser.ExtensionFilter("xml files", "*.xml"));
+		File catalogueFile = catalogueChoosePopup.showOpenDialog(primaryStage);
+		if(catalogueFile != null)
+			return Paths.get(catalogueFile.getAbsolutePath());
 		return null;
 	}
 
