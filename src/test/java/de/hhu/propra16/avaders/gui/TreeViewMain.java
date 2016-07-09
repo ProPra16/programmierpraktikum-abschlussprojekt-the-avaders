@@ -21,7 +21,10 @@ public class TreeViewMain extends Application {
 	//Initializes Stage, load and store MainController
 	private void initStage(Stage primaryStage){
 		this.primaryStage = primaryStage;
-		TreeView<String> treeView = new TreeView();
+
+
+
+		TreeView<String>  treeView = new TreeView();
 		TreeItem<String>  exercises = new TreeItem<>("Exercises");
 		TreeItem<String>  excerciseRoot2 = new TreeItem<>("Exercise2");
 		TreeItem<String>  exercise1 = new TreeItem<>("Exercise1");

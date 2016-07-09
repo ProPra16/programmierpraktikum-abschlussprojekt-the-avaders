@@ -114,6 +114,16 @@ public class MainController {
 		}
 
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
+		exercises.fill();
+
+		//console-sampleoutput
+		System.out.println("Exercises: " + exerciseCatalogue.size());
+		System.out.println("Name of Exercise 1: " + exerciseCatalogue.getExercise(0).getExerciseName());
+		System.out.println("Name of First Class: " + exerciseCatalogue.getExercise(0).getClassName(0));
+		System.out.println("Classes in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfClasses());
+		System.out.println("Name of First Test: " + exerciseCatalogue.getExercise(0).getTestName(0));
+		System.out.println("Tests in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfTests());
+
 		/*Exercise exercise = exerciseCatalogue.getExercise(1);
 		this.userFieldCode.setText(exercise.getTestTemplates(0));
 		this.userFieldCode.setText(exercise.getClassTemplate(0));
