@@ -68,6 +68,8 @@ public class MainController {
 	@FXML private TextArea testRefactorInputArea;
 	@FXML private TextArea userInputField;
 
+	//ExercisesTree
+	@FXML private TreeView<String> exercisesTree;
 
 	//Handler
     @FXML void handleStart(ActionEvent event)  {}
@@ -126,7 +128,7 @@ public class MainController {
 	//HelpMethods
 	private void setupStart(){
 		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.setUneditable(new TextInputControl[]{consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea});
+		ViewTools.setUneditable(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
 		ViewTools.hideNodes(stepBack,stepFurther,timeLeft,timeLeftTitle,activatedModes);
 	}
 
