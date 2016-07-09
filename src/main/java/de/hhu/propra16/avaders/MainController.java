@@ -113,6 +113,7 @@ public class MainController {
 			e.printStackTrace();
 		}
 
+		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
 		/*Exercise exercise = exerciseCatalogue.getExercise(1);
 		this.userFieldCode.setText(exercise.getTestTemplates(0));
 		this.userFieldCode.setText(exercise.getClassTemplate(0));
