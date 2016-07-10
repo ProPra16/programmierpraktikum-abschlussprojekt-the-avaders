@@ -89,8 +89,17 @@ public class MainController {
 
 			Path descriptionPath = getDescriptionPath(item);
 			if(Files.exists(descriptionPath)){
-				String message = "Exercise: " + descriptionPath.getParent().getFileName().toString() + "\n\nDescription:\n";
-				consoleInputArea.setText(message + FileTools.readFile(descriptionPath));
+				String          exerciseName = descriptionPath.getParent().getFileName().toString();
+				String          headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
+				ExerciseConfig  config = getConfig(exerciseName);
+				String          configMessage =   "\nExtensions:\n";
+				if(config.isTimeTracking())
+					configMessage += "->Time-Tracking\n";
+				if(config.isAtdd())
+					configMessage += "->ATDD\n";
+				if(config.isBabySteps())
+					configMessage += "->Babysteps, " + config.getBabyStepsTime() + " sec\n";
+				consoleInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
 			}
 
 		}
@@ -98,7 +107,11 @@ public class MainController {
 
 	public Path getDescriptionPath(TreeItem<String> item){
 		Path itemPath = PathTools.getPath(item);
-		System.out.println("DescriptionPath: " + Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt")); //no guarantee that file exists
+		//no guarantee that file exists
+		if(itemPath.getNameCount() < 2) {
+			System.err.println("Bad structure of directories. Has to be: root->exercise-> <Files> and description.txt");
+			return null;
+		}
 		return Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt");
 	}
 
@@ -197,5 +210,14 @@ public class MainController {
 			ViewTools.enable(timeLeftTitle);
 			ViewTools.enable(timeLeft, "" + exercise.getExerciseConfig().getBabyStepsTime());
 		}
+	}
+
+	private ExerciseConfig getConfig(String exerciseName){
+		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
+			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
+				return exerciseCatalogue.getExercise(exercise).getExerciseConfig();
+		}
+		System.err.println("Invalid name of exercise: " + exerciseName);
+		return null;
 	}
 }
