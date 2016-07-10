@@ -27,13 +27,27 @@ public class ExercisesTree {
 		this.treeView = treeView;
 	}
 
-	public Path getPath(TreeItem<String> leaf){
+	public Path getLeafPath(TreeItem<String> leaf){
 		if(leaf.isLeaf() == false){
 			System.out.println(leaf.getValue() + " is no leaf");
 			return null;
 		}
 		String path = leaf.getValue() + ".txt";
 		TreeItem<String> parent = leaf.getParent();
+		while(parent != null){
+			path = parent.getValue() + File.separator + path;
+			parent = parent.getParent();
+		}
+		return Paths.get(path);
+	}
+
+	public Path getPath(TreeItem<String> item){
+		String path = "";
+		if(item.isLeaf()){
+			path = item.getValue() + ".txt";
+		}
+		path = item.getValue();
+		TreeItem<String> parent = item.getParent();
 		while(parent != null){
 			path = parent.getValue() + File.separator + path;
 			parent = parent.getParent();
@@ -77,14 +91,14 @@ public class ExercisesTree {
 			for(int j = 0; j < exerciseCatalogue.getExercise(i).getNumberOfClasses(); j++){
 				TreeItem<String> currentClass = new TreeItem<>(exerciseCatalogue.getExercise(i).getClassName(j));
 				classes.getChildren().add(currentClass);
-				createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + getPath(currentClass)), exerciseCatalogue.getExercise(i).getClassTemplate(j));
+				createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + getLeafPath(currentClass)), exerciseCatalogue.getExercise(i).getClassTemplate(j));
 			}
 
 			TreeItem<String> tests    = new TreeItem<>("Test");
 			for(int k = 0; k < exerciseCatalogue.getExercise(i).getNumberOfTests(); k++){
 				TreeItem<String> currentTest = new TreeItem<>(exerciseCatalogue.getExercise(i).getTestName(k));
 				tests.getChildren().add(currentTest);
-				createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + getPath(currentTest)), exerciseCatalogue.getExercise(i).getTestTemplates(k));
+				createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + getLeafPath(currentTest)), exerciseCatalogue.getExercise(i).getTestTemplates(k));
 			}
 			exercise.getChildren().addAll(classes,tests);
 			exercises.getChildren().add(exercise);
@@ -97,6 +111,7 @@ public class ExercisesTree {
 				if(event.getButton() == MouseButton.PRIMARY){
 					TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
 					System.out.println("Selected item: " + item.getValue());
+					System.out.println(getPath(item));
 				}
 			}
 		});
