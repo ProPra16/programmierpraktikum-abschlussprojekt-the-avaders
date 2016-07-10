@@ -15,12 +15,18 @@ import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
 import de.hhu.propra16.avaders.testen.Tester;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 public class MainController {
@@ -74,6 +80,28 @@ public class MainController {
 	//Handler
     @FXML void handleStart(ActionEvent event)  {}
 	@FXML void handleProgress(ActionEvent event)  {}
+
+	@FXML void handleTreeViewMouseClicked(MouseEvent event) {
+		if(event.getButton() == MouseButton.PRIMARY){
+			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
+			System.out.println("Selected item: " + item.getValue());
+			System.out.println(PathTools.getPath(item));
+
+			Path descriptionPath = getDescriptionPath(item);
+			if(Files.exists(descriptionPath)){
+				String message = "Exercise: " + descriptionPath.getParent().getFileName().toString() + "\n\nDescription:\n";
+				consoleInputArea.setText(message + FileTools.readFile(descriptionPath));
+			}
+
+		}
+	}
+
+	public Path getDescriptionPath(TreeItem<String> item){
+		Path itemPath = PathTools.getPath(item);
+		System.out.println("DescriptionPath: " + Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt")); //no guarantee that file exists
+		return Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt");
+	}
+
 	@FXML void handleQuit(ActionEvent event){
 		System.exit(0);
 	}

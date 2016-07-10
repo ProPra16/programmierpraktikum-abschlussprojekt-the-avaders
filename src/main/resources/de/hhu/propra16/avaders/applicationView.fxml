@@ -110,7 +110,7 @@
                                                 <Insets left="10.0" />
                                              </padding>
                                           </HBox>
-                                          <TreeView fx:id="exercisesTree" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                          <TreeView fx:id="exercisesTree" onMouseClicked="#handleTreeViewMouseClicked" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>
