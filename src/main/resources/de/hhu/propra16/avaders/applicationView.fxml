@@ -138,6 +138,15 @@
                   </AnchorPane>
                   <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
+                        <Tab fx:id="informationTab" text="Information">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="informationInputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
                         <Tab fx:id="consoleTab" text="Console">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

@@ -61,11 +61,13 @@ public class MainController {
     @FXML private TextArea userFieldRed;
     @FXML private TextArea userFieldCode;
 
+	@FXML private Tab      informationTab;
 	@FXML private Tab      consoleTab;
 	@FXML private Tab      codeTab;
 	@FXML private Tab      codeRefactorTab;
 	@FXML private Tab      testRefactorTab;
 	@FXML private Tab      testTab;
+	@FXML private TextArea informationInputArea;
 	@FXML private TextArea consoleInputArea;
 	@FXML private TextArea testInputArea;
 	@FXML private TextArea codeInputArea;
@@ -73,56 +75,37 @@ public class MainController {
 	@FXML private TextArea testRefactorInputArea;
 	@FXML private TextArea userInputField;
 
-	//ExercisesTree
 	@FXML private TreeView<String> exercisesTree;
-
-	//Handler
-    @FXML void handleStart(ActionEvent event)  {}
-	@FXML void handleProgress(ActionEvent event)  {}
-
-	@FXML void handleTreeViewMouseClicked(MouseEvent event) {
-		if(event.getButton() == MouseButton.PRIMARY){
-			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
-			System.out.println("Selected item: " + item.getValue());
-			System.out.println(PathTools.getPath(item));
-
-			if(item.isLeaf()){
-				Path itemPath = PathTools.getPath(item);
-				userInputField.setText(FileTools.readFile(itemPath));
-			}
-
-			Path descriptionPath = getDescriptionPath(item);
-			if(Files.exists(descriptionPath)){
-				String exerciseName  = descriptionPath.getParent().getFileName().toString();
-				String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
-				String configMessage = getConfigDisplay(getConfig(exerciseName));
-				consoleInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
-			}
-
-		}
-	}
-
-	public Path getDescriptionPath(TreeItem<String> item){
-		Path itemPath = PathTools.getPath(item);
-		//no guarantee that file exists
-		if(itemPath.getNameCount() < 2) {
-			System.err.println("Bad structure of directories. Has to be: root->exercise-> <Files> and description.txt");
-			return null;
-		}
-		return Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt");
-	}
-
-	@FXML void handleQuit(ActionEvent event){
-		System.exit(0);
-	}
 
 	//initializer
 	@FXML public void initialize(){
 		this.phases = new Phases(new Welcome(), new Test(), new Code(), new CodeRefactor(), new TestRefactor());
 		this.logic  = initLogic();
+		this.start.setDisable(true);
 		setupStart();
 	}
 
+
+	//Handler
+    @FXML void handleStart(ActionEvent event)  {
+	}
+
+	@FXML void handleProgress(ActionEvent event)  {}
+
+	@FXML void handleTreeViewMouseClicked(MouseEvent event) {
+		if(event.getButton() == MouseButton.PRIMARY){
+			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
+			//System.out.println("Selected item: " + item.getValue());
+			//System.out.println(PathTools.getPath(item));
+			setUserInputFieldOnParentNameCondition(item,"Test");
+			setInformationInputArea(item);
+		}
+	}
+
+
+	@FXML void handleQuit(ActionEvent event){
+		System.exit(0);
+	}
 
 	@FXML void handlePrePhase(ActionEvent event) {
 		/*logic.abbrechen();
@@ -153,12 +136,12 @@ public class MainController {
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
 		exercises.fill(cataloguePath.getFileName().toString().replace(".xml","") + "Catalogue");
 		//console-sampleoutput
-		System.out.println("Exercises: " + exerciseCatalogue.size());
-		System.out.println("Name of Exercise 1: " + exerciseCatalogue.getExercise(0).getExerciseName());
-		System.out.println("Name of First Class: " + exerciseCatalogue.getExercise(0).getClassName(0));
-		System.out.println("Classes in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfClasses());
-		System.out.println("Name of First Test: " + exerciseCatalogue.getExercise(0).getTestName(0));
-		System.out.println("Tests in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfTests());
+//		System.out.println("Exercises: " + exerciseCatalogue.size());
+//		System.out.println("Name of Exercise 1: " + exerciseCatalogue.getExercise(0).getExerciseName());
+//		System.out.println("Name of First Class: " + exerciseCatalogue.getExercise(0).getClassName(0));
+//		System.out.println("Classes in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfClasses());
+//		System.out.println("Name of First Test: " + exerciseCatalogue.getExercise(0).getTestName(0));
+//		System.out.println("Tests in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfTests());
 	}
 
 
@@ -222,5 +205,47 @@ public class MainController {
 		}
 		System.err.println("Invalid name of exercise: " + exerciseName);
 		return null;
+	}
+
+	private boolean hasParentName(TreeItem<String> item, String parentName){
+		if(PathTools.getPath(item).getParent().getFileName().toString().contentEquals(parentName))
+			return true;
+		return false;
+	}
+
+	private void setInformationInputArea(TreeItem<String> item){
+		Path descriptionPath = getDescriptionPath(item);
+		if(Files.exists(descriptionPath)){
+			String exerciseName  = descriptionPath.getParent().getFileName().toString();
+			String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
+			String configMessage = getConfigDisplay(getConfig(exerciseName));
+			informationInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
+		}
+	}
+
+	private void setUserInputFieldOnParentNameCondition(TreeItem<String> item, String parentName){
+		if(item.isLeaf()){
+			Path itemPath = PathTools.getPath(item);
+			userInputField.setText(FileTools.readFile(itemPath));
+			checkStartCondition(item, parentName);
+		}
+	}
+
+	private void checkStartCondition(TreeItem<String> item, String parentName){
+		if(hasParentName(item, parentName)) {
+			start.setDisable(false);
+		} else {
+			start.setDisable(true);
+		}
+	}
+
+	public Path getDescriptionPath(TreeItem<String> item){
+		Path itemPath = PathTools.getPath(item);
+		//no guarantee that file exists
+		if(itemPath.getNameCount() < 2) {
+			System.err.println("Bad structure of directories. Has to be: root->exercise-> <Files> and description.txt");
+			return null;
+		}
+		return Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt");
 	}
 }
