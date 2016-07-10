@@ -7,11 +7,10 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenExcepti
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.UnexpectedTokenException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.BabyStepsToken;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
-import org.junit.Assert;
 import org.junit.Test;
 
 import static junit.framework.TestCase.fail;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StringToTokenTester {
 	 @Test
