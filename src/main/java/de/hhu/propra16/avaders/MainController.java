@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import vk.core.api.CompilationUnit;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import java.nio.file.Paths;
 public class MainController {
 	private Main              main;
 	private ExerciseCatalogue exerciseCatalogue;
+	private Exercise          currentExercise;
 	private Phases            phases;
 	private Logik             logic;
 
@@ -87,7 +89,12 @@ public class MainController {
 
 
 	//Handler
-    @FXML void handleStart(ActionEvent event)  {
+    @FXML void handleStart(ActionEvent event){
+		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
+		System.out.println("ExerciseName: " + PathTools.getPath(selection).getName(1).toString());
+		this.currentExercise = getExercise(PathTools.getPath(selection).getName(1).toString());
+		//phases.setStates(logic.getSchritt(), userInputField, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
+		//TODO <- setstates anpassen
 	}
 
 	@FXML void handleProgress(ActionEvent event)  {}
@@ -113,9 +120,8 @@ public class MainController {
 	}
 
     @FXML void handleNextPhase(ActionEvent event){
-		/*Exercise current = exerciseCatalogue.getCatalogue(1);
-		logic.weiter(new CompilationUnit(current.getTestName(0), current.getTestTemplates(0), true ));
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);*/
+		logic.weiter(new CompilationUnit(currentExercise.getTestName(0), currentExercise.getTestTemplates(0), false ));
+		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
 	}
 
     @FXML void handleNewCatalogue(ActionEvent event) {
@@ -198,6 +204,17 @@ public class MainController {
 		}
 	}
 
+	//add to Exercise
+	private Exercise getExercise(String exerciseName){
+		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
+			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
+				return exerciseCatalogue.getExercise(exercise);
+		}
+		System.err.println("Invalid name of exercise: " + exerciseName);
+		return null;
+	}
+
+	//add to ExerciseConfig
 	private ExerciseConfig getConfig(String exerciseName){
 		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
 			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
