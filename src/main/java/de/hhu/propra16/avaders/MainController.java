@@ -15,7 +15,6 @@ import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
 import de.hhu.propra16.avaders.testen.Tester;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -87,18 +86,16 @@ public class MainController {
 			System.out.println("Selected item: " + item.getValue());
 			System.out.println(PathTools.getPath(item));
 
+			if(item.isLeaf()){
+				Path itemPath = PathTools.getPath(item);
+				userInputField.setText(FileTools.readFile(itemPath));
+			}
+
 			Path descriptionPath = getDescriptionPath(item);
 			if(Files.exists(descriptionPath)){
-				String          exerciseName = descriptionPath.getParent().getFileName().toString();
-				String          headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
-				ExerciseConfig  config = getConfig(exerciseName);
-				String          configMessage =   "\nExtensions:\n";
-				if(config.isTimeTracking())
-					configMessage += "->Time-Tracking\n";
-				if(config.isAtdd())
-					configMessage += "->ATDD\n";
-				if(config.isBabySteps())
-					configMessage += "->Babysteps, " + config.getBabyStepsTime() + " sec\n";
+				String exerciseName  = descriptionPath.getParent().getFileName().toString();
+				String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
+				String configMessage = getConfigDisplay(getConfig(exerciseName));
 				consoleInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
 			}
 
@@ -140,7 +137,6 @@ public class MainController {
 
     @FXML void handleNewCatalogue(ActionEvent event) {
 		Path cataloguePath = main.getCatalogue();
-
 		try {
 			FileReader           fileReader           = new FileReader(cataloguePath);
 			XMLExerciseTokenizer xmlExerciseTokenizer = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
@@ -154,10 +150,8 @@ public class MainController {
 			}
 			e.printStackTrace();
 		}
-
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
 		exercises.fill(cataloguePath.getFileName().toString().replace(".xml","") + "Catalogue");
-
 		//console-sampleoutput
 		System.out.println("Exercises: " + exerciseCatalogue.size());
 		System.out.println("Name of Exercise 1: " + exerciseCatalogue.getExercise(0).getExerciseName());
@@ -165,20 +159,19 @@ public class MainController {
 		System.out.println("Classes in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfClasses());
 		System.out.println("Name of First Test: " + exerciseCatalogue.getExercise(0).getTestName(0));
 		System.out.println("Tests in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfTests());
-
-		/*Exercise exercise = exerciseCatalogue.getCatalogue(1);
-		this.userFieldCode.setText(exercise.getTestTemplates(0));
-		this.userFieldCode.setText(exercise.getClassTemplate(0));
-		this.activatedModes.setText(getModes(exercise.getExerciseConfig()));
-		setTime(exercise);*/
 	}
 
+
+
+
+
+
+
+	//HelpMethods
 	public void setMain(Main main){
 		this.main = main;
 	}
 
-
-	//HelpMethods
 	private void setupStart(){
 		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
 		ViewTools.setUneditable(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
@@ -190,8 +183,18 @@ public class MainController {
 		KonfigWerte konfigWerte = new KonfigWerte();
 		return new Logik(tester, konfigWerte);
 	}
+	private String getConfigDisplay(ExerciseConfig config){
+		String  configMessage =   "\nExtensions:\n";
+		if(config.isTimeTracking())
+			configMessage += "->Time-Tracking\n";
+		if(config.isAtdd())
+			configMessage += "->ATDD\n";
+		if(config.isBabySteps())
+			configMessage += "->Babysteps, " + config.getBabyStepsTime() + " sec\n";
+		return configMessage;
+	}
 
-	private String getModes(ExerciseConfig config){
+	private String getModesDisplay(ExerciseConfig config){
 		String modesDisplay = "";
 		if(config.isBabySteps())
 			modesDisplay += "Babysteps, ";
