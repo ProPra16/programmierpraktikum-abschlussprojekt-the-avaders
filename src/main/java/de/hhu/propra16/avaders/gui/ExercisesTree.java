@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -61,7 +62,7 @@ public class ExercisesTree {
 			return;
 		}
 		List<String> outputList = new ArrayList<>();
-		outputList.add(output);
+		outputList = Arrays.asList(output.split("\\n"));
 		deleteFile(path);
 		try {
 			Files.createDirectories(path.subpath(0, path.getNameCount()-1));
