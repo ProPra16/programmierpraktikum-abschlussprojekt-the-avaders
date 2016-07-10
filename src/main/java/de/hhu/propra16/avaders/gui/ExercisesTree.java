@@ -35,14 +35,14 @@ public class ExercisesTree {
 			for(int j = 0; j < exerciseCatalogue.getExercise(i).getNumberOfClasses(); j++){
 				TreeItem<String> currentClass = new TreeItem<>(exerciseCatalogue.getExercise(i).getClassName(j));
 				classes.getChildren().add(currentClass);
-				FileTools.createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + PathTools.getLeafPath(currentClass)), exerciseCatalogue.getExercise(i).getClassTemplate(j));
+				FileTools.createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + PathTools.getPath(currentClass)), exerciseCatalogue.getExercise(i).getClassTemplate(j));
 			}
 
 			TreeItem<String> tests    = new TreeItem<>("Test");
 			for(int k = 0; k < exerciseCatalogue.getExercise(i).getNumberOfTests(); k++){
 				TreeItem<String> currentTest = new TreeItem<>(exerciseCatalogue.getExercise(i).getTestName(k));
 				tests.getChildren().add(currentTest);
-				FileTools.createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + PathTools.getLeafPath(currentTest)), exerciseCatalogue.getExercise(i).getTestTemplates(k));
+				FileTools.createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + PathTools.getPath(currentTest)), exerciseCatalogue.getExercise(i).getTestTemplates(k));
 			}
 			exercise.getChildren().addAll(classes,tests);
 			exercises.getChildren().add(exercise);
@@ -54,7 +54,7 @@ public class ExercisesTree {
 		treeView.setRoot(root);
 		treeView.setShowRoot(false);
 		treeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
+			@Override //TODO handle in controller
 			public void handle(MouseEvent event) {
 				if(event.getButton() == MouseButton.PRIMARY){
 					TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();

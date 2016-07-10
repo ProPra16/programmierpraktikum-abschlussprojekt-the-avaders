@@ -1,5 +1,7 @@
 package de.hhu.propra16.avaders.gui;
 
+import de.hhu.propra16.avaders.catalogueLoader.tokenizer.LineReader;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +38,26 @@ public class FileTools {
 		} catch (IOException e) {
 			System.err.println("Unable to delete File " + path);
 		}
+	}
+
+	//TODO check validity
+	public static String readFile(Path path){
+		List<String> content = null;
+		try {
+			content = Files.readAllLines(path);
+		} catch (IOException e) {
+			System.err.println("Unable to read file " + path + ", readFile returns null");
+			return null;
+		}
+		if(content.size() <= 0) {
+			System.err.println("Empty File " + path);
+			return null;
+		}
+		String output = "";
+		for (String line : content){
+			output += line + "\n";
+		}
+		return output;
 	}
 
 }
