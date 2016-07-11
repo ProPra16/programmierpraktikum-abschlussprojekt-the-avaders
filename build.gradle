@@ -18,4 +18,9 @@ dependencies {
 
 javadoc {
 	options.charSet = 'UTF-8'
+	options {
+		links 'http://docs.oracle.com/javase/8/docs/api/'
+		links 'http://docs.oracle.com/javase/8/javafx/api/'
+		links 'http://http://kata.bendisposto.de/'
+	}
 }
