@@ -14,5 +14,9 @@ public class Code extends Phase {
 	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){
 		listenTo(targetField);
 		ViewTools.editPhaseDisplay(currentPhase, "CODE", Color.WHITE, Color.DARKGREEN);
+		stepBack.setText("BACK");
+		ViewTools.enable(stepBack);
+		stepFurther.setText("NEXT");
+		ViewTools.enable(stepFurther);
 	}
 }
