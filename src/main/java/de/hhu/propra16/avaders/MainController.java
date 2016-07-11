@@ -25,7 +25,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import vk.core.api.CompilationUnit;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,12 +70,12 @@ public class MainController {
 	@FXML private Tab      codeRefactorTab;
 	@FXML private Tab      testRefactorTab;
 	@FXML private Tab      testTab;
-	@FXML private TextArea informationInputArea;
-	@FXML private TextArea consoleInputArea;
-	@FXML private TextArea testInputArea;
-	@FXML private TextArea codeInputArea;
-	@FXML private TextArea codeRefactorInputArea;
-	@FXML private TextArea testRefactorInputArea;
+	@FXML private TextArea informationOutputArea;
+	@FXML private TextArea consoleOutputArea;
+	@FXML private TextArea testOutputArea;
+	@FXML private TextArea codeOutputArea;
+	@FXML private TextArea codeRefactorOutputArea;
+	@FXML private TextArea testRefactorOutputArea;
 	@FXML private TextArea userInputField;
 
 	@FXML private HBox exercisesHead;
@@ -89,7 +88,8 @@ public class MainController {
 		this.currentStep = Step.WELCOME;
 		this.start.setDisable(true);
 		this.userInputField.setEditable(false);
-		ViewTools.hideNodes(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
+		ViewTools.setUneditable(informationOutputArea, consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
+		ViewTools.hideNodes(consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
 		setInitialStates();
 	}
 
@@ -101,7 +101,7 @@ public class MainController {
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
 		this.currentExercise       = getExercise(PathTools.getPath(selection).getName(1).toString());
 		this.currentTestName       = PathTools.getPath(selection).getFileName().toString().replace(".java", "");
-		phases.setStates(logic.getSchritt(), userInputField, testInputArea, stepBack, stepFurther, currentPhaseLabel);
+		phases.setStates(logic.getSchritt(), userInputField, testOutputArea, stepBack, stepFurther, currentPhaseLabel);
 		this.currentStep = logic.getSchritt();
 		setVisibleTabs(Step.RED);
 		setTabAreaConnection(Step.RED);
@@ -117,7 +117,7 @@ public class MainController {
 				return;
 			}
 			setUserInputFieldOnParentNameCondition(item,"Test");
-			setInformationInputArea(item);
+			setInformationOutputArea(item);
 		}
 	}
 
@@ -136,11 +136,12 @@ public class MainController {
 		CompilationUnit unit = new CompilationUnit(currentTestName, userInputField.getText(), true);
 		ITestenRueckgabe returnValue = logic.weiter(unit);
 
-		consoleInputArea.setText(TestResultDisplay.showCompilerResult(
-				returnValue.getCompilerResult(),unit) + "\n\n" + TestResultDisplay.showTestResults(returnValue.getTestResult()));
+		consoleOutputArea.setText(TestResultDisplay.showCompilerResult(
+				returnValue.getCompilerResult(),unit) + TestResultDisplay.showTestResults(returnValue.getTestResult()));
 
-		if(returnValue.getCompilerResult().hasCompileErrors()==true){
+		if(returnValue.getCompilerResult().hasCompileErrors()){
 			System.err.println("There are compileErrors");
+			return;
 		}
 
 		Step nextStep = logic.getSchritt();
@@ -152,13 +153,13 @@ public class MainController {
 		switch (nextStep){
 			case RED:           setFinish(); break;
 			case GREEN:         setClassTemplateToUserInputArea(); break;
-			case TEST_REFACTOR: userInputField.setText(testInputArea.getText()); break;
+			case TEST_REFACTOR: userInputField.setText(testOutputArea.getText()); break;
 			case CODE_REFACTOR: break;
 		}
 		System.out.println(nextStep);
 		setVisibleTabs(nextStep);
 		if(nextStep!= Step.RED)
-			phases.setStates(nextStep, userInputField, codeInputArea, stepBack, stepFurther, currentPhaseLabel);
+			phases.setStates(nextStep, userInputField, codeOutputArea, stepBack, stepFurther, currentPhaseLabel);
 	}
 
 
@@ -236,24 +237,24 @@ public class MainController {
 		}
 	}
 
-	private void setInformationInputArea(TreeItem<String> item){
+	private void setInformationOutputArea(TreeItem<String> item){
 		Path descriptionPath = PathTools.getDescriptionPath(item);
 		if(Files.exists(descriptionPath)){
 			String exerciseName  = descriptionPath.getParent().getFileName().toString();
 			String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
 			String configMessage = Display.getConfigDisplay(getConfig(exerciseName));
-			informationInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
+			informationOutputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
 		}
 	}
 
 	private void setTabAreaConnection(Step mode){
-		TextArea[] infoAreas = new TextArea[]{testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea};
+		TextArea[] infoAreas = new TextArea[]{testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea};
 		switch (mode){
 			case WELCOME:       BindTools.unbindAreas(infoAreas); break;
-			case RED:           BindTools.setUniqueBinding(userInputField, testInputArea, infoAreas); break;
-			case GREEN:         BindTools.setUniqueBinding(userInputField, codeInputArea, infoAreas); break;
-			case CODE_REFACTOR: BindTools.setUniqueBinding(userInputField, codeRefactorInputArea, infoAreas); break;
-			case TEST_REFACTOR: BindTools.setUniqueBinding(userInputField, testRefactorInputArea, infoAreas); break;
+			case RED:           BindTools.setUniqueBinding(userInputField, testOutputArea, infoAreas); break;
+			case GREEN:         BindTools.setUniqueBinding(userInputField, codeOutputArea, infoAreas); break;
+			case CODE_REFACTOR: BindTools.setUniqueBinding(userInputField, codeRefactorOutputArea, infoAreas); break;
+			case TEST_REFACTOR: BindTools.setUniqueBinding(userInputField, testRefactorOutputArea, infoAreas); break;
 		}
 	}
 	//end
@@ -274,8 +275,8 @@ public class MainController {
 	}
 
 	private void setInitialStates(){
-		phases.setStates(Step.WELCOME,  userInputField, consoleInputArea, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.setUneditable(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
+		phases.setStates(Step.WELCOME,  userInputField, consoleOutputArea, stepBack, stepFurther, currentPhaseLabel);
+		ViewTools.setUneditable(consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
 		ViewTools.hideNodes(stepBack,stepFurther,timeLeft,timeLeftTitle,activatedModes);
 	}
 
@@ -283,8 +284,8 @@ public class MainController {
 		this.currentStep = Step.WELCOME;
 		setTabAreaConnection(Step.WELCOME);
 		setVisibleTabs(Step.FINISHED);
-		phases.setStates(Step.WELCOME, userInputField, codeInputArea, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.showAreas(testRefactorInputArea);
+		phases.setStates(Step.WELCOME, userInputField, codeOutputArea, stepBack, stepFurther, currentPhaseLabel);
+		ViewTools.showAreas(testRefactorOutputArea);
 		ViewTools.hideNode(stepFurther);
 		ViewTools.enable(start);
 		userInputField.setText("Exercise done!");
@@ -292,12 +293,12 @@ public class MainController {
 
 	private void setVisibleTabs(Step mode){
 		switch (mode){
-			case WELCOME:       ViewTools.hideNodes(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea); break;
-			case RED:           ViewTools.enable(consoleInputArea); break;
-			case GREEN:         ViewTools.enable(testInputArea); break;
-			case CODE_REFACTOR: ViewTools.enable(codeInputArea); break;
-			case TEST_REFACTOR: ViewTools.enable(codeRefactorInputArea); break;
-			case FINISHED:      ViewTools.showAreas(testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
+			case WELCOME:       ViewTools.hideNodes(consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea); break;
+			case RED:           ViewTools.enable(consoleOutputArea); break;
+			case GREEN:         ViewTools.enable(testOutputArea); break;
+			case CODE_REFACTOR: ViewTools.enable(codeOutputArea); break;
+			case TEST_REFACTOR: ViewTools.enable(codeRefactorOutputArea); break;
+			case FINISHED:      ViewTools.showAreas(testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
 		}
 	}
 	//end

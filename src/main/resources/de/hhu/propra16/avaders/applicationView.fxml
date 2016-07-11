@@ -142,7 +142,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="informationInputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="informationOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -151,7 +151,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="consoleInputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="consoleOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -160,7 +160,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="testInputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Test-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="testOutputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Test-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -169,7 +169,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="codeInputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Code-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="codeOutputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Code-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -178,7 +178,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="codeRefactorInputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="codeRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -187,7 +187,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="testRefactorInputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="testRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>

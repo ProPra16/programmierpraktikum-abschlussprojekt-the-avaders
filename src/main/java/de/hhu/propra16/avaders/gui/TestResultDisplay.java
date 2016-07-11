@@ -35,7 +35,7 @@ public class TestResultDisplay {
 		for(CompileError error : compileFailures){
 			output += "CompileErrors:" + "\n" +
 					  "> Line: <L=" + error.getLineNumber() + ",C="+ error.getColumnNumber() +"> " + error.getCodeLineContainingTheError() + "\n" +
-                      "> Message: " + error.getMessage() + "\n";
+                      "> Message: " + error.getMessage() + "\n\n";
 		}
 
 		return output;
