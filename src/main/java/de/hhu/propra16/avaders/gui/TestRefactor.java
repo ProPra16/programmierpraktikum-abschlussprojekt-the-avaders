@@ -12,6 +12,9 @@ public class TestRefactor extends Phase {
 	@Override
 	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){
 		listenTo(targetField);
-		ViewTools.editPhaseDisplay(currentPhase, "TEST-REFACTOR", Color.WHITE, Color.DARKGRAY);
+		ViewTools.editPhaseDisplay(currentPhase, "TEST-REFACTOR", Color.WHITE, Color.DARKCYAN);
+		stepFurther.setText("FINISH");
+		ViewTools.enable(stepFurther);
+		ViewTools.hideNode(stepBack);
 	}
 }

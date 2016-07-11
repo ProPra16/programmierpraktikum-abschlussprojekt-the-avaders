@@ -41,5 +41,5 @@ public enum Step {
 	 * <p>Der Nutzer bestimmt, wann wieder zu {@link #RED} weitergegangen wird.
 	 * Ist ATDD eingeschaltet und sind hiernach alle Akzeptanztests erfüllt, wird stattdessen zu {@link #ACCEPTANCE_RED} weitergegangen.</p>
 	 */
-	TEST_REFACTOR, WELCOME,
+	TEST_REFACTOR, WELCOME, FINISHED;
 }

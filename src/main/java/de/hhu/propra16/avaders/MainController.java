@@ -13,6 +13,7 @@ import de.hhu.propra16.avaders.gui.*;
 import de.hhu.propra16.avaders.konfig.KonfigWerte;
 import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
+import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
 import de.hhu.propra16.avaders.testen.Tester;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,17 +23,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import vk.core.api.CompilationUnit;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 public class MainController {
 	private Main              main;
 	private ExerciseCatalogue exerciseCatalogue;
+	private String            currentTestName;
 	private Exercise          currentExercise;
+	private Path              currentClass;
+	private Path              currentTest;
 	private Phases            phases;
 	private Logik             logic;
 
@@ -59,9 +61,6 @@ public class MainController {
 	@FXML private TableColumn exerciseColumn;
 	@FXML private TableColumn classColumn;
 	@FXML private TableColumn testColumn;
-    @FXML private TextArea greenRefactor;
-    @FXML private TextArea userFieldRed;
-    @FXML private TextArea userFieldCode;
 
 	@FXML private Tab      informationTab;
 	@FXML private Tab      consoleTab;
@@ -84,31 +83,35 @@ public class MainController {
 		this.phases = new Phases(new Welcome(), new Test(), new Code(), new CodeRefactor(), new TestRefactor());
 		this.logic  = initLogic();
 		this.start.setDisable(true);
-		setupStart();
+		ViewTools.hideNodes(testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
+		setInitialStates();
 	}
 
 
 	//Handler
     @FXML void handleStart(ActionEvent event){
+		ViewTools.hideNode(start);
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
-		System.out.println("ExerciseName: " + PathTools.getPath(selection).getName(1).toString());
-		this.currentExercise = getExercise(PathTools.getPath(selection).getName(1).toString());
-		//phases.setStates(logic.getSchritt(), userInputField, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
-		//TODO <- setstates anpassen
+		this.currentExercise       = getExercise(PathTools.getPath(selection).getName(1).toString());
+		this.currentTestName       = PathTools.getPath(selection).getFileName().toString().replace(".java", "");
+		phases.setStates(logic.getSchritt(), userInputField, testInputArea, stepBack, stepFurther, currentPhaseLabel);
+		setVisibleTabs(Step.RED);
+		setTabAreaConnection(Step.RED);
+        //System.out.println("CurrentTestname " + currentTestName);
+		//System.out.println("ExerciseName: " + PathTools.getPath(selection).getName(1).toString());
 	}
-
-	@FXML void handleProgress(ActionEvent event)  {}
 
 	@FXML void handleTreeViewMouseClicked(MouseEvent event) {
 		if(event.getButton() == MouseButton.PRIMARY){
 			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
-			//System.out.println("Selected item: " + item.getValue());
-			//System.out.println(PathTools.getPath(item));
+			if(item == null){
+				System.err.println("item not initialized yet");
+				return;
+			}
 			setUserInputFieldOnParentNameCondition(item,"Test");
 			setInformationInputArea(item);
 		}
 	}
-
 
 	@FXML void handleQuit(ActionEvent event){
 		System.exit(0);
@@ -120,9 +123,32 @@ public class MainController {
 	}
 
     @FXML void handleNextPhase(ActionEvent event){
-		logic.weiter(new CompilationUnit(currentExercise.getTestName(0), currentExercise.getTestTemplates(0), false ));
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
+		Step currentStep = logic.getSchritt();
+		System.out.println("Current TestName " + currentTestName + " CurrentStep " + currentStep);
+		CompilationUnit unit = new CompilationUnit(currentTestName, userInputField.getText(), true);
+		ITestenRueckgabe returnValue = logic.weiter(unit);
+
+		consoleInputArea.setText(TestResultDisplay.showCompilerResult(
+				returnValue.getCompilerResult(),unit) + "\n\n" + TestResultDisplay.showTestResults(returnValue.getTestResult()));
+		if(returnValue.getCompilerResult().hasCompileErrors()==true){
+			System.err.println("There are compileErrors");
+		}
+
+		Step nextStep = logic.getSchritt();
+		if(currentStep == nextStep) {
+			System.err.println("Next equals current step");
+			return;
+		}
+		switch (nextStep){
+			case RED:           setFinish(); break;
+			case GREEN:         setClassTemplateToUserInputArea(); break;
+			case TEST_REFACTOR: userInputField.setText(testInputArea.getText()); break;
+			case CODE_REFACTOR: break;
+		}
+		if(nextStep!= Step.RED)
+			phases.setStates(nextStep, userInputField, codeInputArea, stepBack, stepFurther, currentPhaseLabel);
 	}
+
 
     @FXML void handleNewCatalogue(ActionEvent event) {
 		Path cataloguePath = main.getCatalogue();
@@ -140,17 +166,10 @@ public class MainController {
 			e.printStackTrace();
 		}
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
-		exercises.fill(cataloguePath.getFileName().toString().replace(".xml","") + "Catalogue");
-		//console-sampleoutput
-//		System.out.println("Exercises: " + exerciseCatalogue.size());
-//		System.out.println("Name of Exercise 1: " + exerciseCatalogue.getExercise(0).getExerciseName());
-//		System.out.println("Name of First Class: " + exerciseCatalogue.getExercise(0).getClassName(0));
-//		System.out.println("Classes in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfClasses());
-//		System.out.println("Name of First Test: " + exerciseCatalogue.getExercise(0).getTestName(0));
-//		System.out.println("Tests in Exercise 1: " + exerciseCatalogue.getExercise(0).getNumberOfTests());
+		exercises.fill(PathTools.getFileNamePrefix(cataloguePath,".xml") + "Catalogue");
 	}
 
-
+	@FXML void handleProgress(ActionEvent event)  {}
 
 
 
@@ -161,40 +180,10 @@ public class MainController {
 		this.main = main;
 	}
 
-	private void setupStart(){
-		phases.setStates(Step.WELCOME,  userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.setUneditable(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
-		ViewTools.hideNodes(stepBack,stepFurther,timeLeft,timeLeftTitle,activatedModes);
-	}
-
 	private Logik initLogic(){
 		Tester      tester      = new Tester();
 		KonfigWerte konfigWerte = new KonfigWerte();
 		return new Logik(tester, konfigWerte);
-	}
-	private String getConfigDisplay(ExerciseConfig config){
-		String  configMessage =   "\nExtensions:\n";
-		if(config.isTimeTracking())
-			configMessage += "->Time-Tracking\n";
-		if(config.isAtdd())
-			configMessage += "->ATDD\n";
-		if(config.isBabySteps())
-			configMessage += "->Babysteps, " + config.getBabyStepsTime() + " sec\n";
-		return configMessage;
-	}
-
-	private String getModesDisplay(ExerciseConfig config){
-		String modesDisplay = "";
-		if(config.isBabySteps())
-			modesDisplay += "Babysteps, ";
-		if(config.isTimeTracking())
-			modesDisplay += "Tracking, ";
-		if(config.isAtdd())
-			modesDisplay += "ATDD, ";
-		if(modesDisplay.contentEquals(""))
-			return "<None>";
-		System.out.println(modesDisplay);
-		return modesDisplay.substring(0, modesDisplay.length() - 2);
 	}
 
 	private void setTime(Exercise exercise){
@@ -204,7 +193,7 @@ public class MainController {
 		}
 	}
 
-	//add to Exercise
+	//start
 	private Exercise getExercise(String exerciseName){
 		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
 			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
@@ -214,7 +203,6 @@ public class MainController {
 		return null;
 	}
 
-	//add to ExerciseConfig
 	private ExerciseConfig getConfig(String exerciseName){
 		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
 			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
@@ -223,23 +211,11 @@ public class MainController {
 		System.err.println("Invalid name of exercise: " + exerciseName);
 		return null;
 	}
+	//end
 
-	private boolean hasParentName(TreeItem<String> item, String parentName){
-		if(PathTools.getPath(item).getParent().getFileName().toString().contentEquals(parentName))
-			return true;
-		return false;
-	}
 
-	private void setInformationInputArea(TreeItem<String> item){
-		Path descriptionPath = getDescriptionPath(item);
-		if(Files.exists(descriptionPath)){
-			String exerciseName  = descriptionPath.getParent().getFileName().toString();
-			String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
-			String configMessage = getConfigDisplay(getConfig(exerciseName));
-			informationInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
-		}
-	}
 
+	//start
 	private void setUserInputFieldOnParentNameCondition(TreeItem<String> item, String parentName){
 		if(item.isLeaf()){
 			Path itemPath = PathTools.getPath(item);
@@ -248,21 +224,68 @@ public class MainController {
 		}
 	}
 
+	private void setInformationInputArea(TreeItem<String> item){
+		Path descriptionPath = PathTools.getDescriptionPath(item);
+		if(Files.exists(descriptionPath)){
+			String exerciseName  = descriptionPath.getParent().getFileName().toString();
+			String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
+			String configMessage = Display.getConfigDisplay(getConfig(exerciseName));
+			informationInputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
+		}
+	}
+
+	private void setTabAreaConnection(Step mode){
+		TextArea[] infoAreas = new TextArea[]{testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea};
+		switch (mode){
+			case WELCOME:       BindTools.unbindAreas(infoAreas); break;
+			case RED:           BindTools.setUniqueBinding(userInputField, testInputArea, infoAreas); break;
+			case GREEN:         BindTools.setUniqueBinding(userInputField, codeInputArea, infoAreas); break;
+			case CODE_REFACTOR: BindTools.setUniqueBinding(userInputField, codeRefactorInputArea, infoAreas); break;
+			case TEST_REFACTOR: BindTools.setUniqueBinding(userInputField, testRefactorInputArea, infoAreas); break;
+		}
+	}
+	//end
+
+	//start
 	private void checkStartCondition(TreeItem<String> item, String parentName){
-		if(hasParentName(item, parentName)) {
+		if(PathTools.hasParentName(item, parentName)) {
 			start.setDisable(false);
 		} else {
 			start.setDisable(true);
 		}
 	}
+	//end
 
-	public Path getDescriptionPath(TreeItem<String> item){
-		Path itemPath = PathTools.getPath(item);
-		//no guarantee that file exists
-		if(itemPath.getNameCount() < 2) {
-			System.err.println("Bad structure of directories. Has to be: root->exercise-> <Files> and description.txt");
-			return null;
-		}
-		return Paths.get(itemPath.subpath(0,2) + File.separator + "description.txt");
+	//start
+	private void setClassTemplateToUserInputArea(){
+		userInputField.setText(exerciseCatalogue.getExercise(0).getClassTemplate(0));
 	}
+
+	private void setInitialStates(){
+		phases.setStates(Step.WELCOME,  userInputField, consoleInputArea, stepBack, stepFurther, currentPhaseLabel);
+		ViewTools.setUneditable(consoleInputArea,testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
+		ViewTools.hideNodes(stepBack,stepFurther,timeLeft,timeLeftTitle,activatedModes);
+	}
+
+	private void setFinish(){
+		setTabAreaConnection(Step.WELCOME);
+		setVisibleTabs(Step.FINISHED);
+		phases.setStates(Step.WELCOME, userInputField, codeInputArea, stepBack, stepFurther, currentPhaseLabel);
+		ViewTools.showAreas(testRefactorInputArea);
+		ViewTools.hideNode(stepFurther);
+		ViewTools.enable(start);
+		userInputField.setText("Exercise done!");
+	}
+
+	private void setVisibleTabs(Step mode){
+		switch (mode){
+			case WELCOME:       ViewTools.hideNodes(testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea); break;
+			case RED:           ViewTools.hideNodes(testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea); break;
+			case GREEN:         ViewTools.enable(testInputArea); break;
+			case CODE_REFACTOR: ViewTools.enable(codeInputArea); break;
+			case TEST_REFACTOR: ViewTools.enable(codeRefactorInputArea); break;
+			case FINISHED:      ViewTools.showAreas(testInputArea,codeInputArea,codeRefactorInputArea,testRefactorInputArea);
+		}
+	}
+	//end
 }

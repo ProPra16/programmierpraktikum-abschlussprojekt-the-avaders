@@ -27,10 +27,16 @@ public class ViewTools {
 
 	public static void hideNodes(Node... nodes){
 		for(Node node : nodes){
-			node.setDisable(true);
-			node.setVisible(false);
+			hideNode(node);
 		}
+	}
 
+	public static void showAreas(TextInputControl... nodes){
+		for(TextInputControl node : nodes) {
+			node.setVisible(true);
+			node.setDisable(false);
+			node.setEditable(false);
+		}
 	}
 
 	public static void editPhaseDisplay(Label labelOnStackPane, String text, Color textFill, Color backgroundFill ){
@@ -56,7 +62,7 @@ public class ViewTools {
 	}
 
 
-	public static void disable(Node node){
+	public static void hideNode(Node node){
 		node.setVisible(false);
 		node.setDisable(true);
 	}
