@@ -1,10 +1,12 @@
-apply plugin: "java"
+apply plugin: "application"
 apply plugin: "eclipse"
-apply plugin: "idea"
+apply plugin: "java"
 apply plugin: "maven"
 
-sourceCompatibility="1.8"
-targetCompatibility="1.8"
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+mainClassName = "de.hhu.propra16.avaders.Main"
 
 repositories {
 	mavenCentral()
@@ -21,6 +23,6 @@ javadoc {
 	options {
 		links 'http://docs.oracle.com/javase/8/docs/api/'
 		links 'http://docs.oracle.com/javase/8/javafx/api/'
-		links 'http://http://kata.bendisposto.de/'
+		links 'http://kata.bendisposto.de/'
 	}
 }
