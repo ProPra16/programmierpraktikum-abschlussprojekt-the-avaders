@@ -23,8 +23,7 @@ public class TestResultDisplay {
 			output += "TestFailures:" + "\n" +
 					  "> Class: " + failure.getTestClassName() + "\n" +
 					  "> Method: " + failure.getMethodName()  + "\n" +
-					  "> Message: " + failure.getMessage()  + "\n"
-					+ "> Stacktrace: " + failure.getExceptionStackTrace() + "\n\n";
+					  "> Message: " + failure.getMessage()  + "\n\n";
 		}
 		return output;
 		//testfailures ?
@@ -34,7 +33,8 @@ public class TestResultDisplay {
 		String output = "";
 		Collection<CompileError> compileFailures = result.getCompilerErrorsForCompilationUnit(unit);
 		for(CompileError error : compileFailures){
-			output += "> Line: <L=" + error.getLineNumber() + ",C="+ error.getColumnNumber() +"> " + error.getCodeLineContainingTheError() + "\n" +
+			output += "CompileErrors:" + "\n" +
+					  "> Line: <L=" + error.getLineNumber() + ",C="+ error.getColumnNumber() +"> " + error.getCodeLineContainingTheError() + "\n" +
                       "> Message: " + error.getMessage() + "\n";
 		}
 
