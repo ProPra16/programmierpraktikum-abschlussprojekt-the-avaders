@@ -11,7 +11,7 @@ public class Phase {
 	//save userinput from textarea
 	public String userInput; 
 	
-	//this method will be overriden by subclasses Red,Green,CodeRefactor to set appropriate states
+	//this method will be overriden by subclasses Test,Code,CodeRefactor to set appropriate states
 	
 	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){
 	}

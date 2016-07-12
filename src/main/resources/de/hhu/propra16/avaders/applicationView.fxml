@@ -100,16 +100,19 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="225.0" prefHeight="160.0" prefWidth="225.0" SplitPane.resizableWithParent="false">
                                  <children>
-                                    <TableView fx:id="exerciseTable" minWidth="225.0" prefHeight="94.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <columns>
-                                          <TableColumn fx:id="exerciseColumn" minWidth="75.0" prefWidth="75.0" text="Exercise" />
-                                          <TableColumn fx:id="classColumn" minWidth="75.0" prefWidth="75.0" text="Class" />
-                                          <TableColumn fx:id="testColumn" minWidth="75.0" prefWidth="75.0" text="Test" />
-                                       </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
+                                    <VBox layoutX="42.0" layoutY="30.0" prefHeight="259.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <HBox fx:id="exercisesHead" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="NEVER">
+                                             <children>
+                                                <Label text="Exercises" />
+                                             </children>
+                                             <padding>
+                                                <Insets left="10.0" />
+                                             </padding>
+                                          </HBox>
+                                          <TreeView fx:id="exercisesTree" onMouseClicked="#handleTreeViewMouseClicked" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
                                  </children>
                               </AnchorPane>
                               <VBox prefHeight="200.0" prefWidth="100.0">
@@ -135,11 +138,20 @@
                   </AnchorPane>
                   <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
+                        <Tab fx:id="informationTab" text="Information">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="informationOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
                         <Tab fx:id="consoleTab" text="Console">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="consoleInputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="consoleOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -148,7 +160,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="testInputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Test-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="testOutputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Test-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -157,16 +169,25 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="codeInputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Code-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="codeOutputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Code-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="refactorTab" text="Refactor">
+                        <Tab fx:id="codeRefactorTab" text="Code-Refactor">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="refactorInputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="codeRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="testRefactorTab" text="Test-Refactor">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextArea fx:id="testRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>

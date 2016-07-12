@@ -6,7 +6,7 @@
 			<test name="RomanNumberConverterTest">
 				import static org.junit.Assert.*;
 				import org.junit.Test;
-				public class RomanNumbersTest {
+				public class RomanNumberConverterTest {
 				@Test
 				public void testSomething() {
 				}
@@ -15,7 +15,7 @@
 			<test name="RomanNumberConverterTest2">
 				import static org.junit.Assert.*;
 				import org.junit.Test;
-				public class RomanNumbersTest2 {
+				public classRomanNumberConverterTest2 {
 				@Test
 				public void testSomethingElse() {
 				}
@@ -63,7 +63,7 @@
 			<test name="ArabNumberConverterTest">
 				import static org.junit.Assert.*;
 				import org.junit.Test;
-				public class ArabNumbersTest {
+				public class ArabNumberConverterTest {
 				@Test
 				public void testSomething() {
 				}

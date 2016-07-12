@@ -15,5 +15,8 @@ public class CodeRefactor extends Phase {
 	public void setStates(TextArea userInputField, TextArea targetField, Button stepBack, Button stepFurther, Label currentPhase){
 		listenTo(targetField);
 		ViewTools.editPhaseDisplay(currentPhase, "CODE-REFACTOR", Color.WHITE, Color.BLACK);
+		stepFurther.setText("NEXT");
+		ViewTools.enable(stepFurther);
+		ViewTools.hideNode(stepBack);
 	}
 }
