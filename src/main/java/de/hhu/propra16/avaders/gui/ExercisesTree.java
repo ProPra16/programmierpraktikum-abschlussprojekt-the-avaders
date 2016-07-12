@@ -39,7 +39,8 @@ public class ExercisesTree {
 				tests.getChildren().add(currentTest);
 				FileTools.createFile(Paths.get("" + rootName + File.separator + exercise.getValue() + File.separator  + PathTools.getPath(currentTest)), exerciseCatalogue.getExercise(i).getTestTemplates(k));
 			}
-			exercise.getChildren().addAll(classes,tests);
+			exercise.getChildren().add(classes);
+			exercise.getChildren().add(tests);
 			exercises.getChildren().add(exercise);
 		}
 		treeView.setRoot(exercises);
