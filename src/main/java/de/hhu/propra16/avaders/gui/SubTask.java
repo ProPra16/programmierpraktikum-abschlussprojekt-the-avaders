@@ -46,7 +46,7 @@ public class SubTask {
 	public String toString(){
 		return "TestName: " + testName + "\n" +
 				"ClassName: " + className  + "\n" +
-				"testTemplate: " + testTemplate  + "\n" +
-				"classTemplate:" +classTemplate  + "\n";
+				"testTemplate:\n" + testTemplate  + "\n" +
+				"classTemplate:\n" +classTemplate  + "\n";
 	}
 }

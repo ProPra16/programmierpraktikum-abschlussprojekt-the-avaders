@@ -2,6 +2,7 @@ package de.hhu.propra16.avaders;
 
 import de.hhu.propra16.avaders.catalogueLoader.ParserException;
 import de.hhu.propra16.avaders.catalogueLoader.ExerciseCatalogueLoader;
+import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.ExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
@@ -32,77 +33,109 @@ import java.nio.file.Path;
 
 
 public class MainController {
-	private Main              main;
+	private Main main;
 	private ExerciseCatalogue exerciseCatalogue;
 	private Phases phases;
-	private Logik             logic;
+	private Logik logic;
 
 	//menuItems
-    @FXML private MenuItem newCatalogue;
-    @FXML private MenuItem restart;
-	@FXML private MenuItem quit;
-    
-    //phase-switcher
-	@FXML private Button start;
-    @FXML private Button stepBack;
-    @FXML private Button stepFurther;
-    
-    //User-information about activated modes and time left due activated 'babysteps'
-    @FXML private Label activatedModes;
-	@FXML private ProgressBar progress;
-    @FXML private Label timeLeft;
-	@FXML private Label timeLeftTitle;
-	@FXML private Label currentPhaseLabel;
-	@FXML private StackPane currentPhaseDisplay;
+	@FXML
+	private MenuItem newCatalogue;
+	@FXML
+	private MenuItem restart;
+	@FXML
+	private MenuItem quit;
 
-    //areas for user
-	@FXML private TableColumn exerciseColumn;
-	@FXML private TableColumn classColumn;
-	@FXML private TableColumn testColumn;
+	//phase-switcher
+	@FXML
+	private Button start;
+	@FXML
+	private Button stepBack;
+	@FXML
+	private Button stepFurther;
 
-	@FXML private Tab      informationTab;
-	@FXML private Tab      consoleTab;
-	@FXML private Tab      codeTab;
-	@FXML private Tab      codeRefactorTab;
-	@FXML private Tab      testRefactorTab;
-	@FXML private Tab      testTab;
-	@FXML private TextArea informationOutputArea;
-	@FXML private TextArea consoleOutputArea;
-	@FXML private TextArea testOutputArea;
-	@FXML private TextArea codeOutputArea;
-	@FXML private TextArea codeRefactorOutputArea;
-	@FXML private TextArea testRefactorOutputArea;
-	@FXML private TextArea userInputField;
+	//User-information about activated modes and time left due activated 'babysteps'
+	@FXML
+	private Label activatedModes;
+	@FXML
+	private ProgressBar progress;
+	@FXML
+	private Label timeLeft;
+	@FXML
+	private Label timeLeftTitle;
+	@FXML
+	private Label currentPhaseLabel;
+	@FXML
+	private StackPane currentPhaseDisplay;
 
-	@FXML private HBox exercisesHead;
-	@FXML private TreeView<String> exercisesTree;
+	//areas for user
+	@FXML
+	private TableColumn exerciseColumn;
+	@FXML
+	private TableColumn classColumn;
+	@FXML
+	private TableColumn testColumn;
+
+	@FXML
+	private Tab informationTab;
+	@FXML
+	private Tab consoleTab;
+	@FXML
+	private Tab codeTab;
+	@FXML
+	private Tab codeRefactorTab;
+	@FXML
+	private Tab testRefactorTab;
+	@FXML
+	private Tab testTab;
+	@FXML
+	private TextArea informationOutputArea;
+	@FXML
+	private TextArea consoleOutputArea;
+	@FXML
+	private TextArea testOutputArea;
+	@FXML
+	private TextArea codeOutputArea;
+	@FXML
+	private TextArea codeRefactorOutputArea;
+	@FXML
+	private TextArea testRefactorOutputArea;
+	@FXML
+	private TextArea userInputField;
+
+	@FXML
+	private HBox exercisesHead;
+	@FXML
+	private TreeView<String> exercisesTree;
 
 	private ButtonDisplay buttonDisplay;
 	private ModeDisplay modeDisplay;
-	private Information   information;
-	private Console       console;
-	private SubTask       subTask;
+	private Information information;
+	private Console console;
+	private SubTask subTask;
 
 
-	@FXML public void initialize(){
-		this.buttonDisplay = new ButtonDisplay(stepBack,stepFurther,start,new Button("save"));
-		this.phases        = new Phases(
-				             new Welcome(userInputField,informationOutputArea,buttonDisplay,currentPhaseLabel),
-				             new Test( userInputField,testOutputArea,buttonDisplay,currentPhaseLabel),
-				             new Code(userInputField,codeOutputArea,buttonDisplay,currentPhaseLabel),
-				             new CodeRefactor(userInputField,codeRefactorOutputArea,buttonDisplay,currentPhaseLabel),
-				             new TestRefactor(userInputField,testRefactorOutputArea,buttonDisplay,currentPhaseLabel));
-		this.modeDisplay   = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
-		this.information   = new Information(informationOutputArea);
-		this.console       = new Console(consoleOutputArea);
-		this.logic         = initializeLogic();
+	@FXML
+	public void initialize() {
+		this.buttonDisplay = new ButtonDisplay(stepBack, stepFurther, start, new Button("save"));
+		this.phases = new Phases(
+				new Welcome(userInputField, informationOutputArea, buttonDisplay, currentPhaseLabel),
+				new Test(userInputField, testOutputArea, buttonDisplay, currentPhaseLabel),
+				new Code(userInputField, codeOutputArea, buttonDisplay, currentPhaseLabel),
+				new CodeRefactor(userInputField, codeRefactorOutputArea, buttonDisplay, currentPhaseLabel),
+				new TestRefactor(userInputField, testRefactorOutputArea, buttonDisplay, currentPhaseLabel));
+		this.modeDisplay = new ModeDisplay(activatedModes, timeLeftTitle, timeLeft);
+		this.information = new Information(informationOutputArea);
+		this.console = new Console(consoleOutputArea);
+		this.logic = initializeLogic();
 
 		phases.setStates(Step.WELCOME);
 	}
 
 
 	//Handler
-    @FXML void handleStart(){
+	@FXML
+	void handleStart() {
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
 		this.subTask = new SubTask();
 		subTask.load(selection, exerciseCatalogue);
@@ -112,21 +145,23 @@ public class MainController {
 
 	}
 
-	@FXML void handleTreeViewMouseClicked(MouseEvent event) {
-		if(event.getButton() == MouseButton.PRIMARY){
+	@FXML
+	void handleTreeViewMouseClicked(MouseEvent event) {
+		if (event.getButton() == MouseButton.PRIMARY) {
 			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
-			if(item == null){
+			if (item == null) {
 				System.err.println("item not initialized yet");
 				return;
 			}
-			showClassContent(item,"Test");
-			if(isTestSelection(item, "Test"))
+			showClassContent(item, "Test");
+			if (isTestSelection(item, "Test"))
 				start.setDisable(false);
 			phases.getWelcome().setInformation(item, exerciseCatalogue);
 		}
 	}
 
-    @FXML void handleNextPhase(){
+	@FXML
+	void handleNextPhase() {
 //		Step currentStep = logic.getSchritt();
 //		System.out.println("Current TestName " + currentTestName + " CurrentStep " + currentStep);
 //		CompilationUnit unit = new CompilationUnit(currentTestName, userInputField.getText(), true);
@@ -158,24 +193,33 @@ public class MainController {
 	}
 
 
-    @FXML void handleNewCatalogue() {
+	@FXML
+	void handleNewCatalogue() {
 		Path cataloguePath = main.getCatalogue();
+		ExerciseCatalogue notProofedCatalogue = new ExerciseCatalogue();
 		try {
-			FileReader           fileReader           = new FileReader(cataloguePath);
-			ExerciseTokenizer    exerciseTokenizer    = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
-			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
-			ExerciseCatalogueLoader xmlExerciseLoader = new ExerciseCatalogueLoader(exerciseTokenizer, exerciseCatalogue);
-			this.exerciseCatalogue = xmlExerciseLoader.loadCatalogue();
+			FileReader              fileReader        = new FileReader(cataloguePath);
+			ExerciseTokenizer       exerciseTokenizer = new XMLExerciseTokenizer(fileReader);
+			ExerciseCatalogueLoader xmlExerciseLoader = new ExerciseCatalogueLoader(exerciseTokenizer, notProofedCatalogue);
+			xmlExerciseLoader.loadCatalogue();
 		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
-			if(e instanceof ParserException) {
-				System.out.println("Caught null from main.getCatalogue: No file selected");
+			if (e instanceof ParserException) {
+				System.err.println("Caught null from main.getCatalogue: No file selected");
 				return;
 			}
-			e.printStackTrace();
+			informationOutputArea.setText("Unable to load specified catalogue.\nInvalid Catalogue.");
+			return;
 		}
+		if(!PathTools.checkCatalogue(notProofedCatalogue, informationOutputArea)) {
+			return;
+		}
+		this.exerciseCatalogue  = notProofedCatalogue;
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
-		exercises.fill(PathTools.getFileNamePrefix(cataloguePath,".xml") + "Catalogue");
+		exercises.fill(PathTools.getFileNamePrefix(cataloguePath, ".xml") + "Catalogue");
 	}
+
+
+
 
 	@FXML void handleQuit(){
 		System.exit(0);

@@ -32,12 +32,14 @@ public class Welcome extends Phase {
 	//finished
 	public void setInformation(TreeItem<String> item, ExerciseCatalogue exerciseCatalogue) {
 		Path descriptionPath = PathTools.getDescriptionPath(item);
-		if (Files.exists(descriptionPath)) {
-			String exerciseName = descriptionPath.getParent().getFileName().toString();
-			String headMessage = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
-			String configMessage = Display.getConfigDisplay(ExerciseTools.getConfig(exerciseName, exerciseCatalogue));
-			phaseOutputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
+		System.out.println(descriptionPath.toString());
+		if(!Files.exists(descriptionPath)) {
+			phaseOutputArea.setText("No description available");
+			return;
 		}
-		phaseOutputArea.setText("No description available");
+		String exerciseName = descriptionPath.getParent().getFileName().toString();
+		String headMessage = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
+		String configMessage = Display.getConfigDisplay(ExerciseTools.getConfig(exerciseName, exerciseCatalogue));
+		phaseOutputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
 	}
 }
