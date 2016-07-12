@@ -8,7 +8,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenExcepti
 import java.io.IOException;
 
 /**
- * An CatalogueLoader returns an ExerciseCatalogue
+ * A CatalogueLoader represents a source that returns an ExerciseCatalogue
  */
 public interface CatalogueLoader {
 	/**

@@ -14,7 +14,8 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 import java.io.IOException;
 
 /**
- * Loads ExerciseCatalogues
+ * Loads exercise catalogues into a dedicated {@link ExerciseCatalogue} instance provided
+ * by the caller with the help of a {@link ExerciseTokenizer}
  * @see CatalogueLoader
  */
 public class ExerciseCatalogueLoader implements CatalogueLoader {

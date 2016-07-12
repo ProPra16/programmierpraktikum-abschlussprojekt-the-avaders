@@ -15,7 +15,8 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.co
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.convertDescription;
 
 /**
- * Reads lexemes from a .xml file until the end of file is reached
+ * Reads lexemes from a .xml file until the end of file is reached and returns single
+ * {@link Token} instances for parsing
  */
 public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	private LineReader fileReader;
