@@ -7,6 +7,7 @@ import de.hhu.propra16.avaders.gui.tools.PathTools;
 import de.hhu.propra16.avaders.gui.tools.ViewTools;
 import de.hhu.propra16.avaders.gui.view.ButtonDisplay;
 import de.hhu.propra16.avaders.gui.view.Display;
+import de.hhu.propra16.avaders.logik.Step;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
@@ -22,11 +23,17 @@ public class Welcome extends Phase {
 		super(userInputArea, phaseOutputArea, buttonDisplay, phase);
 	}
 
+	@Override
+	public boolean hasUnitTests() {
+		return false;
+	}
+
 	//finished
 	@Override
 	public void setStates() {
-		userInputArea.setEditable(false);
 		ViewTools.editPhaseDisplay(phase, "WELCOME", Color.WHITE, Color.DARKORANGE);
+		buttonDisplay.show(Step.WELCOME);
+		userInputArea.setEditable(false);
 	}
 
 	//finished

@@ -6,6 +6,8 @@ import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
 import de.hhu.propra16.avaders.gui.tools.ExerciseTools;
 import de.hhu.propra16.avaders.gui.tools.FileTools;
 import de.hhu.propra16.avaders.gui.tools.PathTools;
+import de.hhu.propra16.avaders.logik.Step;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 
 public class SubTask {
@@ -14,6 +16,45 @@ public class SubTask {
 	private String  className;
 	private String  testTemplate;
 	private String  classTemplate;
+
+	public String getName(Step mode){
+		switch (mode){
+			case TEST_REFACTOR:
+			case RED:           return testName;
+			case CODE_REFACTOR:
+			case GREEN:         return className;
+			default:
+				System.err.println("SubTask.getName(...) called out of cycle!");
+				throw new RuntimeException();
+		}
+	}
+
+	private void setTestTemplate(String testOutputArea){
+		this.testTemplate = testOutputArea;
+	}
+
+	private void setClassTemplate(String codeOutputArea){
+		this.classTemplate = codeOutputArea;
+	}
+
+	public void updateTemplate(Step mode, TextArea userInputArea){
+		switch (mode){
+			case RED:   setTestTemplate(userInputArea.getText());  break;
+			case GREEN: setClassTemplate(userInputArea.getText()); break;
+		}
+	}
+
+	public String getTemplate(Step mode){
+		switch (mode){
+			case CODE_REFACTOR:
+			case RED:               return testTemplate;
+			case TEST_REFACTOR:
+			case GREEN:             return classTemplate;
+			default:
+				System.err.println("SubTask.getTemplate(...) called out of Red and Green-phase!");
+				throw new RuntimeException();
+		}
+	}
 
 	public void load(TreeItem<String> testItem, ExerciseCatalogue exerciseCatalogue ){
 		String exerciseName           = PathTools.getNameOutOfPath(testItem,1);

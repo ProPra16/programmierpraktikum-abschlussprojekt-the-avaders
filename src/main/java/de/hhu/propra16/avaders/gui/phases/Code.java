@@ -18,6 +18,10 @@ public class Code extends Phase {
 		ViewTools.editPhaseDisplay(phase, "CODE", Color.WHITE, Color.DARKGREEN);
 		buttonDisplay.show(Step.GREEN);
 		userInputArea.setEditable(true);
-		phaseOutputArea.textProperty().bind(userInputArea.textProperty());
+	}
+
+	@Override
+	public boolean hasUnitTests(){
+		return false;
 	}
 }

@@ -19,6 +19,10 @@ public class CodeRefactor extends Phase {
 		ViewTools.editPhaseDisplay(phase, "CODE-REFACTOR", Color.WHITE, Color.BLACK);
 		buttonDisplay.show(Step.CODE_REFACTOR);
 		userInputArea.setEditable(true);
-		phaseOutputArea.textProperty().bind(userInputArea.textProperty());
+	}
+
+	@Override
+	public boolean hasUnitTests(){
+		return false;
 	}
 }

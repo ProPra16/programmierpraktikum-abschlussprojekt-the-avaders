@@ -3,6 +3,7 @@ package de.hhu.propra16.avaders.gui.phases;
 import de.hhu.propra16.avaders.gui.view.ButtonDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import vk.core.api.CompilationUnit;
 
 abstract public class Phase {
 	TextArea      userInputArea;
@@ -19,5 +20,6 @@ abstract public class Phase {
 	}
 
 	//finished
+	abstract public boolean hasUnitTests();
 	abstract public void setStates();
 }

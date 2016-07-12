@@ -19,6 +19,10 @@ public class Test extends Phase {
 		ViewTools.editPhaseDisplay(phase, "TEST", Color.WHITE, Color.DARKRED);
 		buttonDisplay.show(Step.RED);
 		userInputArea.setEditable(true);
-		phaseOutputArea.textProperty().bind(userInputArea.textProperty());
+	}
+
+	@Override
+	public boolean hasUnitTests(){
+		return true;
 	}
 }

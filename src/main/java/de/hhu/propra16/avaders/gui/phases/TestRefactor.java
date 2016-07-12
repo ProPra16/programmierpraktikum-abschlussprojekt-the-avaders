@@ -18,6 +18,10 @@ public class TestRefactor extends Phase {
 		ViewTools.editPhaseDisplay(phase, "TEST-REFACTOR", Color.WHITE, Color.DARKCYAN);
 		buttonDisplay.show(Step.TEST_REFACTOR);
 		userInputArea.setEditable(true);
-		phaseOutputArea.textProperty().bind(userInputArea.textProperty());
+	}
+
+	@Override
+	public boolean hasUnitTests(){
+		return true;
 	}
 }

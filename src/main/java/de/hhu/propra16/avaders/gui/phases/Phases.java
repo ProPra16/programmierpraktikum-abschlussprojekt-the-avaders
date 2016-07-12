@@ -20,6 +20,7 @@ public class Phases {
 	public void setStates(Step step){
 		phases.get(step).setStates();
 	}
+	public Phase   getPhase(Step mode) {return phases.get(mode);}
 	public Welcome getWelcome() {return (Welcome) phases.get(Step.WELCOME);}
 
 }
