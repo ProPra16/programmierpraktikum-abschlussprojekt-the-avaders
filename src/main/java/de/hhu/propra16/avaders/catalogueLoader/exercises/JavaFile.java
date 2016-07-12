@@ -4,7 +4,14 @@ package de.hhu.propra16.avaders.catalogueLoader.exercises;
  * JavaFile holds a template for a Java class
  */
 public class JavaFile {
+	/**
+	 * Represents the name of the java-file as well as of the java class it holds.
+	 */
 	public final String className;
+
+	/**
+	 * Holds the source code of the class
+	 */
 	public final String sourceCodeTemplate;
 
 	/**
