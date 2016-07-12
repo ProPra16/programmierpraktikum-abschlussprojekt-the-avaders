@@ -20,6 +20,15 @@ public interface IWerteTabelle {
 	 * Falls bereits ein Eintrag mit diesem Namen vorhanden ist, wird sein Wert ersetzt.
 	 *
 	 * @param pName Der eindeutige Name des Eintrags, über den er verwaltet wird
+	 * @param pWert Ein Wahrheitswert, mit dem der neue Eintrag initialisiert wird
+	 */
+	public void boolSetzen(String pName, boolean pWert);
+
+	/**
+	 * Speichert eine Einrag mit dem übergebenen Namen und Wert in der Wertetabelle.
+	 * Falls bereits ein Eintrag mit diesem Namen vorhanden ist, wird sein Wert ersetzt.
+	 *
+	 * @param pName Der eindeutige Name des Eintrags, über den er verwaltet wird
 	 * @param pWert Ein Integer-Wert, mit dem der neue Eintrag initialisiert wird
 	 */
 	public void intSetzen(String pName, int pWert);
@@ -32,6 +41,19 @@ public interface IWerteTabelle {
 	 * @param pWert Ein String, mit dem der neue Eintrag initialisiert wird
 	 */
 	public void stringSetzen(String pName, String pWert);
+
+	/**
+	 * Sucht in der Wertetabelle nach einem Eintrag mit dem übergebenen Namen und gibt seinen
+	 * Wert als Boolean zurück.
+	 *
+	 * @param pName Der Name des gesuchten Eintrags
+	 * @return Der Wert des Eintrags als Boolean
+	 * @throws EintragNichtGefunden Falls kein Eintrag mit dem übergebenen Namen in der
+	 *                              Wertetabelle gefunden werden konnte
+	 * @throws PharserException Falls der Wert nicht in einen Integer umgewandelt werden
+	 *                          konnte
+	 */
+	public boolean boolAbfragen(String pName) throws EintragNichtGefunden;
 
 	/**
 	 * Sucht in der Wertetabelle nach einem Eintrag mit dem übergebenen Namen und gibt seinen
