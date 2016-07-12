@@ -7,7 +7,7 @@ import java.util.Collection;
 public class TestResultDisplay {
 	public static String showTestResults(TestResult result){
 		if(result == null){
-			return "testresult is null";
+			return "";
 		}
 		String output;
 		output = "Tests:" + "\n" +

@@ -2,7 +2,6 @@ package de.hhu.propra16.avaders;
 
 import de.hhu.propra16.avaders.catalogueLoader.ParserException;
 import de.hhu.propra16.avaders.catalogueLoader.ExerciseCatalogueLoader;
-import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.ExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
@@ -11,12 +10,12 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SameProperty
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.gui.*;
 import de.hhu.propra16.avaders.gui.phases.*;
-import de.hhu.propra16.avaders.gui.tools.BindTools;
 import de.hhu.propra16.avaders.gui.tools.FileTools;
 import de.hhu.propra16.avaders.gui.tools.PathTools;
 import de.hhu.propra16.avaders.gui.tools.ViewTools;
 import de.hhu.propra16.avaders.gui.view.ButtonDisplay;
 import de.hhu.propra16.avaders.gui.view.ModeDisplay;
+import de.hhu.propra16.avaders.gui.view.TestResultDisplay;
 import de.hhu.propra16.avaders.konfig.KonfigWerte;
 import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
@@ -116,6 +115,7 @@ public class MainController {
 	private Information information;
 	private Console console;
 	private SubTask subTask;
+	private CompilationUnits compilationUnits;
 
 
 	@FXML
@@ -141,15 +141,17 @@ public class MainController {
 	void handleStart() {
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
 		this.subTask = new SubTask();
-		subTask.load(selection, exerciseCatalogue);
+		this.subTask.load(selection, exerciseCatalogue);
+		this.compilationUnits = new CompilationUnits();
 		phases.setStates(logic.getSchritt());
 
-		currentStep = Step.RED;
 		consoleOutputArea.setText("");
 		testOutputArea.setText("");
 		codeOutputArea.setText("");
 		codeRefactorOutputArea.setText("");
 		testRefactorOutputArea.setText("");
+		ViewTools.setUneditable(informationOutputArea,consoleOutputArea,codeOutputArea,
+				testOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
 	}
 
 	@FXML
@@ -168,13 +170,14 @@ public class MainController {
 		}
 	}
 
-	//this switch will be removed. exists because auf testing
+
 	public void updateUserInputArea(Step mode){
 		switch (mode){
 			case RED:
-				userInputField.setText(testOutputArea.getText());
-				testOutputArea.setText("");
-				tabPane.getSelectionModel().select(informationTab);
+				subTask.updateForNextCycle(codeRefactorOutputArea,testRefactorOutputArea);
+				testRefactorOutputArea.setText(userInputField.getText());
+				userInputField.setText(testRefactorOutputArea.getText());
+				tabPane.getSelectionModel().select(testRefactorTab);
 				break;
 			case GREEN:
 				testOutputArea.setText(userInputField.getText());
@@ -190,35 +193,36 @@ public class MainController {
 				userInputField.setText(testOutputArea.getText());
 				tabPane.getSelectionModel().select(codeRefactorTab);
 				break;
-			case WELCOME:
-				testRefactorOutputArea.setText(userInputField.getText());
-				userInputField.setText("Cycle done!");
-				tabPane.getSelectionModel().select(testRefactorTab);
-				phases.setStates(mode);
-				break;
 		}
 	}
 
 
-	public Step currentStep = Step.RED;
 	@FXML
 	void handleNextPhase() {
-		CompilationUnit unit = new CompilationUnit(subTask.getName(currentStep), userInputField.getText(),
-				phases.getPhase(currentStep).hasUnitTests());
+		Step currentStep = logic.getSchritt();
+
+		compilationUnits.update(currentStep, new CompilationUnit(subTask.getName(currentStep), userInputField.getText(),
+				phases.getPhase(currentStep).hasUnitTests()));
+
+		ITestenRueckgabe results = compilationUnits.test(currentStep, logic); //logic goes ahead!
+		compilationUnits.showResultsOn(consoleOutputArea, results);
 
 		System.out.println(currentStep);
+		System.out.println(subTask.getName(currentStep));
 		System.out.println(userInputField.getText());
 		System.out.println(phases.getPhase(currentStep).hasUnitTests());
 
-		switch (currentStep){
-			case RED:           currentStep = Step.GREEN; break;
-			case GREEN:         currentStep = Step.CODE_REFACTOR; break;
-			case CODE_REFACTOR: currentStep = Step.TEST_REFACTOR; break;
-			case TEST_REFACTOR: currentStep = Step.WELCOME; break;
+		if(currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors()
+				| currentStep == logic.getSchritt())) {
+			tabPane.getSelectionModel().select(consoleTab);
+			return;
 		}
-
-		updateUserInputArea(currentStep);
-		phases.setStates(currentStep);
+		if(currentStep == Step.RED & currentStep == logic.getSchritt()) {
+			tabPane.getSelectionModel().select(consoleTab);
+			return;
+		}
+		updateUserInputArea(logic.getSchritt());
+		phases.setStates(logic.getSchritt());
 	}
 
 
@@ -254,11 +258,11 @@ public class MainController {
 		System.exit(0);
 	}
 	@FXML void handlePrePhase() {
-		//logic.abbrecrhen();
-		//parameter: logic.getSchritt()
-		currentStep = Step.RED;
-		phases.setStates(currentStep);
-		updateUserInputArea(currentStep);
+		logic.abbrechen();
+		phases.setStates(logic.getSchritt());
+		userInputField.setText(testOutputArea.getText());
+		testOutputArea.setText("");
+		tabPane.getSelectionModel().select(consoleTab);
 	}
 
 	@FXML void handleProgress() {}

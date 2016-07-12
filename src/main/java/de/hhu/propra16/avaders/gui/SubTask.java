@@ -37,11 +37,9 @@ public class SubTask {
 		this.classTemplate = codeOutputArea;
 	}
 
-	public void updateTemplate(Step mode, TextArea userInputArea){
-		switch (mode){
-			case RED:   setTestTemplate(userInputArea.getText());  break;
-			case GREEN: setClassTemplate(userInputArea.getText()); break;
-		}
+	public void updateForNextCycle(TextArea codeRefactorOutputArea, TextArea testRefactorOutputArea){
+		this.classTemplate = codeRefactorOutputArea.getText();
+		this.testTemplate  = testRefactorOutputArea.getText();
 	}
 
 	public String getTemplate(Step mode){
