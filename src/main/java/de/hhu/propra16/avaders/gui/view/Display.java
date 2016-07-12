@@ -1,11 +1,10 @@
-package de.hhu.propra16.avaders.gui;
+package de.hhu.propra16.avaders.gui.view;
 
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
 
-/**
- * Created by Batman140 on 11.07.2016.
- */
+
 public class Display {
+	//finished
 	public static String getConfigDisplay(ExerciseConfig config){
 		String  configMessage =   "\nExtensions:\n";
 		if(config.isTimeTracking())
@@ -17,6 +16,7 @@ public class Display {
 		return configMessage;
 	}
 
+	//TODO set assignment
 	public static String getModesDisplay(ExerciseConfig config){
 		String modesDisplay = "";
 		if(config.isBabySteps())

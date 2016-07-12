@@ -2,9 +2,7 @@ package de.hhu.propra16.avaders.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class TreeViewMain extends Application {
@@ -24,7 +22,7 @@ public class TreeViewMain extends Application {
 
 
 
-		TreeView<Test>  treeView = new TreeView();
+		TreeView<de.hhu.propra16.avaders.gui.phases.Test>  treeView = new TreeView();
 
 
 		primaryStage.setTitle("TreeViewTester");

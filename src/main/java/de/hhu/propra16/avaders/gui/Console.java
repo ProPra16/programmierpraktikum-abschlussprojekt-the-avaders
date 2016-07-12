@@ -2,10 +2,10 @@ package de.hhu.propra16.avaders.gui;
 
 import javafx.scene.control.TextArea;
 
-public class Information {
+public class Console {
 	private TextArea outputArea;
 
-	public Information(TextArea outputArea){
+	public Console(TextArea outputArea){
 		this.outputArea = outputArea;
 	}
 }
