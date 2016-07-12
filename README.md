@@ -2,12 +2,24 @@
 
 [![Build Status](https://travis-ci.org/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders.svg?branch=master)](https://travis-ci.org/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders)
 
-## Build
+## Build Standalone Distribution
+
+To create a standalone distribution as a zip file, run:
 
 ```sh
 ./gradlew distZip
 ```
 
-## Run
+The zip distribution is placed under `build/distributions`.
 
-Extract the generated zip file (found under `build/distributions`). On OS X/Linux, run the script `programmierpraktikum-abschlussprojekt-the-avaders`. On Windows, run the script `programmierpraktikum-abschlussprojekt-the-avaders.bat`.
+To run the program from the distribution, extract the zip file, and run the launch script for your system in the `bin` folder. On Windows, use the Batch script (`.bat` extension). On OS X, Linux, etc., use the shell script (no extension).
+
+## Javadoc
+
+Javadocs may be generated using Gradle:
+
+```sh
+./gradlew javadoc
+```
+
+The generated documentation can be found under `build/docs/javadoc`.
