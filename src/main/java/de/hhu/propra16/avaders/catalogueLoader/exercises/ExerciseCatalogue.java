@@ -15,6 +15,7 @@ public class ExerciseCatalogue {
 	public ExerciseCatalogue(){ catalogue = new ArrayList<>(); }
 
 	/**
+	 * Adds the provided {@link Exercise} to the catalogue
 	 * @param exercise The {@link Exercise} to be added to the list of exercises
      */
 	public void addExercise(Exercise exercise){
@@ -22,6 +23,7 @@ public class ExerciseCatalogue {
 	}
 
 	/**
+	 * Produces the required {@link Exercise} from the {@link ExerciseCatalogue}
 	 * @param exerciseNumber The index of the {@link Exercise} to return
 	 * @return The {@link Exercise} at the specified position in the list
 	 * @throws IndexOutOfBoundsException - if the index is out of range

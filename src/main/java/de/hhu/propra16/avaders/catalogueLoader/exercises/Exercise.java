@@ -31,6 +31,7 @@ public class Exercise {
 	}
 
 	/**
+	 * Returns the name of the exercise
 	 * @return The name of the exercise
      */
 	public String getExerciseName() {
@@ -38,6 +39,7 @@ public class Exercise {
 	}
 
 	/**
+	 * Returns the description of the exercise
 	 * @return The description of the exercise
      */
 	public String getDescription() {
@@ -45,6 +47,7 @@ public class Exercise {
 	}
 
 	/**
+	 * Produces the indexed template for a class
 	 * @param templateNr the index of the class of which the template
 	 *                   should be returned
 	 * @return The template of the class specified by templateNr
@@ -54,7 +57,7 @@ public class Exercise {
 	}
 
 	/**
-	 *
+	 * Produces the indexed template for a test
 	 * @param classNr the index of the test of which the template
 	 *                   should be returned
 	 * @return The template of the class specified by templateNr
@@ -64,6 +67,7 @@ public class Exercise {
 	}
 
 	/**
+	 * Returns the name of an indexed class
 	 * @param classNumber The index of the class of which the name should be returned
 	 * @return The name of the class
      */
@@ -72,22 +76,27 @@ public class Exercise {
 	}
 
 	/**
+	 * Produces the name of an indexed test
 	 * @param testNumber The index of the test of which the name should be returned
 	 * @return The name of the test
      */
 	public String getTestName(int testNumber){	return testTemplates.getJavaFile(testNumber).className;	}
 
 	/**
-	 * @return The number of classes in this exercise
+	 * Returns the amount of classes in this {@link Exercise}
+	 * @return The number of classes in this {@link Exercise}
      */
 	public int getNumberOfClasses(){	return classTemplates.size();	}
 
 	/**
-	 * @return The number of tests in this exercise
+	 * Returns the amount of tests in this {@link Exercise}
+	 * @return The number of tests in this {@link Exercise}
      */
 	public int getNumberOfTests(){	return testTemplates.size(); }
 
 	/**
+	 * Returns the configuration in the form of a {@link ExerciseConfig} for
+	 * this class
 	 * @return The {@link ExerciseConfig} of this exercise
      */
 	public ExerciseConfig getExerciseConfig(){	return exerciseConfig; }

@@ -44,16 +44,19 @@ public interface ExerciseTokenizer {
 	ClassToken readJavaFile(String stringToEndOn, String classType) throws IOException, SamePropertyTwiceException, TokenException;
 
 	/**
+	 * Returns true if the source that is being parsed holds another lexeme
 	 * @return True if there is a next tokens, otherwise false
 	 */
 	boolean hasNextToken();
 
 	/**
+	 * Returns the currently parsed Token
 	 * @return The currently parsed {@link Token}
 	 */
 	Token currentToken();
 
 	/**
+	 * Returns the currently parsed line in the source
 	 * @return the current line number
 	 */
 	int getLineNumber();

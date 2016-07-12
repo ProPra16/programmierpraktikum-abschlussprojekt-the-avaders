@@ -6,6 +6,9 @@ package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
  * catalogue was read from
  */
 public class ClassToken extends Token{
+	/**
+	 * Holds the template of a java class as it was read with a ExerciseTokenizer
+	 */
 	public final String classTemplate;
 
 	/**

@@ -1,11 +1,18 @@
 package de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens;
 
 /**
- * This class represents a tokens in the file the
+ * This class represents a token in the file the
  * exercise catalogue is read from
  */
 public class Token {
+	/**
+	 * Distinguishes this {@link Token} from others
+	 */
 	public final String name;
+
+	/**
+	 * Holds the value extracted from the lexeme corresponding to this {@link Token}
+	 */
 	public final String value;
 
 	/**
