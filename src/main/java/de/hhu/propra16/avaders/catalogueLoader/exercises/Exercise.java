@@ -1,7 +1,11 @@
 package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
 /**
- * This class holds the necessary information of an exercise
+ * This class holds the necessary information of an exercise, such as it's name
+ * description, class- and test-templates as well as its configuration
+ * @see JavaFile
+ * @see JavaFiles
+ * @see ExerciseConfig
  */
 public class Exercise {
 	private String exerciseName;
