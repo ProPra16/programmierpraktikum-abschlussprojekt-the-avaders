@@ -1,6 +1,7 @@
 package de.hhu.propra16.avaders.projekt;
 
 import java.io.IOException;
+import java.text.ParseException;
 import de.hhu.propra16.avaders.konfig.IWerteTabelle;
 
 /**
@@ -20,7 +21,7 @@ public interface IDatei {
 	 * @throws IOException Falls es zu Schreibfehlern im Zusammenhang mit der Datei kommt
 	 * @throws KlasseNichtGefunden Falls ein interner Fehler aufgetreten ist
 	 */
-	public void Speichern(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, KlasseNichtGefunden;
+	public void speichern(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, KlasseNichtGefunden;
 
 	/**
 	 * Lädt ein Projekt aus einer Datei in die übergebene Klassenstruktur und die übergebene
@@ -32,5 +33,5 @@ public interface IDatei {
 	 * @throws EOFAufgetreten Falls die Datei fehlerhaft oder unvollständig ist
 	 * @throws KlasseNichtGefunden Falls ein interner Fehler aufgetreten ist
 	 */
-	public void Laden(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, EOFaufgetreten, KlasseNichtGefunden;
+	public void laden(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, EOFaufgetreten, KlasseNichtGefunden;
 }

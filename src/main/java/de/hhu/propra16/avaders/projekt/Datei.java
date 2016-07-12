@@ -36,7 +36,7 @@ public class Datei implements IDatei {
 	/**
 	 * {@inheritDoc} 
 	 */
-	public void Speichern(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, KlasseNichtGefunden {
+	public void speichern(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, KlasseNichtGefunden {
 		//Step schritt = projekte.schrittAbfragen();
 		Path datei = Paths.get(fAnschrift);
 		String[] klassenNamen = pKlassen.alleKlassennamen();
@@ -55,7 +55,7 @@ public class Datei implements IDatei {
 	/**
 	 * {@inheritDoc} 
 	 */
-	public void Laden(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, EOFaufgetreten, KlasseNichtGefunden  {
+	public void laden(IKlassen pKlassen, IWerteTabelle pStatusWerte) throws IOException, EOFaufgetreten, KlasseNichtGefunden  {
 		Path datei = Paths.get(fAnschrift);
 		byte[] daten = Files.readAllBytes(datei);
 		int position = 4;
