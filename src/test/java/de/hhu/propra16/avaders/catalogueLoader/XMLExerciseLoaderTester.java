@@ -44,14 +44,14 @@ public class XMLExerciseLoaderTester {
 		assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
 		assertEquals("import static org.junit.Assert.*;\n" +
 							"import org.junit.Test;\n" +
-							"public class RomanNumbersTest {\n" +
+							"public class RomanNumberConverterTest {\n" +
 							"@Test\n" +
 							"public void testSomething() {\n" +
 							"}\n" +
 							"}", 									exercise.getTestTemplates(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
-				"public class RomanNumbersTest2 {\n" +
+				"public class RomanNumberConverterTest2 {\n" +
 				"@Test\n" +
 				"public void testSomethingElse() {\n" +
 				"}\n" +
@@ -85,7 +85,7 @@ public class XMLExerciseLoaderTester {
 		assertEquals("ArabNumberConverterTest", exercise.getTestName(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
-				"public class ArabNumbersTest {\n" +
+				"public class ArabNumberConverterTest {\n" +
 				"@Test\n" +
 				"public void testSomething() {\n" +
 				"}\n" +

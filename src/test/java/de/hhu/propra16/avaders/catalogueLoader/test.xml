@@ -15,7 +15,7 @@
 			<test name="RomanNumberConverterTest2">
 				import static org.junit.Assert.*;
 				import org.junit.Test;
-				public classRomanNumberConverterTest2 {
+				public class RomanNumberConverterTest2 {
 				@Test
 				public void testSomethingElse() {
 				}
