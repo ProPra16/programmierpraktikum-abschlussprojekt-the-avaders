@@ -6,7 +6,7 @@ import java.text.ParseException;
  * Eine Klasse, die IWerteTabelle implementiert, soll eine Liste mit {@link WerteEintrag}
  * erwalten. Dort sollen Einstellungen und Statuswerte des Programms in einer Datenstruktur
  * gespeichert werden, unabhängig von ihrem {@link Datentyp}. Als Datentypen sind zur Zeit
- * String und Integer möglich.
+ * Boolean, String und Integer möglich.
  * <p>
  * Dieses Interface ersetzt das Interface der Klasse {@link KonfigWerte}, die den gleichen
  * Zweck hatte, jedoch auf die Speicherung von Einstellungsdaten spezialisiert war.
@@ -17,7 +17,7 @@ import java.text.ParseException;
 public interface IWerteTabelle {
 	/**
 	 * Speichert eine Einrag mit dem übergebenen Namen und Wert in der Wertetabelle.
-	 * Falls bereits ein Eintrag mit diesem Namen vorhanden ist, wird ihr Wert ersetzt.
+	 * Falls bereits ein Eintrag mit diesem Namen vorhanden ist, wird sein Wert ersetzt.
 	 *
 	 * @param pName Der eindeutige Name des Eintrags, über den er verwaltet wird
 	 * @param pWert Ein Integer-Wert, mit dem der neue Eintrag initialisiert wird
@@ -26,7 +26,7 @@ public interface IWerteTabelle {
 
 	/**
 	 * Speichert eine Einrag mit dem übergebenen Namen und Wert in der Wertetabelle.
-	 * Falls bereits ein Eintrag mit diesem Namen vorhanden ist, wird ihr Wert ersetzt.
+	 * Falls bereits ein Eintrag mit diesem Namen vorhanden ist, wird sein Wert ersetzt.
 	 *
 	 * @param pName Der eindeutige Name des Eintrags, über den er verwaltet wird
 	 * @param pWert Ein String, mit dem der neue Eintrag initialisiert wird

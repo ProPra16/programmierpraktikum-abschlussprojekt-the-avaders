@@ -1,7 +1,7 @@
 package de.hhu.propra16.avaders.konfig;
 
 import java.util.HashMap;
-import java.text.ParseException
+import java.text.ParseException;
 
 /**
  * Ein WerteEintrag speichert einen einzelnen Wert in seinem originalen {@link Datentypen} und
@@ -65,7 +65,7 @@ public class WerteEintrag implements IWerteEintrag {
 	/**
 	 * {@inheritDoc} 
 	 */
-	public void intSetzen(String pWert) {
+	public void intSetzen(int pWert) {
 		zuruecksetzen();
 		fWertInt = pWert;
 		fWertQuelle = Datentyp.INTEGER;
@@ -83,8 +83,8 @@ public class WerteEintrag implements IWerteEintrag {
 	/**
 	 * {@inheritDoc} 
 	 */
-	public int boolAbfragen() {
-		if (!fVorhandenBool) inBoolKonvertieren()
+	public boolean boolAbfragen() {
+		if (!fVorhandenBool) inBoolKonvertieren();
 		return fWertBool;
 	}
 
@@ -92,7 +92,7 @@ public class WerteEintrag implements IWerteEintrag {
 	 * {@inheritDoc} 
 	 */
 	public int intAbfragen() throws ParseException {
-		if (!fVorhandenInt) inIntKonvertieren()
+		if (!fVorhandenInt) inIntKonvertieren();
 		return fWertInt;
 	}
 
@@ -100,7 +100,7 @@ public class WerteEintrag implements IWerteEintrag {
 	 * {@inheritDoc} 
 	 */
 	public String stringAbfragen() {
-		if (!fVorhandenString) inStringKonvertieren()
+		if (!fVorhandenString) inStringKonvertieren();
 		return fWertString;
 	}
 
@@ -113,30 +113,30 @@ public class WerteEintrag implements IWerteEintrag {
 	}
 
 	//Konvertiert den gespeicherten Wert in einen Boolean und speichert ihn ab
-	void inIntKonvertieren() {
-		switch (fWertQuelle)
-			case Datentyp.INT;
+	void inBoolKonvertieren() {
+		switch (fWertQuelle) {
+			case INTEGER:
 				if (fWertInt==0)
 					fWertBool = false;
 				else
 					fWertBool = true;
 				break;
-			case Datentyp.STRING:
-				fWertInt = Boolean.parseBoolean(fWertString);
+			case STRING:
+				fWertBool = Boolean.parseBoolean(fWertString);
 		}
 		fVorhandenBool = true;
 	}
 
 	//Konvertiert den gespeicherten Wert in einen Integer und speichert ihn ab
 	void inIntKonvertieren() throws ParseException {
-		switch (fWertQuelle)
-			case Datentyp.BOOLEAN;
+		switch (fWertQuelle) {
+			case BOOLEAN:
 				if (fWertBool)
 					fWertInt = 1;
 				else
 					fWertInt = 0;
 				break;
-			case Datentyp.STRING:
+			case STRING:
 				fWertInt = Integer.parseInt(fWertString);
 		}
 		fVorhandenInt = true;
@@ -144,12 +144,12 @@ public class WerteEintrag implements IWerteEintrag {
 
 	//Konvertiert den gespeicherten Wert in einen String und speichert ihn ab
 	void inStringKonvertieren() {
-		switch (fWertQuelle)
-			case Datentyp.BOOLEAN;
-				fWertString = Boolean(fWertBool).toString();
+		switch (fWertQuelle) {
+			case BOOLEAN:
+				fWertString = Boolean.toString(fWertBool);
 				break;
-			case Datentyp.INTEGER:
-				fWertString = Integer(fWertInt).toString();
+			case INTEGER:
+				fWertString = Integer.toString(fWertInt);
 		}
 		fVorhandenString = true;
 	}

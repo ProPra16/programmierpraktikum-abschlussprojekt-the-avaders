@@ -1,5 +1,6 @@
 package de.hhu.propra16.avaders.konfig;
 
+import java.util.HashMap;
 import java.text.ParseException;
 
 /**
@@ -28,29 +29,49 @@ public class WerteTabelle implements IWerteTabelle {
 	/**
 	 * {@inheritDoc} 
 	 */
+	public void boolSetzen(String pName, boolean pWert) {
+		if (fTabelle.containsKey(pName))
+			fTabelle.get(pName).boolSetzen(pWert);
+		else
+			fTabelle.put(pName, new WerteEintrag(pWert));
+	}
+
+	/**
+	 * {@inheritDoc} 
+	 */
 	public void intSetzen(String pName, int pWert) {
-		if (fTabelle.contains(pName))
+		if (fTabelle.containsKey(pName))
 			fTabelle.get(pName).intSetzen(pWert);
 		else
-			fTabelle.put(pName, new WerteEintrag(pWert);
+			fTabelle.put(pName, new WerteEintrag(pWert));
 	}
 
 	/**
 	 * {@inheritDoc} 
 	 */
 	public void stringSetzen(String pName, String pWert) {
-		if (fTabelle.contains(pName))
-			fTabelle.get(pName).intSetzen(pWert);
+		if (fTabelle.containsKey(pName))
+			fTabelle.get(pName).stringSetzen(pWert);
 		else
-			fTabelle.put(pName, new WerteEintrag(pWert);
+			fTabelle.put(pName, new WerteEintrag(pWert));
+	}
+
+	/**
+	 * {@inheritDoc} 
+	 */
+	public boolean boolAbfragen(String pName) throws EintragNichtGefunden {
+		if (fTabelle.containsKey(pName))
+			return fTabelle.get(pName).boolAbfragen();
+		else
+			throw new EintragNichtGefunden(pName);
 	}
 
 	/**
 	 * {@inheritDoc} 
 	 */
 	public int intAbfragen(String pName) throws EintragNichtGefunden, ParseException {
-		if (fTabelle.contains(pName))
-			return fTabelle.get(pName).intAbfragen()
+		if (fTabelle.containsKey(pName))
+			return fTabelle.get(pName).intAbfragen();
 		else
 			throw new EintragNichtGefunden(pName);
 	}
@@ -59,8 +80,8 @@ public class WerteTabelle implements IWerteTabelle {
 	 * {@inheritDoc} 
 	 */
 	public String stringAbfragen(String pName) throws EintragNichtGefunden {
-		if (fTabelle.contains(pName))
-			return fTabelle.get(pName).stringAbfragen()
+		if (fTabelle.containsKey(pName))
+			return fTabelle.get(pName).stringAbfragen();
 		else
 			throw new EintragNichtGefunden(pName);
 	}

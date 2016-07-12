@@ -21,7 +21,7 @@ public interface IWerteEintrag {
 	 *
 	 * @param pWert Ein Wahrheitswert, der als Wert gespeichert werden soll
 	 */
-	public void boolSetzen(String pWert);
+	public void boolSetzen(boolean pWert);
 
 	/**
 	 * Speichert den übergebenen Integer als Wert dieser Instanz und ersetzt dabei falls vorhanden
@@ -29,7 +29,7 @@ public interface IWerteEintrag {
 	 *
 	 * @param pWert Ein Integer-Wert, der als Wert gespeichert werden soll
 	 */
-	public void intSetzen(String pWert);
+	public void intSetzen(int pWert);
 
 	/**
 	 * Speichert den übergebenen String als Wert dieser Instanz und ersetzt dabei falls vorhanden
