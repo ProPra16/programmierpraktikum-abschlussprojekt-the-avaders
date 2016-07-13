@@ -135,8 +135,11 @@ public class MainController {
 				return;
 			}
 			showClassContent(item, "Test");
-			if (isTestSelection(item, "Test"))
+			if (isTestSelection(item, "Test")) {
 				start.setDisable(false);
+			} else {
+				start.setDisable(true);
+			}
 			phases.getWelcome().setInformation(item, exerciseCatalogue);
 		}
 	}
