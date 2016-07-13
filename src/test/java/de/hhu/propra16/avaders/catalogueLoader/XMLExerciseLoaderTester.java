@@ -41,7 +41,7 @@ public class XMLExerciseLoaderTester {
 
 		// test code
 		assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
-		assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
+		assertEquals("RomanNumberConverter2Test", exercise.getTestName(1));
 		assertEquals("import static org.junit.Assert.*;\n" +
 							"import org.junit.Test;\n" +
 							"public class RomanNumberConverterTest {\n" +
@@ -51,7 +51,7 @@ public class XMLExerciseLoaderTester {
 							"}", 									exercise.getTestTemplates(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
-				"public class RomanNumberConverterTest2 {\n" +
+				"public class RomanNumberConverter2Test {\n" +
 				"\t@Test\n" +
 				"\tpublic void testSomethingElse() {\n" +
 				"\t}\n" +
