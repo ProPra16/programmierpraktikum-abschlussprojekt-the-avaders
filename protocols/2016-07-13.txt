@@ -11,6 +11,7 @@ Ziele für diese Woche:
 
 Florian:
 - erstellen des Benutzerhandbuches
+- arbeiten an den docs
 
 Thiemo:
 - Implementierung der Extensions an die GUI
