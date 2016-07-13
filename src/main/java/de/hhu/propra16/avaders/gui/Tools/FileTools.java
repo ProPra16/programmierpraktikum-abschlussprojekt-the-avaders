@@ -57,4 +57,16 @@ public class FileTools {
 		return output;
 	}
 
+	public static void updateFile(Path path, String output){
+		if(Files.exists(path))
+			deleteFile(path);
+		List<String> outputList = Arrays.asList(output.split("\\n"));
+		try {
+			Files.write(path, outputList, StandardOpenOption.CREATE);
+			System.out.println("" + path.toString() + " created!");
+		} catch (IOException e) {
+			System.err.println("Unable to update to File " + path);
+		}
+	}
+
 }

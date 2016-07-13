@@ -3,6 +3,7 @@ package de.hhu.propra16.avaders.gui.tools;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -14,6 +15,11 @@ public class ViewTools {
 	public static void enable(Node node){
 		node.setVisible(true);
 		node.setDisable(false);
+	}
+
+	public static void clearOutputAreas(TextArea... outputArea) {
+		for(TextArea area : outputArea)
+			area.setText("");
 	}
 
 	//finished
@@ -48,5 +54,10 @@ public class ViewTools {
 	private static void editLabel(Label label, String text, Color color){
 		label.setTextFill(color);
 		label.setText(text);
+	}
+
+	public static void setUneditable(TextArea... outputAreas) {
+		for(TextArea area : outputAreas)
+			area.setEditable(false);
 	}
 }
