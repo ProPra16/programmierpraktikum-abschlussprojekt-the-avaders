@@ -45,16 +45,16 @@ public class XMLExerciseLoaderTester {
 		assertEquals("import static org.junit.Assert.*;\n" +
 							"import org.junit.Test;\n" +
 							"public class RomanNumberConverterTest {\n" +
-							"@Test\n" +
-							"public void testSomething() {\n" +
-							"}\n" +
+							"\t@Test\n" +
+							"\tpublic void testSomething() {\n" +
+							"\t}\n" +
 							"}", 									exercise.getTestTemplates(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class RomanNumberConverterTest2 {\n" +
-				"@Test\n" +
-				"public void testSomethingElse() {\n" +
-				"}\n" +
+				"\t@Test\n" +
+				"\tpublic void testSomethingElse() {\n" +
+				"\t}\n" +
 				"}", 									exercise.getTestTemplates(1));
 
 
@@ -81,14 +81,16 @@ public class XMLExerciseLoaderTester {
 		assertEquals("ArabNumberConverter", exercise.getClassName(0));
 		assertEquals("public class ArabNumberConverter {\n}", exercise.getClassTemplate(0));
 
+		System.out.println(exercise.getTestTemplates(0));
+
 		// test code
 		assertEquals("ArabNumberConverterTest", exercise.getTestName(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class ArabNumberConverterTest {\n" +
-				"@Test\n" +
-				"public void testSomething() {\n" +
-				"}\n" +
+				"\t@Test\n" +
+				"\tpublic void testSomething() {\n" +
+				"\t}\n" +
 				"}", 									exercise.getTestTemplates(0));
 
 		assertEquals(true, exercise.getExerciseConfig().isAtdd());
@@ -126,16 +128,16 @@ public class XMLExerciseLoaderTester {
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class RomanNumbersTest {\n" +
-				"@Test\n" +
-				"public void testSomething() {\n" +
-				"}\n" +
+				"\t@Test\n" +
+				"\tpublic void testSomething() {\n" +
+				"\t}\n" +
 				"}", 									exercise.getTestTemplates(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
 				"public class RomanNumbersTest2 {\n" +
-				"@Test\n" +
-				"public void testSomethingElse() {\n" +
-				"}\n" +
+				"\t@Test\n" +
+				"\tpublic void testSomethingElse() {\n" +
+				"\t}\n" +
 				"}", 									exercise.getTestTemplates(1));
 
 

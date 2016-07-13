@@ -154,7 +154,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 			return new ClassToken(classType, currentToken.value, classTemplate);
 		}
 		else {
-			// only skip the /classType tokens
+			// only skip the /classType token
 			advance();
 			return null;
 		}
@@ -164,12 +164,16 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * Reads lines until the given string is encountered and returns them as single string
 	 * @param until The string until which the string is to be build
 	 * @return The lines that were read up until the given string
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws IOException If an I/O error occurs with the BufferedReader instance
      */
 	private String readLinesUntil(String until) throws IOException, MissingTokenException {
 		StringBuilder contentBuilder = new StringBuilder();
+		String indent = "";
+
 		while(readLine != null && !readLine.replace(" ","").contains("</" + until + ">")){
-			contentBuilder.append(readLine.trim()).append("\n");
+			indent = removeIndent(indent);
+			contentBuilder.append(indent).append(readLine.trim()).append("\n");
+			indent = addIndent(indent);
 			readNextLine();
 		}
 
@@ -182,6 +186,28 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 		readLine = remove(readLine, "</" + until + ">");
 
 		return content.trim();
+	}
+
+	/**
+	 * Removes indentation "\t" from the given indent string if
+	 * the currently read line includes a "}"
+	 * @param indent The string holding the current indentation
+	 * @return The new indent string
+	 */
+	private String removeIndent(String indent) {
+		if(!indent.equals("") && readLine.contains("}")) return indent.replaceFirst("\t", "");
+		return indent;
+	}
+
+	/**
+	 * Adds indentation "\t" to the given indent string if
+	 * the currently read line includes a "{"
+	 * @param indent The string holding the current indentation
+	 * @return The new indent string
+	 */
+	private String addIndent(String indent) {
+		if(readLine.contains("{")) return indent + "\t";
+		return indent;
 	}
 
 	/**
