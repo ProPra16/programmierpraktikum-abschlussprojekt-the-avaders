@@ -15,7 +15,6 @@ import de.hhu.propra16.avaders.gui.tools.PathTools;
 import de.hhu.propra16.avaders.gui.tools.ViewTools;
 import de.hhu.propra16.avaders.gui.view.ButtonDisplay;
 import de.hhu.propra16.avaders.gui.view.ModeDisplay;
-import de.hhu.propra16.avaders.gui.view.TestResultDisplay;
 import de.hhu.propra16.avaders.konfig.KonfigWerte;
 import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
@@ -35,76 +34,46 @@ import java.nio.file.Path;
 
 public class MainController {
 	//menuItems
-	@FXML
-	private MenuItem newCatalogue;
-	@FXML
-	private MenuItem restart;
-	@FXML
-	private MenuItem quit;
+	@FXML private MenuItem newCatalogue;
+	@FXML private MenuItem restart;
+	@FXML private MenuItem quit;
+	@FXML private MenuItem endCycleMenuItem;
 
 	//phase-switcher
-	@FXML
-	private Button start;
-	@FXML
-	private Button stepBack;
-	@FXML
-	private Button stepFurther;
+	@FXML private Button start;
+	@FXML private Button stepBack;
+	@FXML private Button stepFurther;
 
 	//User-information about activated modes and time left due activated 'babysteps'
-	@FXML
-	private Label activatedModes;
-	@FXML
-	private ProgressBar progress;
-	@FXML
-	private Label timeLeft;
-	@FXML
-	private Label timeLeftTitle;
-	@FXML
-	private Label currentPhaseLabel;
-	@FXML
-	private StackPane currentPhaseDisplay;
+	@FXML private Label activatedModes;
+	@FXML private ProgressBar progress;
+	@FXML private Label timeLeft;
+	@FXML private Label timeLeftTitle;
+	@FXML private Label currentPhaseLabel;
+	@FXML private StackPane currentPhaseDisplay;
 
 	//areas for user
-	@FXML
-	private TableColumn exerciseColumn;
-	@FXML
-	private TableColumn classColumn;
-	@FXML
-	private TableColumn testColumn;
+	@FXML private TableColumn exerciseColumn;
+	@FXML private TableColumn classColumn;
+	@FXML private TableColumn testColumn;
 
-	@FXML
-	private TabPane tabPane;
-	@FXML
-	private Tab informationTab;
-	@FXML
-	private Tab consoleTab;
-	@FXML
-	private Tab codeTab;
-	@FXML
-	private Tab codeRefactorTab;
-	@FXML
-	private Tab testRefactorTab;
-	@FXML
-	private Tab testTab;
-	@FXML
-	private TextArea informationOutputArea;
-	@FXML
-	private TextArea consoleOutputArea;
-	@FXML
-	private TextArea testOutputArea;
-	@FXML
-	private TextArea codeOutputArea;
-	@FXML
-	private TextArea codeRefactorOutputArea;
-	@FXML
-	private TextArea testRefactorOutputArea;
-	@FXML
-	private TextArea userInputField;
+	@FXML private TabPane tabPane;
+	@FXML private Tab informationTab;
+	@FXML private Tab consoleTab;
+	@FXML private Tab codeTab;
+	@FXML private Tab codeRefactorTab;
+	@FXML private Tab testRefactorTab;
+	@FXML private Tab testTab;
+	@FXML private TextArea informationOutputArea;
+	@FXML private TextArea consoleOutputArea;
+	@FXML private TextArea testOutputArea;
+	@FXML private TextArea codeOutputArea;
+	@FXML private TextArea codeRefactorOutputArea;
+	@FXML private TextArea testRefactorOutputArea;
+	@FXML private TextArea userInputField;
 
-	@FXML
-	private HBox exercisesHead;
-	@FXML
-	private TreeView<String> exercisesTree;
+	@FXML private HBox exercisesHead;
+	@FXML private TreeView<String> exercisesTree;
 
 	private Main main;
 	private ExerciseCatalogue exerciseCatalogue;
@@ -142,17 +111,19 @@ public class MainController {
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
 		this.subTask = new SubTask();
 		this.subTask.load(selection, exerciseCatalogue);
-		this.compilationUnits = new CompilationUnits();
+		this.subTask.createPaths(selection);
+		CompilationUnit initTestUnit  = new CompilationUnit(subTask.getName(Step.RED),   subTask.getTestTemplate(),  true);
+		CompilationUnit initClassUnit = new CompilationUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
+		this.compilationUnits = new CompilationUnits(initTestUnit,initClassUnit);
+		this.modeDisplay = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
+		modeDisplay.set(subTask.getExerciseConfig());
 		phases.setStates(logic.getSchritt());
 
-		consoleOutputArea.setText("");
-		testOutputArea.setText("");
-		codeOutputArea.setText("");
-		codeRefactorOutputArea.setText("");
-		testRefactorOutputArea.setText("");
+		ViewTools.clearOutputAreas(consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
 		ViewTools.setUneditable(informationOutputArea,consoleOutputArea,codeOutputArea,
 				testOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
 	}
+
 
 	@FXML
 	void handleTreeViewMouseClicked(MouseEvent event) {
@@ -170,33 +141,6 @@ public class MainController {
 		}
 	}
 
-
-	public void updateUserInputArea(Step mode){
-		switch (mode){
-			case RED:
-				subTask.updateForNextCycle(codeRefactorOutputArea,testRefactorOutputArea);
-				testRefactorOutputArea.setText(userInputField.getText());
-				userInputField.setText(testRefactorOutputArea.getText());
-				tabPane.getSelectionModel().select(testRefactorTab);
-				break;
-			case GREEN:
-				testOutputArea.setText(userInputField.getText());
-				userInputField.setText(subTask.getTemplate(mode));
-				tabPane.getSelectionModel().select(testTab);
-				break;
-			case CODE_REFACTOR:
-				codeOutputArea.setText(userInputField.getText());
-				tabPane.getSelectionModel().select(codeTab);
-				break;
-			case TEST_REFACTOR:
-				codeRefactorOutputArea.setText(userInputField.getText());
-				userInputField.setText(testOutputArea.getText());
-				tabPane.getSelectionModel().select(codeRefactorTab);
-				break;
-		}
-	}
-
-
 	@FXML
 	void handleNextPhase() {
 		Step currentStep = logic.getSchritt();
@@ -204,13 +148,8 @@ public class MainController {
 		compilationUnits.update(currentStep, new CompilationUnit(subTask.getName(currentStep), userInputField.getText(),
 				phases.getPhase(currentStep).hasUnitTests()));
 
-		ITestenRueckgabe results = compilationUnits.test(currentStep, logic); //logic goes ahead!
+		ITestenRueckgabe results = compilationUnits.test(logic); //logic goes ahead!
 		compilationUnits.showResultsOn(consoleOutputArea, results);
-
-		System.out.println(currentStep);
-		System.out.println(subTask.getName(currentStep));
-		System.out.println(userInputField.getText());
-		System.out.println(phases.getPhase(currentStep).hasUnitTests());
 
 		if(currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors()
 				| currentStep == logic.getSchritt())) {
@@ -221,8 +160,13 @@ public class MainController {
 			tabPane.getSelectionModel().select(consoleTab);
 			return;
 		}
-		updateUserInputArea(logic.getSchritt());
+		updateAreas(logic.getSchritt());
 		phases.setStates(logic.getSchritt());
+	}
+
+	@FXML
+	public void handleEndCycle(){
+		updateAreas(Step.WELCOME);
 	}
 
 
@@ -249,6 +193,7 @@ public class MainController {
 		this.exerciseCatalogue  = notProofedCatalogue;
 		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
 		exercises.fill(PathTools.getFileNamePrefix(cataloguePath, ".xml") + "Catalogue");
+		updateAreas(Step.WELCOME);
 	}
 
 
@@ -257,6 +202,7 @@ public class MainController {
 	@FXML void handleQuit(){
 		System.exit(0);
 	}
+
 	@FXML void handlePrePhase() {
 		logic.abbrechen();
 		phases.setStates(logic.getSchritt());
@@ -290,20 +236,35 @@ public class MainController {
 		return PathTools.hasParentName(item, parentName);
 	}
 
-
-
-	//start
-	private void setClassTemplateToUserInputArea(){
-		userInputField.setText(exerciseCatalogue.getExercise(0).getClassTemplate(0));
+	private void updateAreas(Step mode){
+		switch (mode){
+			case RED:
+				testRefactorOutputArea.setText(userInputField.getText());
+				subTask.updateForNextCycle(codeRefactorOutputArea,testRefactorOutputArea);
+				subTask.saveToFiles();
+				informationOutputArea.setText(informationOutputArea.getText() + "\n\n" + "Last cycle has been saved!");
+				userInputField.setText(testRefactorOutputArea.getText());
+				tabPane.getSelectionModel().select(codeRefactorTab);
+				break;
+			case GREEN:
+				testOutputArea.setText(userInputField.getText());
+				userInputField.setText(subTask.getTemplate(mode));
+				tabPane.getSelectionModel().select(testTab);
+				break;
+			case CODE_REFACTOR:
+				codeOutputArea.setText(userInputField.getText());
+				tabPane.getSelectionModel().select(codeTab);
+				break;
+			case TEST_REFACTOR:
+				codeRefactorOutputArea.setText(userInputField.getText());
+				userInputField.setText(testOutputArea.getText());
+				tabPane.getSelectionModel().select(codeRefactorTab);
+				break;
+			case WELCOME:
+				logic = initializeLogic();
+				ViewTools.clearOutputAreas(userInputField,consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
+				phases.setStates(Step.WELCOME);
+		}
 	}
 
-
-	private void setFinish(){
-		phases.setStates(Step.WELCOME);
-		ViewTools.showAreas(testRefactorOutputArea);
-		ViewTools.hideNode(stepFurther);
-		ViewTools.enable(start);
-		userInputField.setText("Exercise done!");
-	}
-	//end
 }

@@ -10,12 +10,24 @@ import de.hhu.propra16.avaders.logik.Step;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class SubTask {
 	private ExerciseConfig exerciseConfig;
 	private String  testName;
 	private String  className;
 	private String  testTemplate;
+
+	public String getClassTemplate() {return classTemplate;}
+	public String getTestTemplate() {return testTemplate;}
+
 	private String  classTemplate;
+	private Path    testPath;
+	private Path    classPath;
+
+
 
 	public String getName(Step mode){
 		switch (mode){
@@ -40,6 +52,7 @@ public class SubTask {
 	public void updateForNextCycle(TextArea codeRefactorOutputArea, TextArea testRefactorOutputArea){
 		this.classTemplate = codeRefactorOutputArea.getText();
 		this.testTemplate  = testRefactorOutputArea.getText();
+		System.out.println("Updated classTemplate:\n" + classTemplate+ "\nUpdated testTemplate:\n" + testTemplate + "\n");
 	}
 
 	public String getTemplate(Step mode){
@@ -62,6 +75,7 @@ public class SubTask {
 		this.className     = PathTools.getFileNamePrefix(testItem,"Test.java");
 		this.testTemplate  = getTestTemplate(testItem);
 		this.classTemplate = getClassTemplate(testItem,currentExercise);
+		System.out.println("");
 	}
 
 	private static String getTestTemplate(TreeItem<String> testItem){
@@ -74,7 +88,8 @@ public class SubTask {
 			String testItemReduced = testItem.getValue().replace("Test", "");
 			for(int name = 0; name < exercise.getNumberOfClasses(); name++){
 				if(exercise.getClassName(name).contentEquals(testItemReduced))
-					return exercise.getClassTemplate(name);
+					return FileTools.readFile(Paths.get(PathTools.getPath(testItem).subpath(0,2).toString() + File.separator + "Class" + File.separator +
+							exercise.getClassName(name) + ".java"));
 			}
 		}
 		System.out.println("To " + testItem.getValue() + " corresponding class not found");
@@ -87,5 +102,19 @@ public class SubTask {
 				"ClassName: " + className  + "\n" +
 				"testTemplate:\n" + testTemplate  + "\n" +
 				"classTemplate:\n" +classTemplate  + "\n";
+	}
+
+	public void createPaths(TreeItem<String> selection) {
+		this.testPath  = PathTools.getPath(selection);
+		this.classPath = Paths.get(testPath.subpath(0,2) + File.separator + "Class" + File.separator + className + ".java");
+	}
+
+	public void saveToFiles() {
+		FileTools.updateFile(testPath, testTemplate);
+		FileTools.updateFile(classPath, classTemplate);
+	}
+
+	public ExerciseConfig getExerciseConfig() {
+		return exerciseConfig;
 	}
 }
