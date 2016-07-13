@@ -21,5 +21,5 @@ XML-Parser: Kommentare erlauben, Unit-Tests an korrekten Ort verschieben
 David:
 Unit-Tests für Logik, Javadoc reparieren
 
-Lukas:
+Lucas:
 Fehlende Dummy-Klasse pushen, Tracking fertigstellen
