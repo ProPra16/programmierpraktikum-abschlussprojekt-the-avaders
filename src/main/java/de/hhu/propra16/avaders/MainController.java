@@ -142,7 +142,7 @@ public class MainController {
 				userInputField.setText(babysteps.getOldText());
 				babysteps.restart();
 			});
-			babysteps.startTimer(60);
+			babysteps.startTimer(subTask.getExerciseConfig().getBabyStepsTime());
 		}
 
 		phases.setStates(logic.getSchritt());
