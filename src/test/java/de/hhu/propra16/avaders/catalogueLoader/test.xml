@@ -12,10 +12,10 @@
 				}
 				}
 			</test>
-			<test name="RomanNumberConverterTest2">
+			<test name="RomanNumberConverter2Test">
 				import static org.junit.Assert.*;
 				import org.junit.Test;
-				public class RomanNumberConverterTest2 {
+				public class RomanNumberConverter2Test {
 				@Test
 				public void testSomethingElse() {
 				}
