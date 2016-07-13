@@ -1,13 +1,8 @@
 package de.hhu.propra16.avaders.gui.tools;
 
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 public class ViewTools {
@@ -59,5 +54,23 @@ public class ViewTools {
 	public static void setUneditable(TextArea... outputAreas) {
 		for(TextArea area : outputAreas)
 			area.setEditable(false);
+	}
+
+	public static void enableExerciseTree(boolean status, HBox exercisesHead, TreeView<String> exercisesTree, AnchorPane exerciseTreeBase){
+		if(status){
+			exercisesTree.setMaxWidth(400);
+			exercisesHead.setMaxWidth(400);
+			exerciseTreeBase.setMaxWidth(400);
+			exercisesTree.setMinWidth(225);
+			exercisesHead.setMinWidth(225);
+			exerciseTreeBase.setMinWidth(225);
+		} else {
+			exercisesTree.setMaxWidth(0);
+			exercisesHead.setMaxWidth(0);
+			exerciseTreeBase.setMaxWidth(0);
+			exercisesTree.setMinWidth(0);
+			exercisesHead.setMinWidth(0);
+			exerciseTreeBase.setMinWidth(0);
+		}
 	}
 }

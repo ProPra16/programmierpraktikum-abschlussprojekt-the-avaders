@@ -24,8 +24,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
@@ -73,6 +75,8 @@ public class MainController {
 	@FXML private TextArea userInputField;
 
 	@FXML private HBox exercisesHead;
+	@FXML private SplitPane vericalSplitBase;
+	@FXML private AnchorPane exerciseTreeBase;
 	@FXML private TreeView<String> exercisesTree;
 
 	private Main main;
@@ -85,6 +89,8 @@ public class MainController {
 	private Console console;
 	private SubTask subTask;
 	private CompilationUnits compilationUnits;
+	private AnchorPane exerciseTreeBaseTemp;
+
 
 
 	@FXML
@@ -115,7 +121,7 @@ public class MainController {
 		CompilationUnit initTestUnit  = new CompilationUnit(subTask.getName(Step.RED),   subTask.getTestTemplate(),  true);
 		CompilationUnit initClassUnit = new CompilationUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
 		this.compilationUnits = new CompilationUnits(initTestUnit,initClassUnit);
-		this.modeDisplay = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
+		this.modeDisplay      = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
 		modeDisplay.set(subTask.getExerciseConfig());
 		phases.setStates(logic.getSchritt());
 
@@ -261,7 +267,7 @@ public class MainController {
 			case TEST_REFACTOR:
 				codeRefactorOutputArea.setText(userInputField.getText());
 				userInputField.setText(testOutputArea.getText());
-				tabPane.getSelectionModel().select(codeRefactorTab);
+				tabPane.getSelectionModel().select(testTab);
 				break;
 			case WELCOME:
 				logic = initializeLogic();

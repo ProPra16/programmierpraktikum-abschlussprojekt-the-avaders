@@ -97,13 +97,13 @@
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <SplitPane dividerPositions="0.27638190954773867" layoutX="162.0" layoutY="-32.0" prefHeight="96.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane fx:id="vericalSplitBase" dividerPositions="0.27638190954773867" layoutX="162.0" layoutY="-32.0" prefHeight="96.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane minHeight="0.0" minWidth="225.0" prefHeight="160.0" prefWidth="225.0" SplitPane.resizableWithParent="false">
+                            <AnchorPane fx:id="exerciseTreeBase" maxWidth="400.0" minHeight="0.0" minWidth="225.0" prefHeight="160.0" prefWidth="225.0" SplitPane.resizableWithParent="false">
                                  <children>
-                                    <VBox layoutX="42.0" layoutY="30.0" prefHeight="259.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox layoutX="42.0" layoutY="30.0" maxWidth="400.0" minWidth="225.0" prefHeight="259.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <HBox fx:id="exercisesHead" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0" VBox.vgrow="NEVER">
+                                          <HBox fx:id="exercisesHead" alignment="CENTER_LEFT" maxWidth="400.0" minWidth="225.0" prefHeight="25.0" prefWidth="225.0" VBox.vgrow="NEVER">
                                              <children>
                                                 <Label text="Exercises" />
                                              </children>
@@ -111,12 +111,12 @@
                                                 <Insets left="10.0" />
                                              </padding>
                                           </HBox>
-                                          <TreeView fx:id="exercisesTree" onMouseClicked="#handleTreeViewMouseClicked" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                          <TreeView fx:id="exercisesTree" minWidth="225.0" onMouseClicked="#handleTreeViewMouseClicked" prefHeight="200.0" prefWidth="225.0" VBox.vgrow="ALWAYS" />
                                        </children>
                                     </VBox>
                                  </children>
                               </AnchorPane>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox prefHeight="200.0" prefWidth="675.0">
                                  <children>
                                     <TextArea fx:id="userInputField" prefHeight="234.0" prefWidth="587.0" promptText="Current Phase" VBox.vgrow="ALWAYS" />
                                     <HBox alignment="CENTER_LEFT" maxHeight="25.0" minHeight="25.0" minWidth="360.0" prefHeight="25.0" prefWidth="360.0" spacing="5.0" VBox.vgrow="NEVER">
