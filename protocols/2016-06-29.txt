@@ -26,5 +26,5 @@ David:
 Arbeitsbereich: feature/logic
 Ziel dieser Woche: Weitere Integration der virtual-kata-lib
 
-Lukas: babysteps, Tracking
+Lucas: babysteps, Tracking
 Ziel dieser Woche: Tracking Klasse fertigstellen
