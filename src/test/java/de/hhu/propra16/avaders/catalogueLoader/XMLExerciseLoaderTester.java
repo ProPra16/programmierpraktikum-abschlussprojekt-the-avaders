@@ -81,8 +81,6 @@ public class XMLExerciseLoaderTester {
 		assertEquals("ArabNumberConverter", exercise.getClassName(0));
 		assertEquals("public class ArabNumberConverter {\n}", exercise.getClassTemplate(0));
 
-		System.out.println(exercise.getTestTemplates(0));
-
 		// test code
 		assertEquals("ArabNumberConverterTest", exercise.getTestName(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
