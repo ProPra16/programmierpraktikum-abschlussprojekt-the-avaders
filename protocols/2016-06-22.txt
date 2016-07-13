@@ -30,5 +30,5 @@ David:
 Arbeitsbereich: Logik 
 Ziel dieser Woche: Mitarbeiten an der Grundstruktur der Hauptlogik und einbinden der Methoden der Katalib
 
-Lukas: Erweiterungen
+Lucas: Erweiterungen
 Ziel dieser Woche: Implementierung Babysteps
