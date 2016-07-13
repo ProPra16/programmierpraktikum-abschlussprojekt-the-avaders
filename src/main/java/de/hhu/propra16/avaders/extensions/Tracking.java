@@ -15,6 +15,15 @@ import javafx.scene.chart.XYChart;
 import javafx.util.Pair;
 import vk.core.api.CompileError;
 import vk.core.api.TestFailure;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -31,7 +40,7 @@ import static de.hhu.propra16.avaders.logik.Step.*;
  * und die Häufigkeit von {@link CompileError}s und {@link TestFailure}s.
  * Diese können auch in hübschen {@link Chart Diagrammen} dargestellt werden.
  */
-public class Tracking {
+public class Tracking implements Serializable{
 	protected int secondsGREEN = 0;
 	protected int secondsRED = 0;
 	protected int secondsREFACTOR = 0;
@@ -52,6 +61,15 @@ public class Tracking {
 	 */
 	public Tracking(Step currentState){
 		this.currentState = currentState;
+	}
+
+	public Tracking(String path, String ExerciseName, Step currentStep) throws IOException, ClassNotFoundException {
+		load(path+ExerciseName+"TrackingData.ser");
+		currentState = currentStep;
+	}
+
+	public Tracking(String path, String ExerciseName) throws IOException, ClassNotFoundException {
+		this(path, ExerciseName, RED);
 	}
 
 	/**
@@ -354,5 +372,27 @@ public class Tracking {
 		PieChart chart = new PieChart(chartData);
 		chart.setTitle("Verteilung der Arbeitszeit auf die "+s+" Phasen");
 		return chart;
+	}
+
+	public void save(String path, String ExerciseName) throws IOException {
+		Files.delete(Paths.get(path+ExerciseName+"TrackingData.ser"));
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path+ExerciseName+"TrackingData.ser"));
+		objectOutputStream.writeObject(this);
+		objectOutputStream.flush();
+		objectOutputStream.close();
+	}
+
+	private void load(String path) throws IOException, ClassNotFoundException {
+		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path));
+		Tracking copyTracking = (Tracking) objectInputStream.readObject();
+		secondsRED =copyTracking.secondsRED;
+		secondsGREEN = copyTracking.secondsGREEN;
+		secondsREFACTOR = copyTracking.secondsREFACTOR;
+		secondsREFACTOR2 = copyTracking.secondsREFACTOR2;
+		secondsAcceptance = copyTracking.secondsAcceptance;
+		compileErrorMapGREEN =  copyTracking.compileErrorMapGREEN;
+		compileErrorMapREFACTOR = copyTracking.compileErrorMapREFACTOR;
+		testErrorMap = copyTracking.testErrorMap;
+		objectInputStream.close();
 	}
 }
