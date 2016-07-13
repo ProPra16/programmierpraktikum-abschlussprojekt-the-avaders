@@ -1,0 +1,26 @@
+Protokoll zum Gruppentreffen am 13.07.2016
+Protokollführer: Lucas Döring (Cookiebowser)
+
+Themen:
+- GUI layout und Funktionalität
+- Tracking/Babysteps Anbindung an die GUI
+
+
+Ziele für diese Woche:
+
+
+Florian:
+- erstellen des Benutzerhandbuches
+
+Thiemo:
+- Implementierung der Extensions an die GUI
+
+Nikita:
+- catalogueLoader Implementierung für standardisierte Einrückung beim laden von Code/Tests
+- Überprüfung, ob es in der geladenen xml pro Klasse eine Test-Klasse gibt.
+
+David:
+- verbessert Logik
+
+Lucas:
+- Speichern und laden von Daten in Tracking implementieren
