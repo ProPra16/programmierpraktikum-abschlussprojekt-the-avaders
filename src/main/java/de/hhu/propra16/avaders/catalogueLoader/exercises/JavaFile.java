@@ -39,7 +39,6 @@ public class JavaFile {
      */
 	private boolean isValidClassName() {
 		String classHeader = sourceCodeTemplate.substring(0, sourceCodeTemplate.indexOf("{")+1);
-		System.out.println(classHeader.replaceAll("\\s", ""));
 		return classHeader.replaceAll("\\s", "").contains("class" + className + "{");
 	}
 }
