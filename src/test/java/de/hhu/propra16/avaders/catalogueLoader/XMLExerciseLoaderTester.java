@@ -93,7 +93,7 @@ public class XMLExerciseLoaderTester {
 				"\t}\n" +
 				"}", 									exercise.getTestTemplates(0));
 
-		assertEquals(true, exercise.getExerciseConfig().isAtdd());
+		assertEquals(false, exercise.getExerciseConfig().isAtdd());
 		assertEquals(true, exercise.getExerciseConfig().isBabySteps());
 		assertEquals(120, exercise.getExerciseConfig().getBabyStepsTime());
 		assertEquals(true, exercise.getExerciseConfig().isTimeTracking());

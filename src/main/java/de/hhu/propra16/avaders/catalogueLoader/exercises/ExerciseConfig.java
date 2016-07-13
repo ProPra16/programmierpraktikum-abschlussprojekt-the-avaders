@@ -70,11 +70,14 @@ public class ExerciseConfig {
 	}
 
 	/**
-	 * Returns if the attached {@link Exercise} should have atdd enabled
+	 * Returns if the attached {@link Exercise} should have atdd enabled <p>
+	 * <strong>NOTE: THIS FEATURE IS NOT SUPPORTED IN THIS REALEASE
+	 * AND THUS ALWAYS RETURNS FALSE</strong>
 	 * @return The value of atdd
+	 *
      */
 	public boolean isAtdd() {
-		return atdd;
+		return false;
 	}
 
 	/**
