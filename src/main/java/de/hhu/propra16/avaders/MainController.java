@@ -8,6 +8,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
+import de.hhu.propra16.avaders.extensions.Babysteps;
 import de.hhu.propra16.avaders.gui.*;
 import de.hhu.propra16.avaders.gui.phases.*;
 import de.hhu.propra16.avaders.gui.tools.FileTools;
@@ -20,6 +21,7 @@ import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
 import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
 import de.hhu.propra16.avaders.testen.Tester;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -27,7 +29,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
@@ -80,6 +81,7 @@ public class MainController {
 	@FXML private TreeView<String> exercisesTree;
 
 	private Main main;
+	private Babysteps babysteps;
 	private ExerciseCatalogue exerciseCatalogue;
 	private Phases phases;
 	private Logik logic;
@@ -122,7 +124,27 @@ public class MainController {
 		CompilationUnit initClassUnit = new CompilationUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
 		this.compilationUnits = new CompilationUnits(initTestUnit,initClassUnit);
 		this.modeDisplay      = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
-		modeDisplay.set(subTask.getExerciseConfig());
+		modeDisplay.set(subTask.getExerciseConfig()); //TODO activate displays method
+		modeDisplay.enableActiveModes(true, subTask.getExerciseConfig());
+		modeDisplay.enableTime(true, subTask.getExerciseConfig());
+
+		if(subTask.getExerciseConfig().isBabySteps()) {//TODO 2 methods
+			this.babysteps = new Babysteps();
+			this.babysteps.setCurrentlyEditableArea(userInputField);
+			this.timeLeft.textProperty().bind(Bindings.concat("", babysteps.getRemainingBinding()));
+			this.babysteps.setOnTimeout(() -> {
+				if(logic.getSchritt() == Step.GREEN){
+					logic.abbrechen();
+					phases.setStates(logic.getSchritt());
+					ViewTools.clearOutputAreas(consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
+					tabPane.getSelectionModel().select(informationTab);
+				}
+				userInputField.setText(babysteps.getOldText());
+				babysteps.restart();
+			});
+			babysteps.startTimer(60);
+		}
+
 		phases.setStates(logic.getSchritt());
 
 		ViewTools.clearOutputAreas(consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
@@ -160,12 +182,8 @@ public class MainController {
 		ITestenRueckgabe results = compilationUnits.test(logic); //logic goes ahead!
 		compilationUnits.showResultsOn(consoleOutputArea, results);
 
-		if(currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors()
-				| currentStep == logic.getSchritt())) {
-			tabPane.getSelectionModel().select(consoleTab);
-			return;
-		}
-		if(currentStep == Step.RED & currentStep == logic.getSchritt()) {
+		if((currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors() | currentStep == logic.getSchritt()))
+				|| (currentStep == Step.RED & currentStep == logic.getSchritt()) ) {
 			tabPane.getSelectionModel().select(consoleTab);
 			return;
 		}
@@ -248,6 +266,10 @@ public class MainController {
 	private void updateAreas(Step mode){
 		switch (mode){
 			case RED:
+				if(subTask.getExerciseConfig().isBabySteps()) {
+					babysteps.startTimer(subTask.getExerciseConfig().getBabyStepsTime());
+					modeDisplay.enableTime(true, subTask.getExerciseConfig());
+				}
 				testRefactorOutputArea.setText(userInputField.getText());
 				subTask.updateForNextCycle(codeRefactorOutputArea,testRefactorOutputArea);
 				subTask.saveToFiles();
@@ -261,6 +283,10 @@ public class MainController {
 				tabPane.getSelectionModel().select(testTab);
 				break;
 			case CODE_REFACTOR:
+				if(subTask.getExerciseConfig().isBabySteps()) {
+					babysteps.resetAndStop();
+					modeDisplay.enableTime(false, subTask.getExerciseConfig());
+				}
 				codeOutputArea.setText(userInputField.getText());
 				tabPane.getSelectionModel().select(codeTab);
 				break;

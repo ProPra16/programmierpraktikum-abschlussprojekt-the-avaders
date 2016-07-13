@@ -119,18 +119,37 @@
                               <VBox prefHeight="200.0" prefWidth="675.0">
                                  <children>
                                     <TextArea fx:id="userInputField" prefHeight="234.0" prefWidth="587.0" promptText="Current Phase" VBox.vgrow="ALWAYS" />
-                                    <HBox alignment="CENTER_LEFT" maxHeight="25.0" minHeight="25.0" minWidth="360.0" prefHeight="25.0" prefWidth="360.0" spacing="5.0" VBox.vgrow="NEVER">
+                                    <GridPane>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
                                        <children>
-                                          <Label text="Active Modes: ">
+                                          <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                             <children>
+                                                <Label text="Active Modes: ">
+                                                   <padding>
+                                                      <Insets left="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="activatedModes" maxWidth="300.0" minWidth="200.0" prefHeight="17.0" prefWidth="200.0" text="&lt;Modes&gt;" />
+                                             </children>
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding>
-                                          </Label>
-                                          <Label fx:id="activatedModes" minWidth="150.0" text="&lt;Modes&gt;" />
-                                          <Label fx:id="timeLeftTitle" text="Time Left: " />
-                                          <Label fx:id="timeLeft" text="&lt;Time&gt;" />
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
+                                             <children>
+                                                <Label fx:id="timeLeftTitle" text="Time Left: " />
+                                                <Label fx:id="timeLeft" text="&lt;Time&gt;" />
+                                             </children>
+                                          </HBox>
                                        </children>
-                                    </HBox>
+                                    </GridPane>
                                  </children>
                               </VBox>
                           </items>
@@ -144,6 +163,7 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <TextArea fx:id="informationOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <HBox alignment="CENTER_LEFT" layoutX="294.0" layoutY="47.0" maxHeight="25.0" minHeight="25.0" minWidth="360.0" prefHeight="25.0" prefWidth="360.0" spacing="5.0" />
                                  </children>
                               </AnchorPane>
                            </content>
