@@ -131,6 +131,15 @@ public class Babysteps {
 		return remaining.intValue();
 	}
 
+
+	/**
+	 * Gibt die Verbleibene Zeit als {@link NumberBinding} zurück.
+	 * @return Die NumberBinding
+	 */
+	public NumberBinding getRemainingBinding(){
+		return remaining;
+	}
+
 	/**
 	 * Gibt einen Wahrheitswert zurück, welcher zeigt, ob der Timer noch läuft.
 	 * @return der Wahrheitswert
