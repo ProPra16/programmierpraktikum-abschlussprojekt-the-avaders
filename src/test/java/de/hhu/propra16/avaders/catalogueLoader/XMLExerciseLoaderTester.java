@@ -122,17 +122,17 @@ public class XMLExerciseLoaderTester {
 
 		// test code
 		assertEquals("RomanNumberConverterTest", exercise.getTestName(0));
-		assertEquals("RomanNumberConverterTest2", exercise.getTestName(1));
+		assertEquals("RomanNumberConverter2Test", exercise.getTestName(1));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
-				"public class RomanNumbersTest {\n" +
+				"public class RomanNumberConverterTest {\n" +
 				"\t@Test\n" +
 				"\tpublic void testSomething() {\n" +
 				"\t}\n" +
 				"}", 									exercise.getTestTemplates(0));
 		assertEquals("import static org.junit.Assert.*;\n" +
 				"import org.junit.Test;\n" +
-				"public class RomanNumbersTest2 {\n" +
+				"public class RomanNumberConverter2Test {\n" +
 				"\t@Test\n" +
 				"\tpublic void testSomethingElse() {\n" +
 				"\t}\n" +

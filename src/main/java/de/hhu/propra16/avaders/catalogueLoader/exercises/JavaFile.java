@@ -1,5 +1,7 @@
 package de.hhu.propra16.avaders.catalogueLoader.exercises;
 
+import de.hhu.propra16.avaders.catalogueLoader.ParserException;
+
 /**
  * JavaFile holds a template for a Java class
  */
@@ -19,9 +21,25 @@ public class JavaFile {
 	 * and a sourcecode template
 	 * @param className The name the class carries
 	 * @param sourceCodeTemplate The template for the source code
+	 * @throws ParserException If the name of the class does not equal the
+	 * 							class name given in the source code
      */
-	public JavaFile(String className, String sourceCodeTemplate){
+	public JavaFile(String className, String sourceCodeTemplate) throws ParserException {
 		this.className = className;
 		this.sourceCodeTemplate = sourceCodeTemplate;
+
+		if(!isValidClassName())
+			throw new ParserException("Class: " + className + " has differing name in source code");
+	}
+
+	/**
+	 * Checks if the name of the javaFile is valid, by comparing it to the
+	 * class name in the source code
+	 * @return True if the class name is valid, false otherwise
+     */
+	private boolean isValidClassName() {
+		String classHeader = sourceCodeTemplate.substring(0, sourceCodeTemplate.indexOf("{")+1);
+		System.out.println(classHeader.replaceAll("\\s", ""));
+		return classHeader.replaceAll("\\s", "").contains("class" + className + "{");
 	}
 }

@@ -123,7 +123,7 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
      */
-	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException {
+	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		Token token = exerciseTokenizer.currentToken();
 		switch(token.name){
 			case "exercise": exerciseName = token.value; break;
@@ -153,7 +153,7 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 	 * but not found
      */
 	private void parseJavaFiles(JavaFiles javaFiles, String classType, String stringToEndOn)
-			throws SamePropertyTwiceException, IOException, TokenException {
+			throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		ClassToken classToken;
 
 		do {
