@@ -1,16 +1,14 @@
 package de.hhu.propra16.avaders.gui;
 
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
+import de.hhu.propra16.avaders.gui.tools.FileTools;
+import de.hhu.propra16.avaders.gui.tools.PathTools;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.io.File;
 import java.nio.file.*;
 
-
-/**
- * Created by Batman140 on 09.07.2016.
- */
 public class ExercisesTree {
 	private ExerciseCatalogue exerciseCatalogue;
 	private TreeView<String>  treeView;
@@ -20,6 +18,7 @@ public class ExercisesTree {
 		this.treeView = treeView;
 	}
 
+	//TODO understand warning
 	public void fill(String rootName){
 		TreeItem<String> exercises = new TreeItem<>(rootName);
 		for(int i = 0; i < exerciseCatalogue.size(); i++) {

@@ -1,16 +1,13 @@
-package de.hhu.propra16.avaders.gui;
+package de.hhu.propra16.avaders.gui.view;
 
 import vk.core.api.*;
 
 import java.util.Collection;
 
-/**
- * Created by Batman140 on 11.07.2016.
- */
 public class TestResultDisplay {
 	public static String showTestResults(TestResult result){
 		if(result == null){
-			return "testresult is null";
+			return "";
 		}
 		String output;
 		output = "Tests:" + "\n" +
@@ -26,7 +23,6 @@ public class TestResultDisplay {
 					  "> Message: " + failure.getMessage()  + "\n\n";
 		}
 		return output;
-		//testfailures ?
 	}
 
 	public static String showCompilerResult(CompilerResult result, CompilationUnit unit){
@@ -37,7 +33,6 @@ public class TestResultDisplay {
 					  "> Line: <L=" + error.getLineNumber() + ",C="+ error.getColumnNumber() +"> " + error.getCodeLineContainingTheError() + "\n" +
                       "> Message: " + error.getMessage() + "\n\n";
 		}
-
 		return output;
 	}
 }

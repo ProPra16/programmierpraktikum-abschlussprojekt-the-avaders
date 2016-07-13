@@ -2,74 +2,70 @@ package de.hhu.propra16.avaders;
 
 import de.hhu.propra16.avaders.catalogueLoader.ParserException;
 import de.hhu.propra16.avaders.catalogueLoader.ExerciseCatalogueLoader;
-import de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
-import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.ExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.FileReader;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.XMLExerciseTokenizer;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.SamePropertyTwiceException;
 import de.hhu.propra16.avaders.catalogueLoader.tokenizer.exceptions.TokenException;
 import de.hhu.propra16.avaders.gui.*;
+import de.hhu.propra16.avaders.gui.phases.*;
+import de.hhu.propra16.avaders.gui.tools.FileTools;
+import de.hhu.propra16.avaders.gui.tools.PathTools;
+import de.hhu.propra16.avaders.gui.tools.ViewTools;
+import de.hhu.propra16.avaders.gui.view.ButtonDisplay;
+import de.hhu.propra16.avaders.gui.view.ModeDisplay;
 import de.hhu.propra16.avaders.konfig.KonfigWerte;
 import de.hhu.propra16.avaders.logik.Logik;
 import de.hhu.propra16.avaders.logik.Step;
 import de.hhu.propra16.avaders.testen.ITestenRueckgabe;
 import de.hhu.propra16.avaders.testen.Tester;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 
 public class MainController {
-	private Main              main;
-	private ExerciseCatalogue exerciseCatalogue;
-	private String            currentTestName;
-	private Exercise          currentExercise;
-	private Path              currentClass;
-	private Path              currentTest;
-	private Phases            phases;
-	private Logik             logic;
-	private Step              currentStep;
-
 	//menuItems
-    @FXML private MenuItem newCatalogue;
-    @FXML private MenuItem restart;
+	@FXML private MenuItem newCatalogue;
+	@FXML private MenuItem restart;
 	@FXML private MenuItem quit;
-    
-    //phase-switcher
+	@FXML private MenuItem endCycleMenuItem;
+
+	//phase-switcher
 	@FXML private Button start;
-    @FXML private Button stepBack;
-    @FXML private Button stepFurther;
-    
-    //User-information about activated modes and time left due activated 'babysteps'
-    @FXML private Label activatedModes;
+	@FXML private Button stepBack;
+	@FXML private Button stepFurther;
+
+	//User-information about activated modes and time left due activated 'babysteps'
+	@FXML private Label activatedModes;
 	@FXML private ProgressBar progress;
-    @FXML private Label timeLeft;
+	@FXML private Label timeLeft;
 	@FXML private Label timeLeftTitle;
 	@FXML private Label currentPhaseLabel;
 	@FXML private StackPane currentPhaseDisplay;
 
-    //areas for user
+	//areas for user
 	@FXML private TableColumn exerciseColumn;
 	@FXML private TableColumn classColumn;
 	@FXML private TableColumn testColumn;
 
-	@FXML private Tab      informationTab;
-	@FXML private Tab      consoleTab;
-	@FXML private Tab      codeTab;
-	@FXML private Tab      codeRefactorTab;
-	@FXML private Tab      testRefactorTab;
-	@FXML private Tab      testTab;
+	@FXML private TabPane tabPane;
+	@FXML private Tab informationTab;
+	@FXML private Tab consoleTab;
+	@FXML private Tab codeTab;
+	@FXML private Tab codeRefactorTab;
+	@FXML private Tab testRefactorTab;
+	@FXML private Tab testTab;
 	@FXML private TextArea informationOutputArea;
 	@FXML private TextArea consoleOutputArea;
 	@FXML private TextArea testOutputArea;
@@ -79,227 +75,205 @@ public class MainController {
 	@FXML private TextArea userInputField;
 
 	@FXML private HBox exercisesHead;
+	@FXML private SplitPane vericalSplitBase;
+	@FXML private AnchorPane exerciseTreeBase;
 	@FXML private TreeView<String> exercisesTree;
 
-	//initializer
-	@FXML public void initialize(){
-		this.phases = new Phases(new Welcome(), new Test(), new Code(), new CodeRefactor(), new TestRefactor());
-		this.logic  = initLogic();
-		this.currentStep = Step.WELCOME;
-		this.start.setDisable(true);
-		this.userInputField.setEditable(false);
-		ViewTools.setUneditable(informationOutputArea, consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
-		ViewTools.hideNodes(consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
-		setInitialStates();
+	private Main main;
+	private ExerciseCatalogue exerciseCatalogue;
+	private Phases phases;
+	private Logik logic;
+	private ButtonDisplay buttonDisplay;
+	private ModeDisplay modeDisplay;
+	private Information information;
+	private Console console;
+	private SubTask subTask;
+	private CompilationUnits compilationUnits;
+	private AnchorPane exerciseTreeBaseTemp;
+
+
+
+	@FXML
+	public void initialize() {
+		this.buttonDisplay = new ButtonDisplay(stepBack, stepFurther, start, new Button("save"));
+		this.phases = new Phases(
+				new Welcome(userInputField, informationOutputArea, buttonDisplay, currentPhaseLabel),
+				new Test(userInputField, testOutputArea, buttonDisplay, currentPhaseLabel),
+				new Code(userInputField, codeOutputArea, buttonDisplay, currentPhaseLabel),
+				new CodeRefactor(userInputField, codeRefactorOutputArea, buttonDisplay, currentPhaseLabel),
+				new TestRefactor(userInputField, testRefactorOutputArea, buttonDisplay, currentPhaseLabel));
+		this.modeDisplay = new ModeDisplay(activatedModes, timeLeftTitle, timeLeft);
+		this.information = new Information(informationOutputArea);
+		this.console = new Console(consoleOutputArea);
+		this.logic = initializeLogic();
+
+		phases.setStates(Step.WELCOME);
 	}
 
 
 	//Handler
-    @FXML void handleStart(ActionEvent event){
-		ViewTools.hideNode(start);
-		this.userInputField.setEditable(true);
+	@FXML
+	void handleStart() {
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
-		this.currentExercise       = getExercise(PathTools.getPath(selection).getName(1).toString());
-		this.currentTestName       = PathTools.getPath(selection).getFileName().toString().replace(".java", "");
-		phases.setStates(logic.getSchritt(), userInputField, testOutputArea, stepBack, stepFurther, currentPhaseLabel);
-		this.currentStep = logic.getSchritt();
-		setVisibleTabs(Step.RED);
-		setTabAreaConnection(Step.RED);
-        //System.out.println("CurrentTestname " + currentTestName);
-		//System.out.println("ExerciseName: " + PathTools.getPath(selection).getName(1).toString());
+		this.subTask = new SubTask();
+		this.subTask.load(selection, exerciseCatalogue);
+		this.subTask.createPaths(selection);
+		CompilationUnit initTestUnit  = new CompilationUnit(subTask.getName(Step.RED),   subTask.getTestTemplate(),  true);
+		CompilationUnit initClassUnit = new CompilationUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
+		this.compilationUnits = new CompilationUnits(initTestUnit,initClassUnit);
+		this.modeDisplay      = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
+		modeDisplay.set(subTask.getExerciseConfig());
+		phases.setStates(logic.getSchritt());
+
+		ViewTools.clearOutputAreas(consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
+		ViewTools.setUneditable(informationOutputArea,consoleOutputArea,codeOutputArea,
+				testOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
 	}
 
-	@FXML void handleTreeViewMouseClicked(MouseEvent event) {
-		if(event.getButton() == MouseButton.PRIMARY & currentStep == Step.WELCOME){
+
+	@FXML
+	void handleTreeViewMouseClicked(MouseEvent event) {
+		if (event.getButton() == MouseButton.PRIMARY & start.isVisible()) {
+			tabPane.getSelectionModel().select(informationTab);
 			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
-			if(item == null){
+			if (item == null) {
 				System.err.println("item not initialized yet");
 				return;
 			}
-			setUserInputFieldOnParentNameCondition(item,"Test");
-			setInformationOutputArea(item);
+			showClassContent(item, "Test");
+			if (isTestSelection(item, "Test")) {
+				start.setDisable(false);
+			} else {
+				start.setDisable(true);
+			}
+			phases.getWelcome().setInformation(item, exerciseCatalogue);
 		}
 	}
 
-	@FXML void handleQuit(ActionEvent event){
+	@FXML
+	void handleNextPhase() {
+		Step currentStep = logic.getSchritt();
+
+		compilationUnits.update(currentStep, new CompilationUnit(subTask.getName(currentStep), userInputField.getText(),
+				phases.getPhase(currentStep).hasUnitTests()));
+
+		ITestenRueckgabe results = compilationUnits.test(logic); //logic goes ahead!
+		compilationUnits.showResultsOn(consoleOutputArea, results);
+
+		if(currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors()
+				| currentStep == logic.getSchritt())) {
+			tabPane.getSelectionModel().select(consoleTab);
+			return;
+		}
+		if(currentStep == Step.RED & currentStep == logic.getSchritt()) {
+			tabPane.getSelectionModel().select(consoleTab);
+			return;
+		}
+		updateAreas(logic.getSchritt());
+		phases.setStates(logic.getSchritt());
+	}
+
+	@FXML
+	public void handleEndCycle(){
+		updateAreas(Step.WELCOME);
+	}
+
+
+	@FXML
+	void handleNewCatalogue() {
+		Path              cataloguePath       = main.getCatalogue();
+		ExerciseCatalogue notProofedCatalogue = new ExerciseCatalogue();
+		try {
+			FileReader              fileReader        = new FileReader(cataloguePath);
+			ExerciseTokenizer       exerciseTokenizer = new XMLExerciseTokenizer(fileReader);
+			ExerciseCatalogueLoader xmlExerciseLoader = new ExerciseCatalogueLoader(exerciseTokenizer, notProofedCatalogue);
+			xmlExerciseLoader.loadCatalogue();
+		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
+			if (e instanceof ParserException) {
+				System.err.println("Caught null from main.getCatalogue: No file selected");
+				return;
+			}
+			informationOutputArea.setText("Unable to load specified catalogue.\nInvalid Catalogue.");
+			return;
+		}
+		if(!PathTools.checkCatalogue(notProofedCatalogue, informationOutputArea)) {
+			return;
+		}
+		this.exerciseCatalogue  = notProofedCatalogue;
+		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
+		exercises.fill(PathTools.getFileNamePrefix(cataloguePath, ".xml") + "Catalogue");
+		updateAreas(Step.WELCOME);
+	}
+
+
+
+
+	@FXML void handleQuit(){
 		System.exit(0);
 	}
 
-	@FXML void handlePrePhase(ActionEvent event) {
-		/*logic.abbrechen();
-		phases.setStates(logic.getSchritt(), userFieldRed, userFieldCode, stepBack, stepFurther, currentPhaseDisplay);*/
+	@FXML void handlePrePhase() {
+		logic.abbrechen();
+		phases.setStates(logic.getSchritt());
+		userInputField.setText(testOutputArea.getText());
+		testOutputArea.setText("");
+		tabPane.getSelectionModel().select(consoleTab);
 	}
 
-    @FXML void handleNextPhase(ActionEvent event){
-		Step currentStep = logic.getSchritt();
-		System.out.println("Current TestName " + currentTestName + " CurrentStep " + currentStep);
-		CompilationUnit unit = new CompilationUnit(currentTestName, userInputField.getText(), true);
-		ITestenRueckgabe returnValue = logic.weiter(unit);
+	@FXML void handleProgress() {}
 
-		consoleOutputArea.setText(TestResultDisplay.showCompilerResult(
-				returnValue.getCompilerResult(),unit) + TestResultDisplay.showTestResults(returnValue.getTestResult()));
-
-		if(returnValue.getCompilerResult().hasCompileErrors()){
-			System.err.println("There are compileErrors");
-			return;
-		}
-
-		Step nextStep = logic.getSchritt();
-		if(currentStep == nextStep) {
-			System.err.println("Next equals current step");
-			return;
-		}
-		setTabAreaConnection(nextStep);
-		switch (nextStep){
-			case RED:           setFinish(); break;
-			case GREEN:         setClassTemplateToUserInputArea(); break;
-			case TEST_REFACTOR: userInputField.setText(testOutputArea.getText()); break;
-			case CODE_REFACTOR: break;
-		}
-		System.out.println(nextStep);
-		setVisibleTabs(nextStep);
-		if(nextStep!= Step.RED)
-			phases.setStates(nextStep, userInputField, codeOutputArea, stepBack, stepFurther, currentPhaseLabel);
-	}
-
-
-    @FXML void handleNewCatalogue(ActionEvent event) {
-		Path cataloguePath = main.getCatalogue();
-		try {
-			FileReader           fileReader           = new FileReader(cataloguePath);
-			ExerciseTokenizer    exerciseTokenizer    = new XMLExerciseTokenizer(fileReader); //able to read tokens out of file
-			ExerciseCatalogue    exerciseCatalogue    = new ExerciseCatalogue(); //empty catalogue
-			ExerciseCatalogueLoader xmlExerciseLoader = new ExerciseCatalogueLoader(exerciseTokenizer, exerciseCatalogue);
-			this.exerciseCatalogue = xmlExerciseLoader.loadCatalogue();
-		} catch (IOException | ParserException | TokenException | SamePropertyTwiceException e) {
-			if(e instanceof ParserException) {
-				System.out.println("Caught null from main.getCatalogue: No file selected");
-				return;
-			}
-			e.printStackTrace();
-		}
-		ExercisesTree exercises = new ExercisesTree(exerciseCatalogue, exercisesTree);
-		exercises.fill(PathTools.getFileNamePrefix(cataloguePath,".xml") + "Catalogue");
-	}
-
-	@FXML void handleProgress(ActionEvent event)  {}
-
-
-
-
-
-	//HelpMethods
-	public void setMain(Main main){
+	void setMain(Main main){
 		this.main = main;
 	}
 
-	private Logik initLogic(){
+
+	//HelpMethods
+	private Logik initializeLogic(){
 		Tester      tester      = new Tester();
 		KonfigWerte konfigWerte = new KonfigWerte();
 		return new Logik(tester, konfigWerte);
 	}
 
-	private void setTime(Exercise exercise){
-		if(exercise.getExerciseConfig().isBabySteps()){
-			ViewTools.enable(timeLeftTitle);
-			ViewTools.enable(timeLeft, "" + exercise.getExerciseConfig().getBabyStepsTime());
-		}
-	}
-
 	//start
-	private Exercise getExercise(String exerciseName){
-		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
-			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
-				return exerciseCatalogue.getExercise(exercise);
-		}
-		System.err.println("Invalid name of exercise: " + exerciseName);
-		return null;
-	}
-
-	private ExerciseConfig getConfig(String exerciseName){
-		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
-			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
-				return exerciseCatalogue.getExercise(exercise).getExerciseConfig();
-		}
-		System.err.println("Invalid name of exercise: " + exerciseName);
-		return null;
-	}
-	//end
-
-
-
-	//start
-	private void setUserInputFieldOnParentNameCondition(TreeItem<String> item, String parentName){
+	private void showClassContent(TreeItem<String> item, String parentName){
 		if(item.isLeaf()){
 			Path itemPath = PathTools.getPath(item);
 			userInputField.setText(FileTools.readFile(itemPath));
-			checkStartCondition(item, parentName);
 		}
 	}
-
-	private void setInformationOutputArea(TreeItem<String> item){
-		Path descriptionPath = PathTools.getDescriptionPath(item);
-		if(Files.exists(descriptionPath)){
-			String exerciseName  = descriptionPath.getParent().getFileName().toString();
-			String headMessage   = "Exercise:\n" + exerciseName + "\n\nDescription:\n";
-			String configMessage = Display.getConfigDisplay(getConfig(exerciseName));
-			informationOutputArea.setText(headMessage + FileTools.readFile(descriptionPath) + configMessage);
-		}
+	private boolean isTestSelection(TreeItem<String> item, String parentName){
+		return PathTools.hasParentName(item, parentName);
 	}
 
-	private void setTabAreaConnection(Step mode){
-		TextArea[] infoAreas = new TextArea[]{testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea};
+	private void updateAreas(Step mode){
 		switch (mode){
-			case WELCOME:       BindTools.unbindAreas(infoAreas); break;
-			case RED:           BindTools.setUniqueBinding(userInputField, testOutputArea, infoAreas); break;
-			case GREEN:         BindTools.setUniqueBinding(userInputField, codeOutputArea, infoAreas); break;
-			case CODE_REFACTOR: BindTools.setUniqueBinding(userInputField, codeRefactorOutputArea, infoAreas); break;
-			case TEST_REFACTOR: BindTools.setUniqueBinding(userInputField, testRefactorOutputArea, infoAreas); break;
+			case RED:
+				testRefactorOutputArea.setText(userInputField.getText());
+				subTask.updateForNextCycle(codeRefactorOutputArea,testRefactorOutputArea);
+				subTask.saveToFiles();
+				informationOutputArea.setText(informationOutputArea.getText() + "\n\n" + "Last cycle has been saved!");
+				userInputField.setText(testRefactorOutputArea.getText());
+				tabPane.getSelectionModel().select(codeRefactorTab);
+				break;
+			case GREEN:
+				testOutputArea.setText(userInputField.getText());
+				userInputField.setText(subTask.getTemplate(mode));
+				tabPane.getSelectionModel().select(testTab);
+				break;
+			case CODE_REFACTOR:
+				codeOutputArea.setText(userInputField.getText());
+				tabPane.getSelectionModel().select(codeTab);
+				break;
+			case TEST_REFACTOR:
+				codeRefactorOutputArea.setText(userInputField.getText());
+				userInputField.setText(testOutputArea.getText());
+				tabPane.getSelectionModel().select(testTab);
+				break;
+			case WELCOME:
+				logic = initializeLogic();
+				ViewTools.clearOutputAreas(userInputField,consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
+				phases.setStates(Step.WELCOME);
 		}
 	}
-	//end
 
-	//start
-	private void checkStartCondition(TreeItem<String> item, String parentName){
-		if(PathTools.hasParentName(item, parentName)) {
-			start.setDisable(false);
-		} else {
-			start.setDisable(true);
-		}
-	}
-	//end
-
-	//start
-	private void setClassTemplateToUserInputArea(){
-		userInputField.setText(exerciseCatalogue.getExercise(0).getClassTemplate(0));
-	}
-
-	private void setInitialStates(){
-		phases.setStates(Step.WELCOME,  userInputField, consoleOutputArea, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.setUneditable(consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
-		ViewTools.hideNodes(stepBack,stepFurther,timeLeft,timeLeftTitle,activatedModes);
-	}
-
-	private void setFinish(){
-		this.currentStep = Step.WELCOME;
-		setTabAreaConnection(Step.WELCOME);
-		setVisibleTabs(Step.FINISHED);
-		phases.setStates(Step.WELCOME, userInputField, codeOutputArea, stepBack, stepFurther, currentPhaseLabel);
-		ViewTools.showAreas(testRefactorOutputArea);
-		ViewTools.hideNode(stepFurther);
-		ViewTools.enable(start);
-		userInputField.setText("Exercise done!");
-	}
-
-	private void setVisibleTabs(Step mode){
-		switch (mode){
-			case WELCOME:       ViewTools.hideNodes(consoleOutputArea, testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea); break;
-			case RED:           ViewTools.enable(consoleOutputArea); break;
-			case GREEN:         ViewTools.enable(testOutputArea); break;
-			case CODE_REFACTOR: ViewTools.enable(codeOutputArea); break;
-			case TEST_REFACTOR: ViewTools.enable(codeRefactorOutputArea); break;
-			case FINISHED:      ViewTools.showAreas(testOutputArea, codeOutputArea, codeRefactorOutputArea, testRefactorOutputArea);
-		}
-	}
-	//end
 }
