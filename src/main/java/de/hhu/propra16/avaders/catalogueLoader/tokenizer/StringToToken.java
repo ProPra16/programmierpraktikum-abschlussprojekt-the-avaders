@@ -135,7 +135,7 @@ public class StringToToken {
 	 * @param property The property the configuration belongs to
 	 * @param lineNumber the current line number
 	 * @return the configuration of the property like "true", "2:00"
-	 * @throws MissingTokenException
+	 * @throws MissingTokenException If a " is found to be missing
      */
 	private static String parseProperty(String readString, String property, int lineNumber) throws MissingTokenException {
 		if(!readString.contains("=")) throw  new MissingTokenException("=", lineNumber);

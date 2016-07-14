@@ -125,7 +125,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @throws IOException If an IO error occurs with the BufferedReader instance
      */
 	private String tokenize() throws IOException {
-		String readToken = "";
+		String readToken;
 		readToken = readLine.substring(readLine.indexOf('<'), readLine.indexOf('>')+INCLUDE);
 		readLine = readLine.replaceFirst(readToken, "").trim();
 		readToken = readToken.replaceFirst("<","").replaceFirst(">","");

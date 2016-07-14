@@ -7,7 +7,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
  */
 public class TokenException extends Exception{
 	/**
-	 * Priduces an {@link Exception} informin the user
+	 * Produces an {@link Exception} informing the user
 	 * that an error occurred while parsing {@link Token}
 	 * @param msg The message of this Exception
      */

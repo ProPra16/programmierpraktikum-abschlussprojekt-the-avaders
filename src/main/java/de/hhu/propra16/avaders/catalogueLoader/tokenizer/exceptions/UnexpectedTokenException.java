@@ -7,7 +7,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
  */
 public class UnexpectedTokenException extends TokenException {
 	/**
-	 * Produces an {@link Exception} informing the calles that an unexpected
+	 * Produces an {@link Exception} informing the caller that an unexpected
 	 * {@link Token} was read while parsing
 	 * @param expectedToken The expected token
 	 * @param foundToken The token that instead appeared
