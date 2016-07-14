@@ -41,7 +41,9 @@ import vk.core.api.CompilationUnit;
 import java.io.IOException;
 import java.nio.file.Path;
 
-
+/**
+ * Main controller handling nearly anything
+ */
 public class MainController {
 	//menuItems
 	@FXML private MenuItem newCatalogue;
