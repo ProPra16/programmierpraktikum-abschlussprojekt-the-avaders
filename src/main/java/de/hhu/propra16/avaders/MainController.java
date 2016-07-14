@@ -30,6 +30,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -103,6 +104,7 @@ public class MainController {
 
 	@FXML
 	public void initialize() {
+		this.progress.setVisible(false);
 		this.buttonDisplay = new ButtonDisplay(stepBack, stepFurther, start, new Button("save"),endCycleMenuItem, newCatalogue);
 		this.phases = new Phases(
 				new Welcome(userInputField, informationOutputArea, buttonDisplay, currentPhaseLabel),
@@ -170,7 +172,8 @@ public class MainController {
 		compilationUnits.update(currentStep, new CompilationUnit(subTask.getName(currentStep), userInputField.getText(),
 				phases.getPhase(currentStep).hasUnitTests()));
 
-		ITestenRueckgabe results = compilationUnits.test(logic); //logic goes ahead!
+		ITestenRueckgabe results = compilationUnits.test(logic);//logic goes ahead!
+		//compilationUnits.addToTracking(timeTracking); TODO uncomment if message null handled in addTestException
 		Step nextStep = logic.getSchritt();
 
 		compilationUnits.showResultsOn(consoleOutputArea, results);
@@ -203,14 +206,16 @@ public class MainController {
 	@FXML
 	public void handleEndCycle(){
 		if(subTask.getExerciseConfig().isTimeTracking() & timeTracking.getTimeForGREEN() > 0 & timeTracking.getTimeForRED() > 0) {
-			Stage info = new Stage();
-			info.setTitle("Time-Tracking Result");
-			info.setScene(new Scene(timeTracking.showTimeChart(false), 500, 500));
-			info.initOwner(main.getPrimaryStage());
-			info.initModality(Modality.WINDOW_MODAL);
+			Stage root = new Stage();
+			BorderPane pane = new BorderPane();
 
-			info.show();
-			info.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			pane.setCenter(timeTracking.showTimeChart(false));
+			root.setScene(new Scene(pane, 500, 500));
+			root.setTitle("Tracking Results");
+			root.initOwner(main.getPrimaryStage());
+			root.initModality(Modality.WINDOW_MODAL);
+			root.show();
+			root.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override
 				public void handle(WindowEvent event) {
 					if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
