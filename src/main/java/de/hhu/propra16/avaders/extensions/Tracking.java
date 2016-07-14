@@ -215,7 +215,8 @@ public class Tracking implements Serializable{
 	public void addCompileExceptions(Collection<CompileError> compileErrors){
 		if(currentState == RED) {
 			compileErrors.forEach(x -> {
-				String s = x.getMessage();
+				String s = "";
+				if(x.getMessage() != null) s = x.getMessage();
 				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
 				if(s.contains("incompatible types:"))  s = "incompatible types:";
 				if (compileErrorMapGREEN.containsKey(s))
@@ -224,7 +225,8 @@ public class Tracking implements Serializable{
 			});
 		} else if(currentState == CODE_REFACTOR){
 			compileErrors.forEach(x -> {
-				String s = x.getMessage();
+				String s = "";
+				if(x.getMessage() != null) s = x.getMessage();
 				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
 				if(s.contains("incompatible types:"))  s = "incompatible types:";
 				if (compileErrorMapREFACTOR.containsKey(s))
@@ -244,7 +246,8 @@ public class Tracking implements Serializable{
 	 */
 	public void addTestExceptions(Collection<TestFailure> testErrors){
 		testErrors.forEach(x -> {
-			String s = x.getMessage();
+			String s = "";
+			if(x.getMessage() != null) s = x.getMessage();
 			if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
 			if(s.contains("incompatible types:"))  s = "incompatible types:";
 			if(testErrorMap.containsKey(s)) compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s)+1);
@@ -374,16 +377,16 @@ public class Tracking implements Serializable{
 	 * @return Das Diagramm
 	 */
 	public Chart showTimeChart(boolean acceptanceEnabled){
-		String s = "vier";
+		String s = "four";
 		ObservableList<PieChart.Data> chartData =
 				FXCollections.observableArrayList(
 						new PieChart.Data("RED", secondsRED),
 						new PieChart.Data("GREEN", secondsGREEN),
 						new PieChart.Data("CODE_REFACTOR", secondsREFACTOR),
 						new PieChart.Data("TEST_REFACTOR", secondsREFACTOR2));
-		if(acceptanceEnabled){ chartData.add(new PieChart.Data("ACCEPTANCE", secondsAcceptance)); s = "fünf";}
+		if(acceptanceEnabled){ chartData.add(new PieChart.Data("ACCEPTANCE", secondsAcceptance)); s = "five";}
 		PieChart chart = new PieChart(chartData);
-		chart.setTitle("Verteilung der Arbeitszeit auf die "+s+" Phasen");
+		chart.setTitle("Time spend on the "+s+" Phases");
 		return chart;
 	}
 
