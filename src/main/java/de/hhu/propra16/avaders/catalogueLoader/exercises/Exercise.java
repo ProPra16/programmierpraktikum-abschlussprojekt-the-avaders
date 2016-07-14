@@ -8,10 +8,33 @@ package de.hhu.propra16.avaders.catalogueLoader.exercises;
  * @see ExerciseConfig
  */
 public class Exercise {
+	/**
+	 * The name of the exercise
+     */
 	private String exerciseName;
+
+	/**
+	 * The description of the exercise
+     */
+
 	private String description;
+
+	/**
+	 * The class templates in this exercise
+	 * @see JavaFiles
+     */
 	private JavaFiles classTemplates;
+
+	/**
+	 * The test templates in this exercise
+	 * @see JavaFiles
+	 */
 	private JavaFiles testTemplates;
+
+	/**
+	 * The configuration of this exercise
+	 * @see ExerciseConfig
+     */
 	private ExerciseConfig exerciseConfig;
 
 	/**
