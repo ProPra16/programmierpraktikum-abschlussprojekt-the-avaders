@@ -222,7 +222,7 @@ public class MainController {
 	 */
 	@FXML
 	public void handleEndCycle(){
-		if(subTask.getExerciseConfig().isTimeTracking() & timeTracking.getTimeForGREEN() > 0 & timeTracking.getTimeForRED() > 0) {
+		if(subTask.getExerciseConfig().isTimeTracking() && ( timeTracking.getTimeForGREEN() > 0 & timeTracking.getTimeForRED() > 0)) {
 			Stage root = new Stage();
 			BorderPane pane = new BorderPane();
 
