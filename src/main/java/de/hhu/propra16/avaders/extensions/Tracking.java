@@ -393,7 +393,7 @@ public class Tracking implements Serializable{
 	 * @param ExerciseName der name der Exercise
 	 */
 	public void save(String path, String ExerciseName) throws IOException {
-		Files.delete(Paths.get(path+ExerciseName+"TrackingData.ser"));
+		try{Files.delete(Paths.get(path+ExerciseName+"TrackingData.ser"));}catch (Exception ignored){}
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path+ExerciseName+"TrackingData.ser"));
 		objectOutputStream.writeObject(this);
 		objectOutputStream.flush();
