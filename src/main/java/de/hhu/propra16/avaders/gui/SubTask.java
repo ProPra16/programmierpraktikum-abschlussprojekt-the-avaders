@@ -14,6 +14,9 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Every exercise contains subTasks. SubTask: When the users starts a cycle on a test-Class.
+ */
 public class SubTask {
 	private ExerciseConfig exerciseConfig;
 	private String  testName;
@@ -23,11 +26,24 @@ public class SubTask {
 	private Path    testPath;
 	private Path    classPath;
 
-
+	/**
+	 * Gets the current edition on the classTemplate
+	 * @return Edited classTemplate
+     */
 	public String getClassTemplate() {return classTemplate;}
+
+	/**
+	 * Gets the current edition on the testTemplate
+	 * @return Edited testTemplate
+	 */
 	public String getTestTemplate() {return testTemplate;}
 
 
+	/**
+	 * Gives the name of the currently handled class according to phase
+	 * @param mode Current phase
+	 * @return Name of the currently handled class
+     */
 	public String getName(Step mode){
 		switch (mode){
 			case TEST_REFACTOR:
@@ -40,20 +56,24 @@ public class SubTask {
 		}
 	}
 
-	private void setTestTemplate(String testOutputArea){
-		this.testTemplate = testOutputArea.trim();
-	}
 
-	private void setClassTemplate(String codeOutputArea){
-		this.classTemplate = codeOutputArea.trim();
-	}
-
+	/**
+	 * Updates the templates to the edited ones for next cycle
+	 * @param codeRefactorOutputArea The source for updating classTemplate
+	 * @param testRefactorOutputArea The source for updating testTemplate
+     */
 	public void updateForNextCycle(TextArea codeRefactorOutputArea, TextArea testRefactorOutputArea){
 		this.classTemplate = codeRefactorOutputArea.getText().trim();
 		this.testTemplate  = testRefactorOutputArea.getText().trim();
 		System.out.println("Updated classTemplate:\n" + classTemplate+ "\nUpdated testTemplate:\n" + testTemplate + "\n");
 	}
 
+
+	/**
+	 * Gets the template according to current phase
+	 * @param mode Current phase
+	 * @return The template according to current phase
+     */
 	public String getTemplate(Step mode){
 		switch (mode){
 			case CODE_REFACTOR:
@@ -66,6 +86,12 @@ public class SubTask {
 		}
 	}
 
+
+	/**
+	 * Loads the templates out of the specified catalogue
+	 * @param testItem           The TreeItem to determine the current class
+	 * @param exerciseCatalogue  The catalogue where the states will be get off only by knowing the treeItem
+     */
 	public void load(TreeItem<String> testItem, ExerciseCatalogue exerciseCatalogue ){
 		String exerciseName           = PathTools.getNameOutOfPath(testItem,1);
 		Exercise currentExercise      = ExerciseTools.getExercise(exerciseName, exerciseCatalogue);
@@ -76,11 +102,22 @@ public class SubTask {
 		this.classTemplate = getClassTemplate(testItem,currentExercise).trim();
 	}
 
+
+	/**
+	 * Gives the testTemplate out of a file
+	 * @param testItem Selected item
+	 * @return The testTemplate read out of a file
+     */
 	private static String getTestTemplate(TreeItem<String> testItem){
 		return FileTools.readFile(PathTools.getPath(testItem));
 	}
 
-	//class xxx.java; test xxxTest.java
+	/**
+	 * Finds the classFile according to selected testname in TreeItem and reads the classTemplate out of it
+	 * @param testItem Selected TreeItem
+	 * @param exercise Current exercise
+     * @return The classTemplate
+     */
 	private static String getClassTemplate(TreeItem<String> testItem, Exercise exercise){
 		if(testItem.isLeaf() & testItem.getParent().getValue().contentEquals("Test")){
 			String testItemReduced = testItem.getValue().replace("Test", "");
@@ -93,6 +130,10 @@ public class SubTask {
 		return null;
 	}
 
+	/**
+	 * String-representation of this class
+	 * @return String-representation
+     */
 	@Override
 	public String toString(){
 		return "TestName: " + testName + "\n" +
@@ -101,16 +142,27 @@ public class SubTask {
 				"classTemplate:\n" +classTemplate  + "\n";
 	}
 
+	/**
+	 * Creates a path out of a TreeItem
+	 * @param selection The treeItem to create a path for
+     */
 	public void createPaths(TreeItem<String> selection) {
 		this.testPath  = PathTools.getPath(selection);
 		this.classPath = Paths.get(testPath.subpath(0,2) + File.separator + "Class" + File.separator + className + ".java");
 	}
 
+	/**
+	 * Updates the files on hard-drive
+	 */
 	public void saveToFiles() {
 		FileTools.updateFile(testPath, testTemplate);
 		FileTools.updateFile(classPath, classTemplate);
 	}
 
+	/**
+	 * Getter for the exercise-config
+	 * @return The exercise-config
+     */
 	public ExerciseConfig getExerciseConfig() {
 		return exerciseConfig;
 	}

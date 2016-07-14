@@ -9,16 +9,27 @@ import javafx.scene.control.TreeView;
 import java.io.File;
 import java.nio.file.*;
 
+/**
+ * Basic class for TreeView: exercisesTree. Handles Creating and saving the tree to hard-drive
+ */
 public class ExercisesTree {
 	private ExerciseCatalogue exerciseCatalogue;
 	private TreeView<String>  treeView;
 
+	/**
+	 * Constructor initializes the states
+	 * @param exerciseCatalogue Catalogue to load the names from
+	 * @param treeView          Tree to fill the items in
+     */
 	public ExercisesTree(ExerciseCatalogue exerciseCatalogue, TreeView<String> treeView){
 		this.exerciseCatalogue = exerciseCatalogue;
 		this.treeView = treeView;
 	}
 
-	//TODO understand warning
+	/**
+	 * Builds the exercisesTree to harddrive and TreeView according to names in config
+	 * @param rootName the Name of the rootDirectory
+     */
 	public void fill(String rootName){
 		TreeItem<String> exercises = new TreeItem<>(rootName);
 		for(int i = 0; i < exerciseCatalogue.size(); i++) {

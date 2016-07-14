@@ -7,12 +7,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 
+/**
+ * Sets controls, areas and labels for TestRefactor-phase
+ */
 public class TestRefactor extends Phase {
 
+	/**
+	 * {@inheritDoc}
+     */
 	public TestRefactor(TextArea userInputArea, TextArea phaseOutputArea, ButtonDisplay buttonDisplay, Label phase) {
 		super(userInputArea,phaseOutputArea,buttonDisplay,phase);
 	}
-	//finished
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setStates(){
 		ViewTools.editPhaseDisplay(phase, "TEST-REFACTOR", Color.WHITE, Color.DARKCYAN);
@@ -20,6 +29,10 @@ public class TestRefactor extends Phase {
 		userInputArea.setEditable(true);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @return true
+	 */
 	@Override
 	public boolean hasUnitTests(){
 		return true;

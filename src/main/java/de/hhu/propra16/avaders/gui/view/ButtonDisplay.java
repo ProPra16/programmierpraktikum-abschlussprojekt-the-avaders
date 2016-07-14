@@ -4,6 +4,9 @@ import de.hhu.propra16.avaders.logik.Step;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
+/**
+ * Manages the views of buttons according to phases, i.e. if they are visible, enabled, disabled etc.
+ */
 public class ButtonDisplay {
 	private Button stepBack;
 	private Button stepFurther;
@@ -12,6 +15,15 @@ public class ButtonDisplay {
 	private MenuItem endCycleMenuItem;
 	private MenuItem newCatalogue;
 
+	/**
+	 * Constructor who initializes all states to phase Welcome when created.
+	 * @param stepBack          Button in CodePhase for aborting
+	 * @param stepFurther       Button for going ahead in phases
+	 * @param start             Button in WelcomePhase to start cycling.
+	 * @param save				Not used
+	 * @param endCycleMenuItem  MenuItem for ending cycle
+     * @param newCatalogue      MenuItem for loading new catalogue of exercises
+     */
 	public ButtonDisplay(Button stepBack, Button stepFurther, Button start, Button save, MenuItem endCycleMenuItem, MenuItem newCatalogue){
 		this.stepBack    = stepBack;
 		this.stepFurther = stepFurther;
@@ -22,6 +34,10 @@ public class ButtonDisplay {
 		show(Step.WELCOME);
 	}
 
+	/**
+	 * Sets Buttons according to phase
+	 * @param mode Given current Phase
+     */
 	public void show(Step mode){
 		switch (mode){
 			case WELCOME:
