@@ -113,4 +113,13 @@ public class TrackingTest {
 
 		tracking.diff(origin,current, "Brot");
 	}
+
+	@Test
+	public void WriteAndLoadTest() throws Exception{
+		TrackingTestDummy trackingTestDummy = new TrackingTestDummy();
+		trackingTestDummy.generateRandomData();
+		trackingTestDummy.save("","TestExercise");
+		Tracking trackingLoad = new Tracking("","TestExercise");
+		Assert.assertEquals(trackingTestDummy.getTimeForGREEN(), trackingLoad.getTimeForGREEN());
+	}
 }
