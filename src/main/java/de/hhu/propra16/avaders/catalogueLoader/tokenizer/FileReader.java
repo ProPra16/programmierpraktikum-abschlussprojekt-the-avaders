@@ -45,6 +45,8 @@ public class FileReader implements LineReader {
     }
 
 	/**
+	 * Returns the path this reader operates on as a
+	 * string
 	 * @return The path this reader operates on as string
      */
 	String getPath() { return path; }

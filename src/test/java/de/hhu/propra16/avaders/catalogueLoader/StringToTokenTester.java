@@ -17,7 +17,7 @@ public class StringToTokenTester {
 	 public void test_ExercisesString(){
 		 Token token = null;
 		 try {
-			 token = StringToToken.convert("exercises", 1);
+			 token = StringToToken.getInstance().convert("exercises", 1);
 		 } catch (Exception e) {
 			 System.out.println(e.getMessage());
 			 fail();
@@ -31,7 +31,7 @@ public class StringToTokenTester {
 	public void test_SlashExercisesString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("/exercises", 1);
+			token = StringToToken.getInstance().convert("/exercises", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -45,7 +45,7 @@ public class StringToTokenTester {
 	public void test_ClassesString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("classes", 1);
+			token = StringToToken.getInstance().convert("classes", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -59,7 +59,7 @@ public class StringToTokenTester {
 	public void test_SlashClassesString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("/classes", 1);
+			token = StringToToken.getInstance().convert("/classes", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -73,7 +73,7 @@ public class StringToTokenTester {
 	public void test_TestsString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("tests", 1);
+			token = StringToToken.getInstance().convert("tests", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -87,7 +87,7 @@ public class StringToTokenTester {
 	public void test_SlashTestsString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("/tests", 1);
+			token = StringToToken.getInstance().convert("/tests", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -101,7 +101,7 @@ public class StringToTokenTester {
 	public void test_TestString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("test name= \t \"testName\"", 1);
+			token = StringToToken.getInstance().convert("test name= \t \"testName\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -115,7 +115,7 @@ public class StringToTokenTester {
 	public void test_ConfigString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("config", 1);
+			token = StringToToken.getInstance().convert("config", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -129,7 +129,7 @@ public class StringToTokenTester {
 	public void test_SlashConfigString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("/config", 1);
+			token = StringToToken.getInstance().convert("/config", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -142,7 +142,7 @@ public class StringToTokenTester {
 	public void test_ExerciseNameString(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("exercise \t name=\"Römische Zahlen\"", 1);
+			token = StringToToken.getInstance().convert("exercise \t name=\"Römische Zahlen\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -156,7 +156,7 @@ public class StringToTokenTester {
 	public void test_Class(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("class name = \"test\"", 1);
+			token = StringToToken.getInstance().convert("class name = \"test\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -169,7 +169,7 @@ public class StringToTokenTester {
 	public void test_BabyStepsString_false(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("babysteps value=\"  false \t \"", 1);
+			token = StringToToken.getInstance().convert("babysteps value=\"  false \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -183,7 +183,7 @@ public class StringToTokenTester {
 	public void test_BabyStepsString_true(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("babysteps value=\"true\" time = \"2:00\"", 1);
+			token = StringToToken.getInstance().convert("babysteps value=\"true\" time = \"2:00\"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -198,7 +198,7 @@ public class StringToTokenTester {
 	public void test_BabyStepsString_true_switched(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("babysteps \t time = \"2:00\"   value=\"true\" \n", 1);
+			token = StringToToken.getInstance().convert("babysteps \t time = \"2:00\"   value=\"true\" \n", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -212,7 +212,7 @@ public class StringToTokenTester {
 	public void test_timeTrackingString_false(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("timetracking value=\"  false \t \"", 1);
+			token = StringToToken.getInstance().convert("timetracking value=\"  false \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -225,7 +225,7 @@ public class StringToTokenTester {
 	public void test_timeTrackingString_true(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("timetracking value=\"  true \t \"", 1);
+			token = StringToToken.getInstance().convert("timetracking value=\"  true \t \"", 1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			fail();
@@ -240,7 +240,7 @@ public class StringToTokenTester {
 				new UnexpectedTokenException("property: value", "time=\"  true \t \"", 1);
 
 		try {
-			StringToToken.convert("timetracking time=\"  true \t \"", 1);
+			StringToToken.getInstance().convert("timetracking time=\"  true \t \"", 1);
 		} catch (Exception e) {
 			assertEquals(unexpectedTokenException.getMessage(), e.getMessage());
 			return;
@@ -253,7 +253,7 @@ public class StringToTokenTester {
 		SamePropertyTwiceException samePropertyTwiceException = new SamePropertyTwiceException("time", 1);
 
 		try {
-			StringToToken.convert("babysteps \t time = \"2:00\"   time=\"2:00\" \n", 1);
+			StringToToken.getInstance().convert("babysteps \t time = \"2:00\"   time=\"2:00\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
 			assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
@@ -268,7 +268,7 @@ public class StringToTokenTester {
 		SamePropertyTwiceException samePropertyTwiceException = new SamePropertyTwiceException("value", 1);
 
 		try {
-			StringToToken.convert("babysteps \t value = \"true\"   value=\"false\" \n", 1);
+			StringToToken.getInstance().convert("babysteps \t value = \"true\"   value=\"false\" \n", 1);
 		} catch (SamePropertyTwiceException e) {
 			assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;
@@ -284,7 +284,7 @@ public class StringToTokenTester {
 		MissingTokenException missingTokenException = new MissingTokenException("exercise, name or =", 1);
 
 		try {
-			StringToToken.convert("exercise = \"fail\"", 1);
+			StringToToken.getInstance().convert("exercise = \"fail\"", 1);
 		} catch (MissingTokenException e) {
 			assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
@@ -299,7 +299,7 @@ public class StringToTokenTester {
 	public void test_Atdd_true(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("atdd \t value = \"true\" \n", 1);
+			token = StringToToken.getInstance().convert("atdd \t value = \"true\" \n", 1);
 		} catch (Exception e){
 			System.out.println(e.getMessage());
 			fail();
@@ -313,7 +313,7 @@ public class StringToTokenTester {
 	public void test_Atdd_false(){
 		Token token = null;
 		try {
-			token = StringToToken.convert("atdd \t value = \"false\" \n", 1);
+			token = StringToToken.getInstance().convert("atdd \t value = \"false\" \n", 1);
 		} catch (Exception e){
 			System.out.println(e.getMessage());
 			fail();
@@ -328,7 +328,7 @@ public class StringToTokenTester {
 		SamePropertyTwiceException samePropertyTwiceException = new SamePropertyTwiceException("value", 1);
 
 		try {
-			StringToToken.convert("atdd \t value = \"false\" value = \"true\"\n", 1);
+			StringToToken.getInstance().convert("atdd \t value = \"false\" value = \"true\"\n", 1);
 		} catch (SamePropertyTwiceException e){
 			assertEquals(samePropertyTwiceException.getMessage(), e.getMessage());
 			return;

@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.insertEscapedCurlyBracket;
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations.remove;
-import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.convert;
 import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.convertDescription;
 
 /**
@@ -19,10 +18,33 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.co
  * {@link Token} instances for parsing
  */
 public class XMLExerciseTokenizer implements ExerciseTokenizer {
+	/**
+	 * The {@link LineReader the xml-file will be read from}
+     */
 	private LineReader fileReader;
+	/**
+	 * The {@link StringToToken} instance for converting strings into tokens
+	 */
+	private StringToToken stringToToken = StringToToken.getInstance();
+
+	/**
+	 * The currently read {@link Token}
+     */
 	private Token currentToken;
+
+	/**
+	 * The {@link Token} that will be read
+     */
 	private Token nextToken;
+
+	/**
+	 * The currently read line
+     */
 	private String readLine;
+
+	/**
+	 * The line the {@link XMLExerciseTokenizer#fileReader} is currently in
+     */
 	private int lineNumber = 0;
 
 	private static final int INCLUDE = 1;
@@ -95,7 +117,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @throws SamePropertyTwiceException If the same property was read twice in a tokens
 	 * @throws TokenException If an unexpected tokens was read or a tokens was expected,
 	 * but not found
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws IOException If an I/O error occurs with the BufferedReader instance
      */
 	private void parseLine() throws SamePropertyTwiceException, TokenException, IOException {
 		String readToken = "";
@@ -116,13 +138,13 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 
 		// end of stream reached
 		if(readLine == null) nextToken = null;
-		else nextToken = convert(readToken, lineNumber);
+		else nextToken = stringToToken.convert(readToken, lineNumber);
 	}
 
 	/**
 	 * Removes unnecessary symbols from the lexeme, only leaving the information needed.
 	 * @return A string only holding the tokens necessary information
-	 * @throws IOException If an IO error occurs with the BufferedReader instance
+	 * @throws IOException If an I/O error occurs with the BufferedReader instance
      */
 	private String tokenize() throws IOException {
 		String readToken = "";

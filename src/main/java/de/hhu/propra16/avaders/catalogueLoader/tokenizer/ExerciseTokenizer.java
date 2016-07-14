@@ -50,7 +50,7 @@ public interface ExerciseTokenizer {
 	boolean hasNextToken();
 
 	/**
-	 * Returns the currently parsed Token
+	 * Returns the currently parsed {@link Token}
 	 * @return The currently parsed {@link Token}
 	 */
 	Token currentToken();
