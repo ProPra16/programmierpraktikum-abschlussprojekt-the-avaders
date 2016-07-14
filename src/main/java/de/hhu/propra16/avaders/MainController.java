@@ -95,14 +95,14 @@ public class MainController {
 	private Logik logic;
 	private ButtonDisplay buttonDisplay;
 	private ModeDisplay modeDisplay;
-	private Information information;
-	private Console console;
 	private SubTask subTask;
 	private CompilationUnits compilationUnits;
 	private AnchorPane exerciseTreeBaseTemp;
 	private Tracking timeTracking;
 
-
+	/**
+	 * Initializes the states. Creates all required instances and sets up the controls and areas to default
+	 */
 	@FXML
 	public void initialize() {
 		this.progressLabel.setVisible(false);
@@ -115,14 +115,14 @@ public class MainController {
 				new CodeRefactor(userInputField, codeRefactorOutputArea, buttonDisplay, currentPhaseLabel),
 				new TestRefactor(userInputField, testRefactorOutputArea, buttonDisplay, currentPhaseLabel));
 		this.modeDisplay = new ModeDisplay(activatedModes, timeLeftTitle, timeLeft);
-		this.information = new Information(informationOutputArea);
-		this.console = new Console(consoleOutputArea);
 		this.logic = initializeLogic();
 		phases.setStates(Step.WELCOME);
 	}
 
 
-	//Handler
+	/**
+	 * Will be called when Start-Button is pressed and handles start of a cycle
+	 */
 	@FXML
 	void handleStart() {
 		TreeItem<String> selection = exercisesTree.getSelectionModel().getSelectedItem();
@@ -133,7 +133,9 @@ public class MainController {
 	}
 
 
-
+	/**
+	 * This resets test and green phase when extension BabySteps is enabled and time run out
+	 */
 	private void resetOnTimeOut(){
 		if(logic.getSchritt() == Step.GREEN){
 			logic.abbrechen();
@@ -146,6 +148,11 @@ public class MainController {
 	}
 
 
+	/**
+	 * Will be called when clicked on the exerciseTree. On informationOutputArea will be information
+	 * according to this exercise and on the userInputArea the class- or test-template shown
+	 * @param event
+     */
 	@FXML
 	void handleTreeViewMouseClicked(MouseEvent event) {
 		if (event.getButton() == MouseButton.PRIMARY & start.isVisible()) {
@@ -165,6 +172,10 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Handles the next phase. Next step will be determined by evaluating tests on current input in testTemplate and
+	 * classTemplate. Depending on the instructions in our project the next phase will be chosen
+	 */
 	@FXML
 	void handleNextPhase() {
 		Step currentStep = logic.getSchritt();
@@ -203,6 +214,10 @@ public class MainController {
 		phases.setStates(nextStep);
 	}
 
+	/**
+	 * This method can be invoked everytime due a cycle and must be invoked to end.
+	 * TimeTracking-information will be shown if enabled and the WelcomePhase will be restored
+	 */
 	@FXML
 	public void handleEndCycle(){
 		if(subTask.getExerciseConfig().isTimeTracking() & timeTracking.getTimeForGREEN() > 0 & timeTracking.getTimeForRED() > 0) {
@@ -234,6 +249,10 @@ public class MainController {
 	}
 
 
+	/**
+	 * This method handles main loading instructions. It calls the catalogue-path from main and verifies the correctness
+	 * of this file and loads it to the hard-drive and the exercisesTree.
+	 */
 	@FXML
 	void handleNewCatalogue() {
 		Path              cataloguePath       = main.getCatalogue();
@@ -261,12 +280,18 @@ public class MainController {
 	}
 
 
-
-
+	/**
+	 * Quits the whole program
+	 */
 	@FXML void handleQuit(){
 		System.exit(0);
 	}
 
+
+	/**
+	 * Only callable due Code-Phase
+	 * CodePhase will be reseted and user thrown to test-phase
+	 */
 	@FXML void handlePrePhase() {
 		if(subTask.getExerciseConfig().isTimeTracking()){
 			timeTracking.finishedGREEN();
@@ -288,29 +313,53 @@ public class MainController {
 
 	@FXML void handleProgress() {}
 
+	/**
+	 * Gives access to main
+	 * @param main The main-class
+     */
 	void setMain(Main main){
 		this.main = main;
 	}
 
 
-	//HelpMethods
+	/**
+	 * Creates and initializes an instance of logic
+	 * @return Initialized logic
+     */
 	private Logik initializeLogic(){
 		Tester      tester      = new Tester();
 		KonfigWerte konfigWerte = new KonfigWerte();
 		return new Logik(tester, konfigWerte);
 	}
 
-	//start
+	/**
+	 * Handles connecting content of templates to userInputArea so that if one clickes on
+	 * the exercisesTree one cann see the content on the userInputArea
+	 * @param item        TreeItem to be clicked
+	 * @param parentName  To be deleted
+     */
 	private void showClassContent(TreeItem<String> item, String parentName){
 		if(item.isLeaf()){
 			Path itemPath = PathTools.getPath(item);
 			userInputField.setText(FileTools.readFile(itemPath));
 		}
 	}
+
+	/**
+	 * Checks if selected item is test-item to switch the start-button on
+	 * @param item       Selected item
+	 * @param parentName Parent-name of selected Item
+     * @return True if parent-name equals 'Test', otherwise false
+     */
 	private boolean isTestSelection(TreeItem<String> item, String parentName){
 		return PathTools.hasParentName(item, parentName);
 	}
 
+
+	/**
+	 * Sets the states of the areas and extensions according to the next step
+	 * @param mode Next step
+     */
 	private void updateAreas(Step mode){
 		switch (mode){
 			case RED:
@@ -350,26 +399,38 @@ public class MainController {
 		}
 	}
 
-	//initializer
+	/**
+	 * Initializes the extensions
+	 */
 	private void initializeExtensions(){
 		if(subTask.getExerciseConfig().isBabySteps())
-			initializeBabysteps();
+			initializeBabySteps();
 		if(subTask.getExerciseConfig().isTimeTracking())
 			initializeTimeTracking();
 	}
 
+	/**
+	 * Initializes TimeTracking
+	 */
 	private void initializeTimeTracking() {
 		this.timeTracking = new Tracking(Step.RED);
 		timeTracking.startRED();
 		System.out.println("TimeTrackin' on the run (ref assigned)");
 	}
 
+	/**
+	 * Initializes a subTask according to selection in exercisesTree
+	 * @param selection Selected TreeItem
+     */
 	private void initializeSubTask(TreeItem<String> selection){
 		this.subTask = new SubTask();
 		this.subTask.load(selection, exerciseCatalogue);
 		this.subTask.createPaths(selection);
 	}
 
+	/**
+	 * Initializes compilationUnits
+	 */
 	private void initializeCompilationUnits(){
 		CompilationUnit initTestUnit  = new CompilationUnit(subTask.getName(Step.RED),   subTask.getTestTemplate(),  true);
 		CompilationUnit initClassUnit = new CompilationUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
@@ -377,12 +438,19 @@ public class MainController {
 		initializeModesDisplay();
 	}
 
+	/**
+	 * Initializes the ModesDisplay for the extensions
+	 */
 	private void initializeModesDisplay(){
 		this.modeDisplay      = new ModeDisplay(activatedModes,timeLeftTitle,timeLeft);
 		modeDisplay.set(subTask.getExerciseConfig());
 		modeDisplay.enableActiveModes(true, subTask.getExerciseConfig());
 		modeDisplay.enableTime(true, subTask.getExerciseConfig());
 	}
+
+	/**
+	 * Initializes the TextAreas to default
+	 */
 	private void initializeAreas(){
 		phases.setStates(logic.getSchritt());
 		ViewTools.clearOutputAreas(consoleOutputArea,testOutputArea,codeOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
@@ -390,7 +458,10 @@ public class MainController {
 				testOutputArea,codeRefactorOutputArea,testRefactorOutputArea);
 	}
 
-	private void initializeBabysteps(){
+	/**
+	 * Initializes BabySteps-extension
+	 */
+	private void initializeBabySteps(){
 		this.babysteps = new Babysteps();
 		this.babysteps.setCurrentlyEditableArea(userInputField);
 		this.timeLeft.textProperty().bind(Bindings.concat("", babysteps.getRemainingBinding()));
