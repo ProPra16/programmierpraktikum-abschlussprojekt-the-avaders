@@ -8,12 +8,21 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 
+/**
+ * Sets controls, areas and labels for test-phase
+ */
 public class Test extends Phase {
 
+	/**
+	 * {@inheritDoc}
+	 * */
 	public Test(TextArea userInputArea, TextArea phaseOutputArea, ButtonDisplay buttonDisplay, Label phase) {
 		super(userInputArea,phaseOutputArea,buttonDisplay,phase);
 	}
-	//finished
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override 
 	public void setStates(){
 		ViewTools.editPhaseDisplay(phase, "TEST", Color.WHITE, Color.DARKRED);
@@ -21,6 +30,10 @@ public class Test extends Phase {
 		userInputArea.setEditable(true);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @return true
+	 */
 	@Override
 	public boolean hasUnitTests(){
 		return true;

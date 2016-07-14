@@ -82,6 +82,7 @@ public class MainController {
 	@FXML private TextArea testRefactorOutputArea;
 	@FXML private TextArea userInputField;
 
+	@FXML private Label   progressLabel;
 	@FXML private HBox exercisesHead;
 	@FXML private SplitPane vericalSplitBase;
 	@FXML private AnchorPane exerciseTreeBase;
@@ -104,6 +105,7 @@ public class MainController {
 
 	@FXML
 	public void initialize() {
+		this.progressLabel.setVisible(false);
 		this.progress.setVisible(false);
 		this.buttonDisplay = new ButtonDisplay(stepBack, stepFurther, start, new Button("save"),endCycleMenuItem, newCatalogue);
 		this.phases = new Phases(
@@ -116,8 +118,6 @@ public class MainController {
 		this.information = new Information(informationOutputArea);
 		this.console = new Console(consoleOutputArea);
 		this.logic = initializeLogic();
-
-
 		phases.setStates(Step.WELCOME);
 	}
 

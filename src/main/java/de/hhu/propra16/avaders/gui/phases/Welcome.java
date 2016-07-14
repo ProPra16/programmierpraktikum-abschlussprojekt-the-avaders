@@ -16,19 +16,22 @@ import javafx.scene.paint.Color;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-
+/**
+ * Sets controls, areas and labels for Welcome-phase
+ */
 public class Welcome extends Phase {
-
+	/**
+	 * {@inheritDoc}
+     */
 	public Welcome(TextArea userInputArea, TextArea phaseOutputArea, ButtonDisplay buttonDisplay, Label phase) {
 		super(userInputArea, phaseOutputArea, buttonDisplay, phase);
 	}
 
-	@Override
-	public boolean hasUnitTests() {
-		return false;
-	}
 
-	//finished
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setStates() {
 		ViewTools.editPhaseDisplay(phase, "WELCOME", Color.WHITE, Color.DARKORANGE);
@@ -36,7 +39,20 @@ public class Welcome extends Phase {
 		userInputArea.setEditable(false);
 	}
 
-	//finished
+	/**
+	 * {@inheritDoc}
+	 * @return true
+	 */
+	@Override
+	public boolean hasUnitTests() {
+		return false;
+	}
+
+	/**
+	 * Shows description and enabled extensions on the informationOutputArea depending on chosen exercise.
+	 * @param item               Selected Item in the exercisestree
+	 * @param exerciseCatalogue  The catalogue where all information of the exercises is hold in
+     */
 	public void setInformation(TreeItem<String> item, ExerciseCatalogue exerciseCatalogue) {
 		Path descriptionPath = PathTools.getDescriptionPath(item);
 		System.out.println(descriptionPath.toString());

@@ -6,13 +6,21 @@ import de.hhu.propra16.avaders.logik.Step;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
-
+/**
+ * Sets controls, areas and labels for Code-phase
+ */
 public class Code extends Phase {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public Code(TextArea userInputArea, TextArea phaseOutputArea, ButtonDisplay buttonDisplay, Label phase) {
 		super(userInputArea,phaseOutputArea,buttonDisplay,phase);
 	}
-	//finished
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setStates(){
 		ViewTools.editPhaseDisplay(phase, "CODE", Color.WHITE, Color.DARKGREEN);
@@ -20,6 +28,10 @@ public class Code extends Phase {
 		userInputArea.setEditable(true);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @return false
+     */
 	@Override
 	public boolean hasUnitTests(){
 		return false;
