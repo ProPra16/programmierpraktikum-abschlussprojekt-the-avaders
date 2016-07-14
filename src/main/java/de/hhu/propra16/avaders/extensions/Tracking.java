@@ -63,11 +63,24 @@ public class Tracking implements Serializable{
 		this.currentState = currentState;
 	}
 
+	/**
+	 * Erzeugt eine Instanz von {@link Tracking} und lädt dabei die Werte aus der angegebenen Datei.
+	 * Zusätzlich wird der Aktuelle {@link Step} auf den übergebenen {@link Step} gesetzt.
+	 * @param path Der Pfad zum Ordner, in welcher die Datei liegt
+	 * @param ExerciseName Der Name der Exercise, zu welcher die Daten gehören
+	 * @param currentStep Der aktuelle {@link Step}
+	 */
 	public Tracking(String path, String ExerciseName, Step currentStep) throws IOException, ClassNotFoundException {
 		load(path+ExerciseName+"TrackingData.ser");
 		currentState = currentStep;
 	}
 
+	/**
+	 * Erzeugt eine Instanz von {@link Tracking} und lädt dabei die Werte aus der angegebenen Datei.
+	 * Zusätzlich wird der Aktuelle {@link Step} auf {@link Step#RED RED} gesetzt.
+	 * @param path Der Pfad zum Ordner, in welcher die Datei liegt
+	 * @param ExerciseName Der Name der Exercise, zu welcher die Daten gehören
+	 */
 	public Tracking(String path, String ExerciseName) throws IOException, ClassNotFoundException {
 		this(path, ExerciseName, RED);
 	}
@@ -374,6 +387,11 @@ public class Tracking implements Serializable{
 		return chart;
 	}
 
+	/**
+	 * Speichert die bis jetzt gesammelten Benutzedrdaten in dem Übergebenen Ordner unter der übergebenen Exercise
+	 * @param path der Ordnerpfad
+	 * @param ExerciseName der name der Exercise
+	 */
 	public void save(String path, String ExerciseName) throws IOException {
 		Files.delete(Paths.get(path+ExerciseName+"TrackingData.ser"));
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path+ExerciseName+"TrackingData.ser"));
@@ -382,6 +400,10 @@ public class Tracking implements Serializable{
 		objectOutputStream.close();
 	}
 
+	/**
+	 * Lädt die zuvor gespeicherten Tracking-Daten aus der angegebenen Datei.
+	 * @param path Der Pfad zur Datei, welche die Daten enthält.
+	 */
 	private void load(String path) throws IOException, ClassNotFoundException {
 		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path));
 		Tracking copyTracking = (Tracking) objectInputStream.readObject();
