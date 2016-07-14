@@ -308,6 +308,7 @@ public class MainController {
 		}
 		logic.abbrechen();
 		phases.setStates(logic.getSchritt());
+		compilationUnits.updateClassUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
 		userInputField.setText(testOutputArea.getText());
 		testOutputArea.setText("");
 		tabPane.getSelectionModel().select(consoleTab);

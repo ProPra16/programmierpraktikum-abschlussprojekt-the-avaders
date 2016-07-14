@@ -68,10 +68,7 @@ public class CompilationUnits {
 	 * @return TestResults determined in logic
      */
 	public ITestenRueckgabe test(Logik logic){
-		ITestenRueckgabe results;
-		if(logic.getSchritt() == Step.RED)
-			results = logic.weiter(testUnit);
-		else  results = logic.weiter(testUnit, classUnit);
+		ITestenRueckgabe results = logic.weiter(testUnit, classUnit);
 
 		if(results.getTestResult() != null) {
 			this.testFailures = new ArrayList<TestFailure>();
@@ -100,5 +97,9 @@ public class CompilationUnits {
 		outputArea.setText(TestResultDisplay.showTestResults(results.getTestResult())+
 				TestResultDisplay.showCompilerResult(results.getCompilerResult(), testUnit) +
 				TestResultDisplay.showCompilerResult(results.getCompilerResult(), classUnit));
+	}
+
+	public void updateClassUnit(String name, String classTemplate, boolean b) {
+		this.classUnit = new CompilationUnit(name,classTemplate,b);
 	}
 }
