@@ -41,16 +41,16 @@ public class SubTask {
 	}
 
 	private void setTestTemplate(String testOutputArea){
-		this.testTemplate = testOutputArea;
+		this.testTemplate = testOutputArea.trim();
 	}
 
 	private void setClassTemplate(String codeOutputArea){
-		this.classTemplate = codeOutputArea;
+		this.classTemplate = codeOutputArea.trim();
 	}
 
 	public void updateForNextCycle(TextArea codeRefactorOutputArea, TextArea testRefactorOutputArea){
-		this.classTemplate = codeRefactorOutputArea.getText();
-		this.testTemplate  = testRefactorOutputArea.getText();
+		this.classTemplate = codeRefactorOutputArea.getText().trim();
+		this.testTemplate  = testRefactorOutputArea.getText().trim();
 		System.out.println("Updated classTemplate:\n" + classTemplate+ "\nUpdated testTemplate:\n" + testTemplate + "\n");
 	}
 
@@ -72,9 +72,8 @@ public class SubTask {
 		this.exerciseConfig = currentExercise.getExerciseConfig();
 		this.testName      = PathTools.getFileNamePrefix(testItem,".java");
 		this.className     = PathTools.getFileNamePrefix(testItem,"Test.java");
-		this.testTemplate  = getTestTemplate(testItem);
-		this.classTemplate = getClassTemplate(testItem,currentExercise);
-		System.out.println("");
+		this.testTemplate  = getTestTemplate(testItem).trim();
+		this.classTemplate = getClassTemplate(testItem,currentExercise).trim();
 	}
 
 	private static String getTestTemplate(TreeItem<String> testItem){
@@ -91,7 +90,6 @@ public class SubTask {
 							exercise.getClassName(name) + ".java"));
 			}
 		}
-		System.out.println("To " + testItem.getValue() + " corresponding class not found");
 		return null;
 	}
 
