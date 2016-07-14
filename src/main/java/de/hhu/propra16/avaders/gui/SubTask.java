@@ -19,14 +19,13 @@ public class SubTask {
 	private String  testName;
 	private String  className;
 	private String  testTemplate;
-
-	public String getClassTemplate() {return classTemplate;}
-	public String getTestTemplate() {return testTemplate;}
-
 	private String  classTemplate;
 	private Path    testPath;
 	private Path    classPath;
 
+
+	public String getClassTemplate() {return classTemplate;}
+	public String getTestTemplate() {return testTemplate;}
 
 
 	public String getName(Step mode){

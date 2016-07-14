@@ -58,13 +58,13 @@ public class Logik implements ILogik {
 		switch (schritt) {
 			case ACCEPTANCE_RED:
 				acceptanceRueckgabe = tester.testen(sources);
-				if (!acceptanceRueckgabe.isSuccessful()) {
+				if (acceptanceRueckgabe.hasNewFailingTest()) {
 					schritt = Step.RED;
 				}
 				break;
 			
 			case RED:
-				if (!rueckgabe.isSuccessful()) {
+				if (rueckgabe.hasNewFailingTest()) {
 					schritt = Step.GREEN;
 				}
 				break;

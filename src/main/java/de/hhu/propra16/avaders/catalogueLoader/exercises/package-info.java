@@ -1,5 +1,5 @@
 /**
- * This package provides the necessary classes for storing information parsed by the {@link de.hhu.propra16.avaders.catalogueLoader.CatalogueLoader}
+ * Provides the necessary classes for storing information parsed by the {@link de.hhu.propra16.avaders.catalogueLoader.CatalogueLoader}
  * and {@link de.hhu.propra16.avaders.catalogueLoader.tokenizer.ExerciseTokenizer}.
  * <ul>
  * <li> {@link de.hhu.propra16.avaders.catalogueLoader.exercises.Exercise} holds information regarding an exercise's name, description, classes and configuration </li>

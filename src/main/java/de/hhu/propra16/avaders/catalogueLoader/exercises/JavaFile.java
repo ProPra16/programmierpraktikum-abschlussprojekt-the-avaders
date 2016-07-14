@@ -29,7 +29,7 @@ public class JavaFile {
 		this.sourceCodeTemplate = sourceCodeTemplate;
 
 		if(!isValidClassName())
-			throw new ParserException("Class: " + className + " has differing name in source code");
+			throw new ParserException("Class: " + className + " name in attribute and source code do not match");
 	}
 
 	/**
