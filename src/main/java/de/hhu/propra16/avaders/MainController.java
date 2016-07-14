@@ -196,7 +196,7 @@ public class MainController {
 			tabPane.getSelectionModel().select(consoleTab);
 			return;
 		}
-		if(currentStep != nextStep){
+		if(currentStep != nextStep & subTask.getExerciseConfig().isTimeTracking()){
 			switch (currentStep){
 				case RED:           timeTracking.finishedRED();       timeTracking.setState(Step.GREEN);         timeTracking.startGREEN();     break;
 				case GREEN:         timeTracking.finishedGREEN();     timeTracking.setState(Step.CODE_REFACTOR); timeTracking.startREFACTOR1(); break;
