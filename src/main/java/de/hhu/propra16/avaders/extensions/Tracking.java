@@ -15,6 +15,15 @@ import javafx.scene.chart.XYChart;
 import javafx.util.Pair;
 import vk.core.api.CompileError;
 import vk.core.api.TestFailure;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -31,7 +40,7 @@ import static de.hhu.propra16.avaders.logik.Step.*;
  * und die Häufigkeit von {@link CompileError}s und {@link TestFailure}s.
  * Diese können auch in hübschen {@link Chart Diagrammen} dargestellt werden.
  */
-public class Tracking {
+public class Tracking implements Serializable{
 	protected int secondsGREEN = 0;
 	protected int secondsRED = 0;
 	protected int secondsREFACTOR = 0;
@@ -52,6 +61,28 @@ public class Tracking {
 	 */
 	public Tracking(Step currentState){
 		this.currentState = currentState;
+	}
+
+	/**
+	 * Erzeugt eine Instanz von {@link Tracking} und lädt dabei die Werte aus der angegebenen Datei.
+	 * Zusätzlich wird der Aktuelle {@link Step} auf den übergebenen {@link Step} gesetzt.
+	 * @param path Der Pfad zum Ordner, in welcher die Datei liegt
+	 * @param ExerciseName Der Name der Exercise, zu welcher die Daten gehören
+	 * @param currentStep Der aktuelle {@link Step}
+	 */
+	public Tracking(String path, String ExerciseName, Step currentStep) throws IOException, ClassNotFoundException {
+		load(path+ExerciseName+"TrackingData.ser");
+		currentState = currentStep;
+	}
+
+	/**
+	 * Erzeugt eine Instanz von {@link Tracking} und lädt dabei die Werte aus der angegebenen Datei.
+	 * Zusätzlich wird der Aktuelle {@link Step} auf {@link Step#RED RED} gesetzt.
+	 * @param path Der Pfad zum Ordner, in welcher die Datei liegt
+	 * @param ExerciseName Der Name der Exercise, zu welcher die Daten gehören
+	 */
+	public Tracking(String path, String ExerciseName) throws IOException, ClassNotFoundException {
+		this(path, ExerciseName, RED);
 	}
 
 	/**
@@ -184,7 +215,8 @@ public class Tracking {
 	public void addCompileExceptions(Collection<CompileError> compileErrors){
 		if(currentState == RED) {
 			compileErrors.forEach(x -> {
-				String s = x.getMessage();
+				String s = "";
+				if(x.getMessage() != null) s = x.getMessage();
 				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
 				if(s.contains("incompatible types:"))  s = "incompatible types:";
 				if (compileErrorMapGREEN.containsKey(s))
@@ -193,7 +225,8 @@ public class Tracking {
 			});
 		} else if(currentState == CODE_REFACTOR){
 			compileErrors.forEach(x -> {
-				String s = x.getMessage();
+				String s = "";
+				if(x.getMessage() != null) s = x.getMessage();
 				if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
 				if(s.contains("incompatible types:"))  s = "incompatible types:";
 				if (compileErrorMapREFACTOR.containsKey(s))
@@ -213,7 +246,8 @@ public class Tracking {
 	 */
 	public void addTestExceptions(Collection<TestFailure> testErrors){
 		testErrors.forEach(x -> {
-			String s = x.getMessage();
+			String s = "";
+			if(x.getMessage() != null) s = x.getMessage();
 			if(s.contains("cannot be applied to given types")) s = "method <Method> in class <Class> cannot be applied to given types";
 			if(s.contains("incompatible types:"))  s = "incompatible types:";
 			if(testErrorMap.containsKey(s)) compileErrorMapGREEN.replace(s, compileErrorMapGREEN.get(s), compileErrorMapGREEN.get(s)+1);
@@ -343,16 +377,47 @@ public class Tracking {
 	 * @return Das Diagramm
 	 */
 	public Chart showTimeChart(boolean acceptanceEnabled){
-		String s = "vier";
+		String s = "four";
 		ObservableList<PieChart.Data> chartData =
 				FXCollections.observableArrayList(
 						new PieChart.Data("RED", secondsRED),
 						new PieChart.Data("GREEN", secondsGREEN),
 						new PieChart.Data("CODE_REFACTOR", secondsREFACTOR),
 						new PieChart.Data("TEST_REFACTOR", secondsREFACTOR2));
-		if(acceptanceEnabled){ chartData.add(new PieChart.Data("ACCEPTANCE", secondsAcceptance)); s = "fünf";}
+		if(acceptanceEnabled){ chartData.add(new PieChart.Data("ACCEPTANCE", secondsAcceptance)); s = "five";}
 		PieChart chart = new PieChart(chartData);
-		chart.setTitle("Verteilung der Arbeitszeit auf die "+s+" Phasen");
+		chart.setTitle("Time spend on the "+s+" Phases");
 		return chart;
+	}
+
+	/**
+	 * Speichert die bis jetzt gesammelten Benutzedrdaten in dem Übergebenen Ordner unter der übergebenen Exercise
+	 * @param path der Ordnerpfad
+	 * @param ExerciseName der name der Exercise
+	 */
+	public void save(String path, String ExerciseName) throws IOException {
+		try{Files.delete(Paths.get(path+ExerciseName+"TrackingData.ser"));}catch (Exception ignored){}
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path+ExerciseName+"TrackingData.ser"));
+		objectOutputStream.writeObject(this);
+		objectOutputStream.flush();
+		objectOutputStream.close();
+	}
+
+	/**
+	 * Lädt die zuvor gespeicherten Tracking-Daten aus der angegebenen Datei.
+	 * @param path Der Pfad zur Datei, welche die Daten enthält.
+	 */
+	private void load(String path) throws IOException, ClassNotFoundException {
+		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path));
+		Tracking copyTracking = (Tracking) objectInputStream.readObject();
+		secondsRED =copyTracking.secondsRED;
+		secondsGREEN = copyTracking.secondsGREEN;
+		secondsREFACTOR = copyTracking.secondsREFACTOR;
+		secondsREFACTOR2 = copyTracking.secondsREFACTOR2;
+		secondsAcceptance = copyTracking.secondsAcceptance;
+		compileErrorMapGREEN =  copyTracking.compileErrorMapGREEN;
+		compileErrorMapREFACTOR = copyTracking.compileErrorMapREFACTOR;
+		testErrorMap = copyTracking.testErrorMap;
+		objectInputStream.close();
 	}
 }

@@ -234,21 +234,6 @@ public class XMLExerciseTokenizerTester {
 		fail();
 	}
 
-
-	@Test
-	public void test_EndTest(){
-		try {
-			xmlExerciseTokenizer = new XMLExerciseTokenizer(() -> "          </  \t test   \t\t >\n");
-			xmlExerciseTokenizer.advance();
-		}
-		catch (Exception e){
-			System.out.println(e.getMessage());
-			fail();
-		}
-
-		assertEquals("/test", xmlExerciseTokenizer.currentToken().name);
-	}
-
 	@Test
 	public void test_WrongExtension(){
 		IOException ioException = new IOException("Please choose a file with the \".xml\" extension.");
