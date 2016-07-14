@@ -38,14 +38,14 @@ public class Projekt {
 	 * {@InheritedDoc}
 	 */
 	public void zuruecksetzen() {
-		fLogik.zuruecksetzen(fKlassen, fStatusWerte, fStatistik);
+		//fLogik.zuruecksetzen(fKlassen, fStatusWerte, fStatistik);
 	}
 
 	/**
 	 * {@InheritedDoc}
 	 */
 	public void weiter() {
-		fLogik.weiter(fKlassen, fStatusWerte, fStatistik);
+		//fLogik.weiter(fKlassen, fStatusWerte, fStatistik);
 	}
 
 	/**
