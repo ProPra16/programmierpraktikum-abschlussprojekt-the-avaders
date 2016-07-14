@@ -1,7 +1,7 @@
 ## Berichte und Dokumentationen
 
 In diesem Ordner sind Berichte und Dokumentationen zu finden. Das
-[Nutzhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
+[Nutzerhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
 beschreibt dabei die Verwendung des Programms und die
 [Spezifikation](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/User%20Guide%20-%20Exercise%20catalogues%20in%20XML.pdf)
 das Erstellen neuer Konfigurationsdateien.
@@ -20,13 +20,13 @@ in der aktuellen Implementation wird zwar eine Instanz erstellt, diese jedoch no
 
 ### extensions
 AlleErweiterungen, beispielsweise BabySteps, wurden in diesem Package isoliert. Ihre Verwendung ist dem
-[Nutzhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
+[Nutzerhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
 zu entnehmen.
 
 ### gui
 Neben dem Hauptprogramm mit dem Controller und den ausgelagerten .fxml- und .css-Dateien sind die Bestandteile der
 grafischen Benutzeroberfläche in diesem Package zu finden. Auch hier ist die Verwendung dem
-[Nutzhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
+[Nutzerhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
 zu entnehmen.
 
 ### projekt und statistik
