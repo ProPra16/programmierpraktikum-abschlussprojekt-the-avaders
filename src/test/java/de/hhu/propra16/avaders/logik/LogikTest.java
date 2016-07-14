@@ -27,6 +27,10 @@ public class LogikTest {
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 0))));
 		Assert.assertEquals(logik.getSchritt(), Step.RED);
 		
+		// No advance with too many failed tests
+		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 2))));
+		Assert.assertEquals(logik.getSchritt(), Step.RED);
+		
 		// Advance with at least one failed test
 		logik.weiter(new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 1))));
 		Assert.assertEquals(logik.getSchritt(), Step.GREEN);
@@ -94,6 +98,13 @@ public class LogikTest {
 		logik.weiter(
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(true), new TestResultDummy(0, 0))),
 			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(0, 0)))
+		);
+		Assert.assertEquals(logik.getSchritt(), Step.ACCEPTANCE_RED);
+		
+		// No advance with too many failed tests
+		logik.weiter(
+			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(true), new TestResultDummy(0, 0))),
+			new CompilationUnitDummy(new TestenRueckgabeDummy(new CompilerResultDummy(false), new TestResultDummy(2, 0)))
 		);
 		Assert.assertEquals(logik.getSchritt(), Step.ACCEPTANCE_RED);
 		
