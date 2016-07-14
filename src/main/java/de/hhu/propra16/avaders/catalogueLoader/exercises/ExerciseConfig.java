@@ -19,25 +19,19 @@ public class ExerciseConfig {
 	 * Returns whether or not {@link Babysteps} is enabled in this exercise
 	 * @return True if {@link Babysteps} is enabled
      */
-	public boolean isBabySteps() {
-		return babySteps;
-	}
+	public boolean isBabySteps(){	return babySteps;	}
 
 	/**
 	 * Sets whether or not the attached {@link Exercise} is marked as having {@link Babysteps} enabled
 	 * @param babySteps The value babySteps will be set to
      */
-	public void setBabySteps(boolean babySteps) {
-		this.babySteps = babySteps;
-	}
+	public void setBabySteps(boolean babySteps){	this.babySteps = babySteps;	}
 
 	/**
 	 * Returns the time that {@link Babysteps} should execute for in the attached {@link Exercise}
 	 * @return The time until all changes are to be reverted
      */
-	public int getBabyStepsTime() {
-		return time;
-	}
+	public int getBabyStepsTime(){	return time;	}
 
 	/**
 	 * Sets the time {@link Babysteps} will be executed for.
@@ -57,17 +51,13 @@ public class ExerciseConfig {
 	 * {@link Exercise}
 	 * @return True if time {@link Tracking} is enabled
      */
-	public boolean isTimeTracking() {
-		return timeTracking;
-	}
+	public boolean isTimeTracking(){	return timeTracking;	}
 
 	/**
 	 * Sets the value of timeTracking
 	 * @param timeTracking The value timeTracking will be set to
      */
-	public void setTimeTracking(boolean timeTracking) {
-		this.timeTracking = timeTracking;
-	}
+	public void setTimeTracking(boolean timeTracking){	this.timeTracking = timeTracking;	}
 
 	/**
 	 * Returns if the attached {@link Exercise} should have atdd enabled <p>
@@ -76,15 +66,11 @@ public class ExerciseConfig {
 	 * @return The value of atdd
 	 *
      */
-	public boolean isAtdd() {
-		return false;
-	}
+	public boolean isAtdd(){	return false;	}
 
 	/**
 	 * Sets atdd to the given value.
 	 * @param atdd The value atdd will be set to
      */
-	public void setAtdd(boolean atdd) {
-		this.atdd = atdd;
-	}
+	public void setAtdd(boolean atdd){	this.atdd = atdd;	}
 }

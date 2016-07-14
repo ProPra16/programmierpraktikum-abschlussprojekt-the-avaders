@@ -245,23 +245,17 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @return True if there is a next tokens, otherwise false
      */
 	@Override
-	public boolean hasNextToken(){
-		return (nextToken != null);
-	}
+	public boolean hasNextToken(){	return (nextToken != null);	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Token currentToken(){
-		return currentToken;
-	}
+	public Token currentToken(){	return currentToken;	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getLineNumber() {
-		return lineNumber;
-	}
+	public int getLineNumber(){	return lineNumber;	}
 }

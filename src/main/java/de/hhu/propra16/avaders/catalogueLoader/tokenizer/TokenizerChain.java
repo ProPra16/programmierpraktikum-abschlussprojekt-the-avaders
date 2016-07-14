@@ -47,7 +47,5 @@ class TokenizerChain {
 	 * @param tokenizerChain The {@link TokenizerChain} that is attached as
 	 *                       {@link TokenizerChain#nextChain}
      */
-	void setNextChain(TokenizerChain tokenizerChain){
-		this.nextChain = tokenizerChain;
-	}
+	void setNextChain(TokenizerChain tokenizerChain){	this.nextChain = tokenizerChain;	}
 }
