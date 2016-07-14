@@ -10,7 +10,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
  * converting a string into a {@link Token}
  */
 @FunctionalInterface
-public interface TokenizerFunction {
+interface TokenizerFunction {
 	/**
 	 * Applys the function to the string and returns the produced Token
 	 * @param String The string to be converted
