@@ -68,9 +68,11 @@ public class CompilationUnits {
 	 * @return TestResults determined in logic
      */
 	public ITestenRueckgabe test(Logik logic){
-		ITestenRueckgabe results   = logic.weiter(testUnit, classUnit);
+		ITestenRueckgabe results;
 		if(logic.getSchritt() == Step.RED)
-			logic.weiter(testUnit);
+			results = logic.weiter(testUnit);
+		else  results = logic.weiter(testUnit, classUnit);
+
 		if(results.getTestResult() != null) {
 			this.testFailures = new ArrayList<TestFailure>();
 			this.testFailures.addAll(results.getTestResult().getTestFailures());
