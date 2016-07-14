@@ -17,6 +17,9 @@ public class Main extends Application {
 	private MainController controller;
 	private BorderPane     mainBase;
 
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{

@@ -27,6 +27,7 @@ public class ModeDisplay {
 		List<String> modes = new ArrayList<>();
 		activatedModes.setText("");
 		if(config.isBabySteps()) {
+			timeLeft.textProperty().unbind();
 			timeLeft.setText("" + config.getBabyStepsTime());
 			modes.add("BabySteps");
 		}
