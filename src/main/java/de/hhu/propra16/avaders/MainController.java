@@ -209,7 +209,7 @@ public class MainController {
 
 		String errorString = compilationUnits.showResultsOn(consoleOutputArea, results);
 		if(subTask.getExerciseConfig().isTimeTracking() & errorString.length() > 0 ){
-			errorWriter(errorString + "\n");
+			errorWriter(errorString + "\n\n\n ");
 		}
 
 		if((currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors() | currentStep == nextStep))
