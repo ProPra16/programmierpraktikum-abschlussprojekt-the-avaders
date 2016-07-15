@@ -27,7 +27,6 @@ public class FileTools {
 		try {
 			Files.createDirectories(path.subpath(0, path.getNameCount()-1));
 			Files.write(path, outputList, StandardOpenOption.CREATE);
-			System.out.println("" + path.toString() + " created!");
 		} catch (IOException e) {
 			System.err.println("Unable to write to File " + path);
 		}
@@ -83,7 +82,6 @@ public class FileTools {
 		List<String> outputList = Arrays.asList(output.split("\\n"));
 		try {
 			Files.write(path, outputList, StandardOpenOption.CREATE);
-			System.out.println("" + path.toString() + " created!");
 		} catch (IOException e) {
 			System.err.println("Unable to update to File " + path);
 		}

@@ -70,7 +70,6 @@ public class SubTask {
 	public void updateForNextCycle(TextArea codeRefactorOutputArea, TextArea testRefactorOutputArea){
 		this.classTemplate = codeRefactorOutputArea.getText().trim();
 		this.testTemplate  = testRefactorOutputArea.getText().trim();
-		System.out.println("Updated classTemplate:\n" + classTemplate+ "\nUpdated testTemplate:\n" + testTemplate + "\n");
 	}
 
 
