@@ -19,7 +19,7 @@ in der aktuellen Implementation wird zwar eine Instanz erstellt, diese jedoch no
 [Dokumentation](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/konfig/Projekt7_Bericht_konfig.pdf)
 
 ### extensions
-AlleErweiterungen, beispielsweise BabySteps, wurden in diesem Package isoliert. Ihre Verwendung ist dem
+Alle Erweiterungen, beispielsweise BabySteps, wurden in diesem Package isoliert. Ihre Verwendung ist dem
 [Nutzerhandbuch](https://github.com/ProPra16/programmierpraktikum-abschlussprojekt-the-avaders/blob/master/doc/TDDT_Handbuch.pdf)
 zu entnehmen.
 
