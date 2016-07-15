@@ -92,11 +92,15 @@ public class CompilationUnits {
 	 * Showing testResults on a specified TextArea
 	 * @param outputArea Target area where the results should be shown
 	 * @param results    Current testResults
+	 * @return All failures and errors as String
      */
-	public void showResultsOn(TextArea outputArea, ITestenRueckgabe results){
-		outputArea.setText(TestResultDisplay.showTestResults(results.getTestResult())+
+	public String showResultsOn(TextArea outputArea, ITestenRueckgabe results){
+		String textToShow = TestResultDisplay.showTestResults(results.getTestResult())+
 				TestResultDisplay.showCompilerResult(results.getCompilerResult(), testUnit) +
-				TestResultDisplay.showCompilerResult(results.getCompilerResult(), classUnit));
+				TestResultDisplay.showCompilerResult(results.getCompilerResult(), classUnit);
+
+		outputArea.setText(textToShow);
+		return textToShow;
 	}
 
 	public void updateClassUnit(String name, String classTemplate, boolean b) {

@@ -207,7 +207,10 @@ public class MainController {
 			System.out.println("next template " + currentClass);
 		}
 
-		compilationUnits.showResultsOn(consoleOutputArea, results);
+		String errorString = compilationUnits.showResultsOn(consoleOutputArea, results);
+		if(subTask.getExerciseConfig().isTimeTracking() & errorString.length() > 0 ){
+			errorWriter(errorString + "\n");
+		}
 
 		if((currentStep != Step.RED & (!results.isSuccessful() | results.getCompilerResult().hasCompileErrors() | currentStep == nextStep))
 				|| (currentStep == Step.RED & currentStep == nextStep) ) {
@@ -513,8 +516,15 @@ public class MainController {
 		}
 	}
 
-	private void errorWriter(){
-
+	private void errorWriter(String errorString){
+		Path saveTo = Paths.get(subTask.getClassPath().toString().replace(".java", "") + "diffTracking.txt");
+		List<String> saveList = Arrays.asList(errorString.split("\n"));
+		try {
+			Files.write(saveTo, saveList, StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			System.err.println("Unable to save diffTracking to " + saveTo);
+			e.printStackTrace();
+		}
 	}
 
 }
