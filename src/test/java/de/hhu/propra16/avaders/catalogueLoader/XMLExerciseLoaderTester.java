@@ -20,7 +20,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_Exercise0() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.xml");
+			exercise = setup(0, "src/test/resources/test.xml");
 		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -67,7 +67,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_Exercise1() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(1, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.xml");
+			exercise = setup(1, "src/test/resources/test.xml");
 		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -101,7 +101,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_ExerciseLineBreaks() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testLotsOfLineBreaks.xml");
+			exercise = setup(0, "src/test/resources/testLotsOfLineBreaks.xml");
 		} catch (SamePropertyTwiceException | IOException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -148,7 +148,7 @@ public class XMLExerciseLoaderTester {
 		MissingTokenException missingTokenException = new MissingTokenException("</test>", 26);
 
 		try {
-			setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testMissingEndToken.xml");
+			setup(0, "src/test/resources/testMissingEndToken.xml");
 		}catch(MissingTokenException e){
 			assertEquals(missingTokenException.getMessage(), e.getMessage());
 			return;
@@ -163,7 +163,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_EmptyConfig() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testEmptyConfig.xml");
+			exercise = setup(0, "src/test/resources/testEmptyConfig.xml");
 		} catch (IOException | SamePropertyTwiceException | TokenException | ParserException e) {
 			e.printStackTrace();
 			fail();
@@ -178,7 +178,7 @@ public class XMLExerciseLoaderTester {
 	public void test_TestXml_StandardBabySteps() {
 		Exercise exercise = null;
 		try {
-			exercise = setup(0, "src/test/java/de/hhu/propra16/avaders/catalogueLoader/testStandardBabySteps.xml");
+			exercise = setup(0, "src/test/resources/testStandardBabySteps.xml");
 		}catch(MissingTokenException e){
 			System.out.println(e.getMessage());
 			return;
