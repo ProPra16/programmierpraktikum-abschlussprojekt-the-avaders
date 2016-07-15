@@ -168,7 +168,7 @@ public class MainController {
 			tabPane.getSelectionModel().select(informationTab);
 			TreeItem<String> item = exercisesTree.getSelectionModel().getSelectedItem();
 			if (item == null) {
-				System.err.println("item not initialized yet");
+				//System.err.println("item not initialized yet");
 				return;
 			}
 			showClassContent(item, "Test");
