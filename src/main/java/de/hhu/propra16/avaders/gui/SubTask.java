@@ -26,9 +26,14 @@ public class SubTask {
 	private Path    testPath;
 	private Path    classPath;
 
+	public Path getClassPath() {
+		return classPath;
+	}
+
 	/**
 	 * Gets the current edition on the classTemplate
 	 * @return Edited classTemplate
+
      */
 	public String getClassTemplate() {return classTemplate;}
 

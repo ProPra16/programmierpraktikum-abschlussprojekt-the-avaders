@@ -36,10 +36,15 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Pair;
 import vk.core.api.CompilationUnit;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.file.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Main controller handling nearly anything
@@ -101,6 +106,7 @@ public class MainController {
 	private CompilationUnits compilationUnits;
 	private AnchorPane exerciseTreeBaseTemp;
 	private Tracking timeTracking;
+	private String currentClass;
 
 	/**
 	 * Initializes the states. Creates all required instances and sets up the controls and areas to default
@@ -132,6 +138,7 @@ public class MainController {
 		initializeCompilationUnits();
 		initializeExtensions();
 		initializeAreas();
+		currentClass = subTask.getTemplate(Step.RED);
 	}
 
 
@@ -181,6 +188,9 @@ public class MainController {
 	@FXML
 	void handleNextPhase() {
 		Step currentStep = logic.getSchritt();
+		if(subTask.getExerciseConfig().isTimeTracking()){
+			diffWriter(currentClass,userInputField.getText(),subTask.getName(currentStep));
+		}
 
 		compilationUnits.update(currentStep, new CompilationUnit(subTask.getName(currentStep), userInputField.getText(),
 				phases.getPhase(currentStep).hasUnitTests()));
@@ -188,6 +198,10 @@ public class MainController {
 		ITestenRueckgabe results = compilationUnits.test(logic);//logic goes ahead!
 		//compilationUnits.addToTracking(timeTracking); TODO uncomment if message null handled in addTestException
 		Step nextStep = logic.getSchritt();
+
+		if(subTask.getExerciseConfig().isTimeTracking()){
+			currentClass = subTask.getTemplate(nextStep);
+		}
 
 		compilationUnits.showResultsOn(consoleOutputArea, results);
 
@@ -299,16 +313,11 @@ public class MainController {
 			timeTracking.finishedGREEN();
 			timeTracking.setState(Step.RED);
 			timeTracking.startRED();
-			System.out.println(
-					"Times:\n"+
-					"Test:    " + timeTracking.getTimeForRED()   + "\n" +
-					"Code:    " + timeTracking.getTimeForGREEN() + "\n" +
-					"CodeRef: " + timeTracking.getTimeForREFACTOR1()  + "\n" +
-					"TestRef: " + timeTracking.getTimeForREFACTOR2()  + "\n");
 		}
 		logic.abbrechen();
 		phases.setStates(logic.getSchritt());
 		compilationUnits.updateClassUnit(subTask.getName(Step.GREEN), subTask.getClassTemplate(), false);
+		currentClass = testOutputArea.getText();
 		userInputField.setText(testOutputArea.getText());
 		testOutputArea.setText("");
 		tabPane.getSelectionModel().select(consoleTab);
@@ -470,6 +479,38 @@ public class MainController {
 		this.timeLeft.textProperty().bind(Bindings.concat("", babysteps.getRemainingBinding()));
 		this.babysteps.setOnTimeout(() -> resetOnTimeOut());
 		babysteps.startTimer(subTask.getExerciseConfig().getBabyStepsTime());
+	}
+
+	/**
+	 * Tool for Tracking-extension. Everytime the user clicks next or back button this writes diffs to a default file
+	 * @param origin    The text at the beginning of a phase
+	 * @param current   The edited text
+	 * @param className Name of the class
+     */
+	private void diffWriter(String origin, String current, String className ){
+		List<String> originList  = Arrays.asList(origin.split("\n"));
+		List<String> currentList = Arrays.asList(current.split("\n"));
+
+		Path saveTo = Paths.get(subTask.getClassPath().toString().replace(".java", "") + "diffTracking.txt");
+		Pair<LocalDateTime, List<String>> diffs = timeTracking.diff(originList, currentList, className);
+		List<String> saveList = new ArrayList<>();
+
+		saveList.add(diffs.getKey().toString());
+		saveList.addAll(diffs.getValue());
+		saveList.add("\n");
+
+		try {
+			if(Files.exists(saveTo))
+				Files.write(saveTo, saveList, StandardOpenOption.APPEND);
+			else Files.write(saveTo, saveList, StandardOpenOption.CREATE);
+		} catch (IOException e) {
+			System.err.println("Unable to save diffTracking to " + saveTo);
+			e.printStackTrace();
+		}
+	}
+
+	private void errorWriter(){
+
 	}
 
 }
