@@ -204,7 +204,6 @@ public class MainController {
 
 		if(subTask.getExerciseConfig().isTimeTracking()){
 			currentClass = subTask.getTemplate(nextStep);
-			System.out.println("next template " + currentClass);
 		}
 
 		String errorString = compilationUnits.showResultsOn(consoleOutputArea, results);
@@ -224,13 +223,6 @@ public class MainController {
 				case CODE_REFACTOR: timeTracking.finishedREFACTOR1(); timeTracking.setState(Step.TEST_REFACTOR); timeTracking.startREFACTOR2(); break;
 				case TEST_REFACTOR: timeTracking.finishedREFACTOR2(); timeTracking.setState(Step.RED);           timeTracking.startRED();       break;
 			}
-			System.out.println("Past    Step: " + currentStep + "\n" +
- 			                   "Current Step: " + nextStep    + "\n\n" +
-					           "Times:\n"+
-					           "Test:    " + timeTracking.getTimeForRED()   + "\n" +
-					           "Code:    " + timeTracking.getTimeForGREEN() + "\n" +
-					           "CodeRef: " + timeTracking.getTimeForREFACTOR1()  + "\n" +
-					           "TestRef: " + timeTracking.getTimeForREFACTOR2()  + "\n");
 		}
 
 		updateAreas(nextStep);
@@ -434,7 +426,6 @@ public class MainController {
 	private void initializeTimeTracking() {
 		this.timeTracking = new Tracking(Step.RED);
 		timeTracking.startRED();
-		System.out.println("TimeTrackin' on the run (ref assigned)");
 	}
 
 	/**

@@ -55,7 +55,6 @@ public class Welcome extends Phase {
      */
 	public void setInformation(TreeItem<String> item, ExerciseCatalogue exerciseCatalogue) {
 		Path descriptionPath = PathTools.getDescriptionPath(item);
-		System.out.println(descriptionPath.toString());
 		if(!Files.exists(descriptionPath)) {
 			phaseOutputArea.setText("No description available");
 			return;
