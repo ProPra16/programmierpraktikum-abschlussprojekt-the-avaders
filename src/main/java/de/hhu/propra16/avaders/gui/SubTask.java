@@ -81,9 +81,9 @@ public class SubTask {
      */
 	public String getTemplate(Step mode){
 		switch (mode){
-			case CODE_REFACTOR:
-			case RED:               return testTemplate;
 			case TEST_REFACTOR:
+			case RED:               return testTemplate;
+			case CODE_REFACTOR:
 			case GREEN:             return classTemplate;
 			default:
 				System.err.println("SubTask.getTemplate(...) called out of Red and Green-phase!");

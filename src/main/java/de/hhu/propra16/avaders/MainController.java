@@ -196,11 +196,15 @@ public class MainController {
 				phases.getPhase(currentStep).hasUnitTests()));
 
 		ITestenRueckgabe results = compilationUnits.test(logic);//logic goes ahead!
-		//compilationUnits.addToTracking(timeTracking); TODO uncomment if message null handled in addTestException
+
+		//if(subTask.getExerciseConfig().isTimeTracking())
+		//		compilationUnits.addToTracking(timeTracking);
+
 		Step nextStep = logic.getSchritt();
 
 		if(subTask.getExerciseConfig().isTimeTracking()){
 			currentClass = subTask.getTemplate(nextStep);
+			System.out.println("next template " + currentClass);
 		}
 
 		compilationUnits.showResultsOn(consoleOutputArea, results);
@@ -239,7 +243,7 @@ public class MainController {
 		if(subTask.getExerciseConfig().isTimeTracking() && ( timeTracking.getTimeForGREEN() > 0 & timeTracking.getTimeForRED() > 0)) {
 			Stage root = new Stage();
 			BorderPane pane = new BorderPane();
-
+			//timeTracking.showTimeChart(false)
 			pane.setCenter(timeTracking.showTimeChart(false));
 			root.setScene(new Scene(pane, 500, 500));
 			root.setTitle("Tracking Results");
