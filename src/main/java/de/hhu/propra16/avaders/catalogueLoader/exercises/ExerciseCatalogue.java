@@ -12,15 +12,13 @@ public class ExerciseCatalogue {
 	/**
 	 * Produces a new empty {@link ExerciseCatalogue}
 	 */
-	public ExerciseCatalogue(){ catalogue = new ArrayList<>(); }
+	public ExerciseCatalogue(){	catalogue = new ArrayList<>();	}
 
 	/**
 	 * Adds the provided {@link Exercise} to the catalogue
 	 * @param exercise The {@link Exercise} to be added to the list of exercises
      */
-	public void addExercise(Exercise exercise){
-		catalogue.add(exercise);
-	}
+	public void addExercise(Exercise exercise){	catalogue.add(exercise);	}
 
 	/**
 	 * Produces the required {@link Exercise} from the {@link ExerciseCatalogue}
@@ -28,12 +26,10 @@ public class ExerciseCatalogue {
 	 * @return The {@link Exercise} at the specified position in the list
 	 * @throws IndexOutOfBoundsException - if the index is out of range
      */
-	public Exercise getExercise(int exerciseNumber){
-		return catalogue.get(exerciseNumber);
-	}
+	public Exercise getExercise(int exerciseNumber){	return catalogue.get(exerciseNumber);	}
 
 	/**
 	 * @return The number of {@link Exercise} instances in the catalogue
      */
-	public int size() { return catalogue.size(); }
+	public int size(){	return catalogue.size();	}
 }

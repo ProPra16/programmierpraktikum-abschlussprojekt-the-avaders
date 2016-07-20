@@ -5,7 +5,12 @@ import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseCatalogue;
 import de.hhu.propra16.avaders.catalogueLoader.exercises.ExerciseConfig;
 
 public class ExerciseTools {
-	//TODO handle RuntimeException
+	/**
+	 * Gets the exerciseCatalogue according to a given Name of an exercise
+	 * @param exerciseName       The name of the exercise
+	 * @param exerciseCatalogue  The corresponding catalogue
+     * @return The catalogue corresponding to the name of the exercise
+     */
 	public static ExerciseConfig getConfig(String exerciseName, ExerciseCatalogue exerciseCatalogue){
 		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
 			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))
@@ -15,7 +20,12 @@ public class ExerciseTools {
 		throw new RuntimeException();
 	}
 
-	//TODO handle RuntimeException
+	/**
+	 * Gets the exercise according to a given Name of an exercise
+	 * @param exerciseName       The name of the exercise
+	 * @param exerciseCatalogue  The corresponding catalogue
+	 * @return The exercise corresponding to the name of the exercise
+	 */
 	public static Exercise getExercise(String exerciseName, ExerciseCatalogue exerciseCatalogue){
 		for(int exercise = 0; exercise < exerciseCatalogue.size(); exercise++){
 			if(exerciseName.contentEquals(exerciseCatalogue.getExercise(exercise).getExerciseName()))

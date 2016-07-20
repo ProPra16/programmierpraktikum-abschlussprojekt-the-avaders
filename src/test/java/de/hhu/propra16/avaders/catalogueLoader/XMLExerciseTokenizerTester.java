@@ -239,7 +239,7 @@ public class XMLExerciseTokenizerTester {
 		IOException ioException = new IOException("Please choose a file with the \".xml\" extension.");
 		FileReader fileReader = null;
 		try {
-			fileReader = new FileReader(Paths.get("src/test/java/de/hhu/propra16/avaders/catalogueLoader/test.txt"));
+			fileReader = new FileReader(Paths.get("src/test/resources/test.txt"));
 		} catch (IOException | ParserException e) {
 			e.printStackTrace();
 		}

@@ -147,7 +147,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @throws IOException If an I/O error occurs with the BufferedReader instance
      */
 	private String tokenize() throws IOException {
-		String readToken = "";
+		String readToken;
 		readToken = readLine.substring(readLine.indexOf('<'), readLine.indexOf('>')+INCLUDE);
 		readLine = readLine.replaceFirst(readToken, "").trim();
 		readToken = readToken.replaceFirst("<","").replaceFirst(">","");
@@ -245,23 +245,17 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @return True if there is a next tokens, otherwise false
      */
 	@Override
-	public boolean hasNextToken(){
-		return (nextToken != null);
-	}
+	public boolean hasNextToken(){	return (nextToken != null);	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Token currentToken(){
-		return currentToken;
-	}
+	public Token currentToken(){	return currentToken;	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getLineNumber() {
-		return lineNumber;
-	}
+	public int getLineNumber(){	return lineNumber;	}
 }

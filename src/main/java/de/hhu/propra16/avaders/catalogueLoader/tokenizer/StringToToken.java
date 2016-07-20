@@ -49,9 +49,9 @@ public class StringToToken {
 		TokenizerChain emptyTagsChain = new TokenizerChain(
 				(readString) ->
 				(readString.startsWith("exercises")	|| readString.startsWith("/exercise")	||
-                readString.startsWith("classes")	|| readString.startsWith("/classes")	||
-                readString.startsWith("tests")		|| readString.startsWith("/tests")		||
-                readString.startsWith("config")		|| readString.startsWith("/config")),
+				readString.startsWith("classes")	|| readString.startsWith("/classes")	||
+				readString.startsWith("tests")		|| readString.startsWith("/tests")		||
+				readString.startsWith("config")		|| readString.startsWith("/config")),
 				Token::new
 		);
 
@@ -120,9 +120,7 @@ public class StringToToken {
 	 * @param tokenizerChainHead The Head of the chain that is used for
 	 *                           converting the string to a {@link Token}
 	 */
-	private StringToToken(TokenizerChain tokenizerChainHead){
-		this.tokenizerChainHead = tokenizerChainHead;
-	}
+	private StringToToken(TokenizerChain tokenizerChainHead){	this.tokenizerChainHead = tokenizerChainHead;	}
 
 	/**
 	 * Extract information from the given string and collects them
@@ -257,7 +255,5 @@ public class StringToToken {
 	 * @param descriptionContent The content of the description
 	 * @return The {@link Token} that holds the description's content as its value
      */
-	static Token convertDescription(String descriptionContent){
-		return new Token("description", descriptionContent);
-	}
+	static Token convertDescription(String descriptionContent){	return new Token("description", descriptionContent);	}
 }

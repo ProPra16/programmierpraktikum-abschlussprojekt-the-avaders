@@ -12,7 +12,7 @@ import de.hhu.propra16.avaders.catalogueLoader.tokenizer.tokens.Token;
 @FunctionalInterface
 interface TokenizerFunction {
 	/**
-	 * Applys the function to the string and returns the produced Token
+	 * Applies the function to the string and returns the produced Token
 	 * @param String The string to be converted
 	 * @return The {@link Token} that was converted from the string
 	 * @throws SamePropertyTwiceException If value appears twice in the {@link Token}s

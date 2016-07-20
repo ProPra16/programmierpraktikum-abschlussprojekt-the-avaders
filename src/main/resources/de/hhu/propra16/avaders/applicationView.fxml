@@ -18,16 +18,6 @@
                         <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#handleQuit" text="Quit" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="View">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                    </items>
-                  </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
               </menus>
             </MenuBar>
             <GridPane>
@@ -56,7 +46,7 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                      <children>
-                        <Label text="Progress:">
+                        <Label fx:id="progressLabel" text="Progress:">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
@@ -118,7 +108,7 @@
                               </AnchorPane>
                               <VBox prefHeight="200.0" prefWidth="675.0">
                                  <children>
-                                    <TextArea fx:id="userInputField" prefHeight="234.0" prefWidth="587.0" promptText="Current Phase" VBox.vgrow="ALWAYS" />
+                                    <TextArea fx:id="userInputField" prefHeight="234.0" prefWidth="587.0" promptText="Select a test and press start for beginning a cycle. To end a cycle choose 'File' -&gt; 'End Cycle'." VBox.vgrow="ALWAYS" />
                                     <GridPane>
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="100.0" />
@@ -162,7 +152,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="informationOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="informationOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="Information about a selected exercise will be shown here." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                     <HBox alignment="CENTER_LEFT" layoutX="294.0" layoutY="47.0" maxHeight="25.0" minHeight="25.0" minWidth="360.0" prefHeight="25.0" prefWidth="360.0" spacing="5.0" />
                                  </children>
                               </AnchorPane>
@@ -172,7 +162,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="consoleOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I am the Consol" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="consoleOutputArea" layoutX="14.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="Failures and Errors will be shown here." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -181,7 +171,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="testOutputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Test-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="testOutputArea" layoutX="76.0" layoutY="-31.0" prefHeight="169.0" prefWidth="598.0" promptText="Edited Tests will be shown here." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -190,7 +180,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="codeOutputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Code-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="codeOutputArea" layoutX="121.0" layoutY="-25.0" prefHeight="169.0" prefWidth="598.0" promptText="Edited Code will be shown here." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -199,7 +189,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="codeRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="codeRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="Refactored Code will be shown here." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -208,7 +198,7 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <TextArea fx:id="testRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="I show what user typed in due Refactor-Phase" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TextArea fx:id="testRefactorOutputArea" layoutX="64.0" layoutY="-45.0" prefHeight="169.0" prefWidth="598.0" promptText="Refectored Test will be shown here." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
                            </content>

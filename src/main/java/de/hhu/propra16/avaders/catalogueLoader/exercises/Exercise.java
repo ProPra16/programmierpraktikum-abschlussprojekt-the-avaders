@@ -57,17 +57,13 @@ public class Exercise {
 	 * Returns the name of the exercise
 	 * @return The name of the exercise
      */
-	public String getExerciseName() {
-		return exerciseName;
-	}
+	public String getExerciseName(){	return exerciseName;	}
 
 	/**
 	 * Returns the description of the exercise
 	 * @return The description of the exercise
      */
-	public String getDescription() {
-		return description;
-	}
+	public String getDescription(){	return description;	}
 
 	/**
 	 * Produces the indexed template for a class
@@ -75,9 +71,7 @@ public class Exercise {
 	 *                   should be returned
 	 * @return The template of the class specified by templateNr
      */
-	public String getClassTemplate(int templateNr){
-		return classTemplates.getJavaFile(templateNr).sourceCodeTemplate;
-	}
+	public String getClassTemplate(int templateNr){	return classTemplates.getJavaFile(templateNr).sourceCodeTemplate;	}
 
 	/**
 	 * Produces the indexed template for a test
@@ -85,18 +79,14 @@ public class Exercise {
 	 *                   should be returned
 	 * @return The template of the class specified by templateNr
      */
-	public String getTestTemplates(int classNr){
-		return testTemplates.getJavaFile(classNr).sourceCodeTemplate;
-	}
+	public String getTestTemplates(int classNr){	return testTemplates.getJavaFile(classNr).sourceCodeTemplate;	}
 
 	/**
 	 * Returns the name of an indexed class
 	 * @param classNumber The index of the class of which the name should be returned
 	 * @return The name of the class
      */
-	public String getClassName(int classNumber){
-		return classTemplates.getJavaFile(classNumber).className;
-	}
+	public String getClassName(int classNumber){	return classTemplates.getJavaFile(classNumber).className;	}
 
 	/**
 	 * Produces the name of an indexed test
