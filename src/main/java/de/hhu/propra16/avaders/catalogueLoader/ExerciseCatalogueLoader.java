@@ -19,6 +19,22 @@ import java.io.IOException;
  * @see CatalogueLoader
  */
 public class ExerciseCatalogueLoader implements CatalogueLoader {
+	public static final String EXERCISES = "exercises";
+	public static final String EXERCISES1 = "/exercises";
+	public static final String EXERCISE = "/exercise";
+	public static final String EXERCISE1 = "exercise";
+	public static final String DESCRIPTION = "description";
+	public static final String CLASSES = "classes";
+	public static final String TESTS = "tests";
+	public static final String CONFIG = "config";
+	public static final String CLASS = "class";
+	public static final String CLASSES1 = "/classes";
+	public static final String TEST = "test";
+	public static final String TESTS1 = "/tests";
+	public static final String CONFIG1 = "/config";
+	public static final String BABYSTEPS = "babysteps";
+	public static final String TIMETRACKING = "timetracking";
+	public static final String ATDD = "atdd";
 	private final ExerciseTokenizer exerciseTokenizer;
 	private final ExerciseCatalogue loadedExerciseCatalogue;
 
@@ -71,12 +87,12 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 
 		if(exerciseTokenizer.currentToken() == null) throw new ParserException("The specified file is empty.");
 
-		if((exerciseTokenizer.currentToken()).name.startsWith("exercises")
+		if((exerciseTokenizer.currentToken()).name.startsWith(EXERCISES)
 				&& exerciseTokenizer.hasNextToken()) exerciseTokenizer.advance();
-		else throw new UnexpectedTokenException("exercises", exerciseTokenizer.currentToken().name,
+		else throw new UnexpectedTokenException(EXERCISES, exerciseTokenizer.currentToken().name,
 				exerciseTokenizer.getLineNumber());
 
-		while(exerciseTokenizer.hasNextToken() && !exerciseTokenizer.currentToken().name.equals("/exercises")) {
+		while(exerciseTokenizer.hasNextToken() && !exerciseTokenizer.currentToken().name.equals(EXERCISES1)) {
 			parseExercise();
 			exerciseTokenizer.advance();
 		}
@@ -85,9 +101,9 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 			throw new ParserException("The specified catalogue does not contain an exercise.");
 
 		if(exerciseTokenizer.currentToken() == null)
-			throw new MissingTokenException("exercises", exerciseTokenizer.getLineNumber());
+			throw new MissingTokenException(EXERCISES, exerciseTokenizer.getLineNumber());
 
-		if(exerciseTokenizer.currentToken().name.equals("/exercises") && !exerciseTokenizer.hasNextToken())
+		if(exerciseTokenizer.currentToken().name.equals(EXERCISES1) && !exerciseTokenizer.hasNextToken())
 			return loadedExerciseCatalogue;
 
 		return null;
@@ -105,7 +121,7 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 		exerciseConfig = new ExerciseConfig();
 		classes = new JavaFiles();
 
-		while(exerciseTokenizer.hasNextToken() && !exerciseTokenizer.currentToken().name.equals("/exercise"))
+		while(exerciseTokenizer.hasNextToken() && !exerciseTokenizer.currentToken().name.equals(EXERCISE))
 			parseToken();
 
 		if(exerciseName != null && description != null && classes.size() > 0 && tests.size() > 0 && exerciseConfig != null) {
@@ -126,15 +142,15 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 	private void parseToken() throws SamePropertyTwiceException, IOException, TokenException, ParserException {
 		Token token = exerciseTokenizer.currentToken();
 		switch(token.name){
-			case "exercise": exerciseName = token.value; break;
-			case "description": {
+			case EXERCISE1: exerciseName = token.value; break;
+			case DESCRIPTION: {
 				if(token.value != null) description = token.value;
 				else description = "";
 				break;
 			}
-			case "classes":	parseJavaFiles(classes, "class", "/classes"); break;
-			case "tests": parseJavaFiles(tests, "test", "/tests"); break;
-			case "config": parseConfig(); break;
+			case CLASSES:	parseJavaFiles(classes, CLASS, CLASSES1); break;
+			case TESTS: parseJavaFiles(tests, TEST, TESTS1); break;
+			case CONFIG: parseConfig(); break;
 			default:
 				throw new UnexpectedTokenException("<exercise>, <description>, <classes>, <tests> or <config>",
 						token.name, exerciseTokenizer.getLineNumber());
@@ -175,21 +191,21 @@ public class ExerciseCatalogueLoader implements CatalogueLoader {
 	private void parseConfig() throws SamePropertyTwiceException, IOException, TokenException {
 		Token token = exerciseTokenizer.currentToken();
 
-		while(!token.name.equals("/config")) {
+		while(!token.name.equals(CONFIG1)) {
 			exerciseTokenizer.advance();
 			token = exerciseTokenizer.currentToken();
 
 			if(token == null) throw new MissingTokenException("</config>", exerciseTokenizer.getLineNumber());
 
 			switch (token.name) {
-				case "babysteps":
+				case BABYSTEPS:
 					exerciseConfig.setBabySteps(Boolean.valueOf(token.value));
 					exerciseConfig.setBabyStepsTime(((BabyStepsToken) token).time);
 					break;
-				case "timetracking":
+				case TIMETRACKING:
 					exerciseConfig.setTimeTracking(Boolean.valueOf(token.value));
 					break;
-				case "atdd":
+				case ATDD:
 					exerciseConfig.setAtdd(Boolean.valueOf(token.value));
 					break;
 			}

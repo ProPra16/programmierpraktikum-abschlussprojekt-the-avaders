@@ -17,7 +17,10 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringToToken.co
  * Reads lexemes from a .xml file until the end of file is reached and returns single
  * {@link Token} instances for parsing
  */
+@SuppressWarnings("HardcodedFileSeparator")
 public class XMLExerciseTokenizer implements ExerciseTokenizer {
+	public static final String XML = ".xml";
+	public static final String DESCRIPTION = "description";
 	/**
 	 * The {@link LineReader the xml-file will be read from}
      */
@@ -61,7 +64,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @see ExerciseTokenizer
      */
 	public XMLExerciseTokenizer(LineReader fileReader) throws SamePropertyTwiceException, IOException, TokenException {
-		if(fileReader instanceof FileReader && !((FileReader)fileReader).getPath().endsWith(".xml"))
+		if(fileReader instanceof FileReader && !((FileReader)fileReader).getPath().endsWith(XML))
 			throw new IOException("Please choose a file with the \".xml\" extension.");
 
 		this.fileReader = fileReader;
@@ -80,7 +83,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 			return;
 		}
 
-		while(readLine != null && readLine.equals("")){
+		while(readLine != null && readLine.isEmpty()){
 			readStructure();
 			if(readLine != null) readLine = readLine.trim();
 		}
@@ -128,12 +131,12 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 
 		currentToken = nextToken;
 
-		if(readToken.startsWith("description")) {
-			nextToken = readContent("description");
+		if(readToken.startsWith(DESCRIPTION)) {
+			nextToken = readContent(DESCRIPTION);
 			return;
 		}
 
-		if( !readToken.contains("/") || (readToken.indexOf("/") == (readToken.length()-1)) )
+		if( !readToken.contains("/") || (readToken.indexOf('/') == (readToken.length()-1)) )
 			readToken = readToken.trim();
 
 		// end of stream reached
@@ -192,9 +195,9 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 		StringBuilder contentBuilder = new StringBuilder();
 		String indent = "";
 
-		while(readLine != null && !readLine.replace(" ","").contains("</" + until + ">")){
+		while(readLine != null && !readLine.replace(" ","").contains("</" + until + '>')){
 			indent = removeIndent(indent);
-			contentBuilder.append(indent).append(readLine.trim()).append("\n");
+			contentBuilder.append(indent).append(readLine.trim()).append('\n');
 			indent = addIndent(indent);
 			readNextLine();
 		}
@@ -203,9 +206,9 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 		else throw new MissingTokenException("</" + until + ">", lineNumber);
 
 		String content = contentBuilder.toString();
-		content = remove(content, "<" + until + ">");
+		content = remove(content, '<' + until + '>');
 		readLine = remove(readLine, insertEscapedCurlyBracket(content));
-		readLine = remove(readLine, "</" + until + ">");
+		readLine = remove(readLine, "</" + until + '>');
 
 		return content.trim();
 	}
@@ -228,7 +231,7 @@ public class XMLExerciseTokenizer implements ExerciseTokenizer {
 	 * @return The new indent string
 	 */
 	private String addIndent(String indent) {
-		if(readLine.contains("{")) return indent + "\t";
+		if(readLine.contains("{")) return indent + '\t';
 		return indent;
 	}
 

@@ -13,12 +13,31 @@ import static de.hhu.propra16.avaders.catalogueLoader.tokenizer.StringOperations
 /**
  * Converts strings into tokens instances and returns them
  */
+@SuppressWarnings("HardcodedFileSeparator")
 public class StringToToken {
 
 	/**
-	 * The singleton instance of this class
+	 * The singleton INSTANCE of this class
      */
-	private static final StringToToken instance = initializeStringToTokenAndTokenizerChain();
+	private static final StringToToken INSTANCE = initializeStringToTokenAndTokenizerChain();
+	public static final String EXERCISES = "exercises";
+	public static final String EXERCISE = "/exercise";
+	public static final String CLASSES = "classes";
+	public static final String CLASSES1 = "/classes";
+	public static final String TESTS = "tests";
+	public static final String TESTS1 = "/tests";
+	public static final String CONFIG = "config";
+	public static final String CONFIG1 = "/config";
+	public static final String EXERCISE1 = "exercise";
+	public static final String CLASS = "class";
+	public static final String TEST = "test";
+	public static final String BABYSTEPS = "babysteps";
+	public static final String TIMETRACKING = "timetracking";
+	public static final String ATDD = "atdd";
+	public static final String VALUE = "value";
+	public static final String TIME = "time";
+	public static final String NAME = "name";
+	public static final String DESCRIPTION = "description";
 
 	/**
 	 * The head of the {@link TokenizerChain} for converting the string into a token
@@ -31,47 +50,47 @@ public class StringToToken {
 	private static int currentLineNumber;
 
 	/**
-	 * Returns the singleton instance of this class
-	 * @return The singleton instance of this class
+	 * Returns the singleton INSTANCE of this class
+	 * @return The singleton INSTANCE of this class
      */
 	public static StringToToken getInstance(){
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
-	 * Initializes the singleton instance of this class by
+	 * Initializes the singleton INSTANCE of this class by
 	 * creating the {@link TokenizerChain} for converting
 	 * a string into a {@link Token}
-	 * @return The singleton instance of this class
+	 * @return The singleton INSTANCE of this class
      */
 	private static StringToToken initializeStringToTokenAndTokenizerChain() {
-		// instance chain
+		// INSTANCE chain
 		TokenizerChain emptyTagsChain = new TokenizerChain(
 				(readString) ->
-				(readString.startsWith("exercises")	|| readString.startsWith("/exercise")	||
-				readString.startsWith("classes")	|| readString.startsWith("/classes")	||
-				readString.startsWith("tests")		|| readString.startsWith("/tests")		||
-				readString.startsWith("config")		|| readString.startsWith("/config")),
+				(readString.startsWith(EXERCISES)	|| readString.startsWith(EXERCISE)	||
+				readString.startsWith(CLASSES)	|| readString.startsWith(CLASSES1)	||
+				readString.startsWith(TESTS)		|| readString.startsWith(TESTS1)		||
+				readString.startsWith(CONFIG)		|| readString.startsWith(CONFIG1)),
 				Token::new
 		);
 
 		TokenizerChain exerciseTagChain = new TokenizerChain(
-				(readString) -> readString.startsWith("exercise"),
-				(readString) -> parseTokenName("exercise", readString)
+				(readString) -> readString.startsWith(EXERCISE1),
+				(readString) -> parseTokenName(EXERCISE1, readString)
 		);
 
 		TokenizerChain classTagChain = new TokenizerChain(
-				(readString) -> readString.startsWith("class"),
-				(readString) -> parseTokenName("class", readString)
+				(readString) -> readString.startsWith(CLASS),
+				(readString) -> parseTokenName(CLASS, readString)
 		);
 
 		TokenizerChain testTagChain = new TokenizerChain(
-				(readString) -> readString.startsWith("test"),
-				(readString) -> parseTokenName("test", readString)
+				(readString) -> readString.startsWith(TEST),
+				(readString) -> parseTokenName(TEST, readString)
 		);
 
 		TokenizerChain babystepsChain = new TokenizerChain(
-				(readString) -> readString.startsWith("babysteps"),
+				(readString) -> readString.startsWith(BABYSTEPS),
 				(readString) -> {
 					if (readString.contains("/")) readString = readString.replaceFirst("/", "").trim();
 					return parseBabySteps(readString);
@@ -79,18 +98,18 @@ public class StringToToken {
 		);
 
 		TokenizerChain timetrackingChain = new TokenizerChain(
-				(readString) -> readString.startsWith("timetracking"),
+				(readString) -> readString.startsWith(TIMETRACKING),
 				(readString) -> {
 					if(readString.contains("/")) readString = readString.replaceFirst("/", "").trim();
-					return parseSingleValueToken("timetracking", readString);
+					return parseSingleValueToken(TIMETRACKING, readString);
 				}
 		);
 
 		TokenizerChain atddChain = new TokenizerChain(
-				(readString) -> readString.startsWith("atdd"),
+				(readString) -> readString.startsWith(ATDD),
 				(readString) -> {
 					if (readString.contains("/")) readString = readString.replaceFirst("/", "").trim();
-					return parseSingleValueToken("atdd", readString);
+					return parseSingleValueToken(ATDD, readString);
 				}
 		);
 
@@ -115,7 +134,7 @@ public class StringToToken {
 	}
 
 	/**
-	 * Creates an instance of StringToToken with the tokenizerChainHead
+	 * Creates an INSTANCE of StringToToken with the tokenizerChainHead
 	 * attached
 	 * @param tokenizerChainHead The Head of the chain that is used for
 	 *                           converting the string to a {@link Token}
@@ -127,13 +146,13 @@ public class StringToToken {
 	 * in a {@link Token} that is then returned
 	 * @param readString The string which will be analyzed
 	 * @param lineNumber The current line number
-	 * @return A {@link Token} instance with the information from the given string
+	 * @return A {@link Token} INSTANCE with the information from the given string
 	 * @throws SamePropertyTwiceException if a property appears twice within the tokens
 	 * @throws TokenException If an unexpected {@link Token} was read or a Token is missing
      */
 	public Token convert(String readString, int lineNumber) throws SamePropertyTwiceException, TokenException {
 		currentLineNumber = lineNumber;
-		if (readString.startsWith("/")) readString = "/" + remove(readString, "/");
+		if (readString.startsWith("/")) readString = '/' + remove(readString, "/");
 
 		return tokenizerChainHead.compute(readString);
 	}
@@ -153,15 +172,15 @@ public class StringToToken {
 		readString = readString.replaceFirst(token, "");
 		readString = readString.trim();
 
-		while(readString.startsWith("value")) {
-			if (readString.startsWith("value")) {
-				if (value == null) value = parseProperty(readString, "value");
-				else throw new SamePropertyTwiceException("value", currentLineNumber);
+		while(readString.startsWith(VALUE)) {
+			if (readString.startsWith(VALUE)) {
+				if (value == null) value = parseProperty(readString, VALUE);
+				else throw new SamePropertyTwiceException(VALUE, currentLineNumber);
 			}
 			readString = removeProperty(readString);
 		}
 
-		if(!readString.equals(""))
+		if(!readString.isEmpty())
 			throw new UnexpectedTokenException("property: value", readString, currentLineNumber);
 
 		return new Token(token, value);
@@ -175,15 +194,15 @@ public class StringToToken {
      */
 	private static String removeProperty(String readString) {
 		// remove read time/value
-		readString = readString.substring(readString.indexOf("\"")+1);
-		readString = readString.substring(readString.indexOf("\"")+1);
+		readString = readString.substring(readString.indexOf('\"')+1);
+		readString = readString.substring(readString.indexOf('\"')+1);
 		return readString.trim();
 	}
 
 	/**
 	 * Parses the babySteps configuration
 	 * @param readString The string which the configuration is to be read from
-	 * @return A {@link BabyStepsToken} instance with the read information
+	 * @return A {@link BabyStepsToken} INSTANCE with the read information
 	 * @throws SamePropertyTwiceException If a property was found twice in the string
 	 * @throws TokenException If an unexpected {@link Token} appeared
      */
@@ -191,23 +210,23 @@ public class StringToToken {
 		String value = null;
 		String time = null;
 
-		readString = readString.replaceFirst("babysteps", "");
+		readString = readString.replaceFirst(BABYSTEPS, "");
 		readString = readString.trim();
 
-		while(readString.startsWith("value") || readString.startsWith("time")) {
-			if (readString.startsWith("value")) {
-				if(value == null) value = parseProperty(readString, "value");
-				else throw new SamePropertyTwiceException("value", currentLineNumber);
+		while(readString.startsWith(VALUE) || readString.startsWith(TIME)) {
+			if (readString.startsWith(VALUE)) {
+				if(value == null) value = parseProperty(readString, VALUE);
+				else throw new SamePropertyTwiceException(VALUE, currentLineNumber);
  			}
-			else if (readString.startsWith("time")) {
-				if (time == null) time = parseProperty(readString, "time");
-				else throw new SamePropertyTwiceException("time", currentLineNumber);
+			else if (readString.startsWith(TIME)) {
+				if (time == null) time = parseProperty(readString, TIME);
+				else throw new SamePropertyTwiceException(TIME, currentLineNumber);
 			}
 
 			readString = removeProperty(readString);
 		}
 
-		if(!readString.equals(""))
+		if(!readString.isEmpty())
 			throw new UnexpectedTokenException("property: time or value", readString, currentLineNumber);
 
 		return new BabyStepsToken(value, StringTimeToSeconds(time));
@@ -227,7 +246,7 @@ public class StringToToken {
 		readString = remove(readString, "=");
 		readString = remove(readString, "\"");
 
-		int indexOfQuote = readString.indexOf("\"");
+		int indexOfQuote = readString.indexOf('\"');
 		if(indexOfQuote == -1) throw new MissingTokenException("\" around " + readString, currentLineNumber);
 
 		return readString.substring(0, indexOfQuote).trim();
@@ -241,11 +260,11 @@ public class StringToToken {
 	 * @throws MissingTokenException If a " is found to be missing
      */
 	private static Token parseTokenName(String token, String readString) throws MissingTokenException {
-		if(!readString.contains(token) || !readString.contains("name") || !readString.contains("="))
+		if(!readString.contains(token) || !readString.contains(NAME) || !readString.contains("="))
 			throw new MissingTokenException(token + ", name or =", currentLineNumber);
 
 		readString = remove(readString, token);
-		readString = parseProperty(readString, "name");
+		readString = parseProperty(readString, NAME);
 
 		return new Token(token, readString);
 	}
@@ -255,5 +274,5 @@ public class StringToToken {
 	 * @param descriptionContent The content of the description
 	 * @return The {@link Token} that holds the description's content as its value
      */
-	static Token convertDescription(String descriptionContent){	return new Token("description", descriptionContent);	}
+	static Token convertDescription(String descriptionContent){	return new Token(DESCRIPTION, descriptionContent);	}
 }

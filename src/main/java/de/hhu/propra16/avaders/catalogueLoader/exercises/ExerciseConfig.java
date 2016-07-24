@@ -13,7 +13,7 @@ public class ExerciseConfig {
 	private boolean timeTracking;
 	private boolean atdd;
 
-	private static final int standardTime = 120;
+	private static final int STANDARD_TIME = 120;
 
 	/**
 	 * Returns whether or not {@link Babysteps} is enabled in this exercise
@@ -35,15 +35,15 @@ public class ExerciseConfig {
 
 	/**
 	 * Sets the time {@link Babysteps} will be executed for.
-	 * If the parameter holds the value 0, the standardTime {@value standardTime}
+	 * If the parameter holds the value 0, the STANDARD_TIME {@value STANDARD_TIME}
 	 * is used in it's stead.
 	 * @param time The time babystepsTime will be set to.
-	 *             If it is 0, then the standardTime ({@value standardTime} seconds)
+	 *             If it is 0, then the STANDARD_TIME ({@value STANDARD_TIME} seconds)
 	 *             is set instead.
      */
 	public void setBabyStepsTime(int time){
 		if(time != 0)	this.time = time;
-		else this.time = standardTime;
+		else this.time = STANDARD_TIME;
 	}
 
 	/**

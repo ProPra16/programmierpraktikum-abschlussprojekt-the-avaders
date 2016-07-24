@@ -8,6 +8,7 @@ import de.hhu.propra16.avaders.extensions.Babysteps;
  * and the time it was set to
  */
 public class BabyStepsToken extends Token {
+	public static final String BABYSTEPS = "babysteps";
 	/**
 	 * Stores the time extracted from the babysteps lexeme
 	 */
@@ -20,7 +21,7 @@ public class BabyStepsToken extends Token {
 	 * @param time The time in seconds that were read in the lexeme
      */
 	public BabyStepsToken(String value, int time){
-		super("babysteps", value);
+		super(BABYSTEPS, value);
 		this.time = time;
 	}
 }

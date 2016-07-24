@@ -7,6 +7,8 @@ import static java.lang.Integer.*;
  */
 class StringOperations {
 
+	public static final int MINUTE_IN_SECONDS = 60;
+
 	/**
 	 * Removes the first occurrence of the
 	 * string specified with toRemove from the string removeFrom and removes
@@ -37,9 +39,9 @@ class StringOperations {
      */
 	static int StringTimeToSeconds(String time) throws NumberFormatException{
 		if(time == null) return 0;
-		int indexOfColon = time.indexOf(":");
+		int indexOfColon = time.indexOf(':');
 		String minutes = time.substring(0, indexOfColon);
 		String seconds = time.substring(indexOfColon+1);
-		return parseInt(minutes)*60 + parseInt(seconds);
+		return parseInt(minutes)* MINUTE_IN_SECONDS + parseInt(seconds);
 	}
 }

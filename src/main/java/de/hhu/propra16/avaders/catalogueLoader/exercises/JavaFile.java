@@ -6,6 +6,8 @@ import de.hhu.propra16.avaders.catalogueLoader.ParserException;
  * JavaFile holds a template for a Java class
  */
 public class JavaFile {
+	public static final String WHITE_SPACE = "\\s";
+	public static final String CLASS = "class";
 	/**
 	 * Represents the name of the java-file as well as of the java class it holds.
 	 */
@@ -38,7 +40,7 @@ public class JavaFile {
 	 * @return True if the class name is valid, false otherwise
      */
 	private boolean isValidClassName() {
-		String classHeader = sourceCodeTemplate.substring(0, sourceCodeTemplate.indexOf("{")+1);
-		return classHeader.replaceAll("\\s", "").contains("class" + className + "{");
+		String classHeader = sourceCodeTemplate.substring(0, sourceCodeTemplate.indexOf('{')+1);
+		return classHeader.replaceAll(WHITE_SPACE, "").contains(CLASS + className + '{');
 	}
 }
